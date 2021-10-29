@@ -8,7 +8,7 @@ To install this package, enter the following commands into R:
 
 ```{r}
 library(devtools)
-devtools::install_github("warkenca/komputeExamples)
+devtools::install_github("warkenca/komputeExamples")
 ```
 
 ## Load the Package
