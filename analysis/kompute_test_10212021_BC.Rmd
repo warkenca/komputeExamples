@@ -1,0 +1,687 @@
+---
+title: "kompute algorithm test - BC data"
+author: "Coby Warkentin and Donghyung Lee"
+date: "`r Sys.Date()`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: inline
+---
+
+### Load packages
+```{r}
+rm(list=ls())
+library(data.table)
+library(dplyr)
+#library(kableExtra)
+library(reshape2)
+library(ggplot2)
+library(tidyr) #spread
+#library(pheatmap)
+library(RColorBrewer)
+#library(GGally) #ggpairs
+library(irlba) # partial PCA
+#library(gridExtra)
+#library(cowplot)
+library(circlize)
+library(ComplexHeatmap)
+#options(max.print = 3000)
+```
+
+```{r global_option, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Raw Control Phenotype
+
+### Read all control phenotype data
+```{r}
+load(file="~/Google Drive Miami/Miami_IMPC/data/v10.1/AllControls_small.Rdata")
+dim(allpheno)
+head(allpheno)
+allpheno.org <- allpheno
+#allpheno <- allpheno.org
+```
+
+### Correct procedure and phenotype names, filter out time series data
+
+We use BC only.
+```{r}
+allpheno = allpheno %>% 
+  filter(procedure_name=="Body Composition (DEXA lean/fat)") %>%
+  mutate(proc_short_name=recode(procedure_name, "Body Composition (DEXA lean/fat)"="BC")) %>%
+  #mutate(parameter_name=recode(parameter_name, "Triglyceride"="Triglycerides")) %>%
+  mutate(proc_param_name=paste0(proc_short_name,"_",parameter_name)) %>%
+  mutate(proc_param_name_stable_id=paste0(proc_short_name,"_",parameter_name,"_",parameter_stable_id))
+
+## Extract time series data and find out parameter names
+ts <- allpheno %>% filter(observation_type=="time_series")
+table(ts$proc_param_name)
+
+# Filter out time series data
+allpheno <- allpheno %>% filter(observation_type!="time_series")
+table(allpheno$proc_param_name)
+```
+
+
+### Heatmap showing measured phenotypes 
+
+This heatmaps show phenotypes measured for each control mouse. Columns represent mice and rows represent phenotypes. 
+```{r, fig.width=12, fig.height=8}
+mtest <- table(allpheno$proc_param_name_stable_id, allpheno$biological_sample_id)
+mtest <-as.data.frame.matrix(mtest)
+dim(mtest)
+
+if(FALSE){
+nmax <-max(mtest)
+library(circlize)
+col_fun = colorRamp2(c(0, nmax), c("white", "red"))
+col_fun(seq(0, nmax))
+pdf("~/Google Drive Miami/Miami_IMPC/output/measured_phenotypes_controls_BC.pdf", width = 12, height = 14)
+ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 8), name="Count")
+draw(ht)
+dev.off()
+}
+```
+
+### Remove phenotypes with num of obs < 15000
+```{r}
+mtest <- table(allpheno$proc_param_name, allpheno$biological_sample_id)
+dim(mtest)
+head(mtest[,1:10])
+mtest0 <- mtest>0
+head(mtest0[,1:10])
+rowSums(mtest0)
+
+rmv.pheno.list <- rownames(mtest)[rowSums(mtest0)<15000]
+rmv.pheno.list
+
+dim(allpheno)
+allpheno <- allpheno %>% filter(!(proc_param_name %in% rmv.pheno.list))
+dim(allpheno)
+
+# number of phenotypes left
+length(unique(allpheno$proc_param_name))
+```
+
+### Romove samples with num of measured phenotypes < 10
+```{r}
+mtest <- table(allpheno$proc_param_name, allpheno$biological_sample_id)
+dim(mtest)
+head(mtest[,1:10])
+mtest0 <- mtest>0
+head(mtest0[,1:10])
+summary(colSums(mtest0))
+
+rmv.sample.list <- colnames(mtest)[colSums(mtest0)<7]
+length(rmv.sample.list)
+
+dim(allpheno)
+allpheno <- allpheno %>% filter(!(biological_sample_id %in% rmv.sample.list))
+dim(allpheno)
+
+# number of observations to use
+length(unique(allpheno$biological_sample_id))
+```
+
+### Heapmap of measured phenotypes after filtering
+```{r}
+if(FALSE){
+mtest <- table(allpheno$proc_param_name, allpheno$biological_sample_id)
+dim(mtest)
+mtest <-as.data.frame.matrix(mtest)
+nmax <-max(mtest)
+library(circlize)
+col_fun = colorRamp2(c(0, nmax), c("white", "red"))
+col_fun(seq(0, nmax))
+pdf("~/Google Drive Miami/Miami_IMPC/output/measured_phenotypes_controls_after_filtering_BC.pdf", width = 10, height = 3)
+ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 7), name="Count")
+draw(ht)
+dev.off()
+}
+```
+
+### Reshape the data (long to wide format)
+```{r}
+ap.mat <- allpheno %>% 
+  dplyr::select(biological_sample_id, proc_param_name, data_point, sex, phenotyping_center, strain_name) %>% 
+  ##consider weight or age in weeks
+  arrange(biological_sample_id) %>%
+  distinct(biological_sample_id, proc_param_name, .keep_all=TRUE) %>% ## remove duplicates, maybe mean() is better.
+  spread(proc_param_name, data_point) %>%
+  tibble::column_to_rownames(var="biological_sample_id")
+head(ap.mat)
+dim(ap.mat)
+
+summary(colSums(is.na(ap.mat[,-1:-3])))
+```
+
+### Distribution of each phenotype
+```{r,  fig.width=10, fig.height=3}
+ggplot(melt(ap.mat), aes(x=value)) + 
+  geom_histogram() + 
+  facet_wrap(~variable, scales="free", ncol=5)+
+  theme(strip.text.x = element_text(size = 6))
+
+```
+
+
+### Rank Z transformation
+```{r, fig.width=10, fig.height=3}
+library(RNOmni)
+ap.mat.rank <- ap.mat
+dim(ap.mat.rank)
+ap.mat.rank <- ap.mat.rank[complete.cases(ap.mat.rank),]
+dim(ap.mat.rank)
+
+dim(ap.mat)
+ap.mat <- ap.mat[complete.cases(ap.mat),]
+dim(ap.mat)
+
+#rankZ <- function(x){ qnorm((rank(x,na.last="keep")-0.5)/sum(!is.na(x))) }
+#ap.mat.rank <- ap.mat
+#dim(ap.mat.rank)
+
+#ap.mat.rank <- ap.mat.rank[complete.cases(ap.mat.rank),]
+#dim(ap.mat.rank)
+#library(RNOmni)
+#ap.mat.rank <- cbind(ap.mat.rank[,1:3], apply(ap.mat.rank[,-1:-3], 2, RankNorm))
+
+ap.mat.rank <- cbind(ap.mat.rank[,1:3], apply(ap.mat.rank[,-1:-3], 2, RankNorm))
+ggplot(melt(ap.mat.rank), aes(x=value)) + 
+  geom_histogram() + 
+  facet_wrap(~variable, scales="free", ncol=5)+
+  theme(strip.text.x = element_text(size = 6))
+```
+
+### [TASK 1] Principal Variance Component Analysis
+
+Please conduct a PVCA analysis on the phenotype matrix data (op.mat[,-1:-3]). I think you can measure the proportion of variance explained by each important covariate (sex, phenotyping_center, strain_name)
+```{r}
+#source("G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/reference/PVCA/examples/PVCA.R")
+source("~/Google Drive Miami/Miami_IMPC/reference/PVCA/examples/PVCA.R")
+
+meta <- ap.mat.rank[,1:3] ## looking at covariates sex, phenotyping_center, and strain_name
+head(meta)
+dim(meta)
+summary(meta) # variables are still characters
+meta[sapply(meta, is.character)] <- lapply(meta[sapply(meta, is.character)], as.factor)
+summary(meta) # now all variables are converted to factors
+
+chisq.test(meta[,1],meta[,2])
+chisq.test(meta[,2],meta[,3]) 
+
+meta<-meta[,-3] # phenotyping_center and strain_name strongly associated and this caused confouding in PVCA analysis so strain_name dropped.
+
+G <- t(ap.mat.rank[,-1:-3]) ## phenotype matrix data
+
+set.seed(09302021)
+
+# Perform PVCA for 10 random samples of size 1000 (more computationally efficient)
+pvca.res <- matrix(nrow=10, ncol=3)
+for (i in 1:10){
+  sample <- sample(1:ncol(G), 1000, replace=FALSE)
+  pvca.res[i,] <- PVCA(G[,sample], meta[sample,], threshold=0.6, inter=FALSE)
+}
+
+# Average effect size across samples
+pvca.means <- colMeans(pvca.res)
+names(pvca.means) <- c(colnames(meta), "resid")
+
+# Plot PVCA
+pvca.plot <- PlotPVCA(pvca.means, "PVCA of Phenotype Matrix Data")
+pvca.plot
+
+#ggsave(filename = "pvca_plot.png", pvca.plot, width=8, height=6)
+```
+
+### [TASK 2] ComBat analysis - Removing batch effects
+If a large proportion of variance is explained by these covariats, we need to remove their effects from the data. 
+```{r}
+library(sva)
+combat_komp = ComBat(dat=G, batch=meta$phenotyping_center, par.prior=TRUE, prior.plots=TRUE, mod=NULL)
+
+combat_komp[,1:3]
+G[,1:3] # for comparison, combat_komp is same form and same dimensions as G
+```
+
+### PVCA on residuals from ComBat and plot it (center effect should be much lower)
+
+```{r}
+set.seed(09302021)
+
+# Perform PVCA for 10 samples (more computationally efficient)
+pvca.res.nobatch <- matrix(nrow=10, ncol=3)
+for (i in 1:10){
+  sample <- sample(1:ncol(combat_komp), 1000, replace=FALSE)
+  pvca.res.nobatch[i,] <- PVCA(combat_komp[,sample], meta[sample,], threshold=0.6, inter=FALSE)
+}
+
+# Average effect size across samples
+pvca.means.nobatch <- colMeans(pvca.res.nobatch)
+names(pvca.means.nobatch) <- c(colnames(meta), "resid")
+
+# Plot PVCA
+pvca.plot.nobatch <- PlotPVCA(pvca.means.nobatch, "PVCA of Phenotype Matrix Data with Reduced Batch Effect")
+pvca.plot.nobatch
+```
+
+The batch effect of phenotyping center has been largely removed.
+
+
+
+
+
+
+
+### Compute correlations between CSD, GS, OF, PPI phenotypes
+```{r, fig.width=10, fig.height=7}
+ap.cor.rank <- cor(ap.mat.rank[,-1:-3], use="pairwise.complete.obs") # pearson correlation coefficient
+#ap.cor <- cor(ap.mat[,-1:-3], use="pairwise.complete.obs") # pearson correlation coefficient
+ap.cor <- cor(ap.mat[,-1:-3], use="pairwise.complete.obs", method="spearman")
+
+
+ap.cor.combat <- cor(t(combat_komp), use="pairwise.complete.obs")
+
+
+#ap.cor <- cor(ap.mat[,-1:-3], use="pairwise.complete.obs", method="spearman") # use original phenotype data
+#ap.cor <- cor(ap.mat.rank[,-1:-3], use="pairwise.complete.obs", method="spearman") # use rankZ transformed phenotype data
+
+#col <- colorRampPalette(c("steelblue", "white", "darkorange"))(100)
+#ap.cor.out <- pheatmap(ap.cor, cluster_rows = T, cluster_cols=T, show_colnames=F, col=col, fontsize = 7)
+
+#col <- colorRampPalette(c("white","darkorange"))(100)
+#pheatmap(abs(op.cor), cluster_rows = T, cluster_cols=T, show_colnames=F, col=col)
+if(FALSE){
+#pdf("~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes.pdf", width = 11, height = 8)
+pdf("~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes_Pearson_BC.pdf", width = 4.9, height = 2)
+ht = Heatmap(ap.cor, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Corr")
+draw(ht)
+dev.off()
+
+pdf("~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes_rankZ_BC.pdf", width = 4.9, height = 2)
+ht = Heatmap(ap.cor.rank, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Corr")
+draw(ht)
+dev.off()
+
+pdf("~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes_ComBat_Adjusted_BC.pdf", width = 4.9, height = 2)
+ht = Heatmap(ap.cor.combat, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Corr")
+draw(ht)
+dev.off()
+
+}
+
+pheno.list <- rownames(ap.cor)
+```
+
+
+## KOMPV10.1 association summary stat
+### Read KOMPv10.1
+```{r}
+KOMPv10.1.file = "~/Google Drive Miami/Miami_IMPC/data/v10.1/IMPC_ALL_statistical_results.csv.gz"
+KOMPv10.1 = fread(KOMPv10.1.file, header=TRUE, sep=",")
+KOMPv10.1$parameter_name <- trimws(KOMPv10.1$parameter_name) #remove white spaces
+KOMPv10.1$proc_param_name <- paste0(KOMPv10.1$procedure_name,"_",KOMPv10.1$parameter_name)
+
+#head(KOMPv10.1, 10)
+#sort(table(KOMPv10.1$procedure_name))
+#sort(table(KOMPv10.1$proc_param_name), decreasing = TRUE)[1:100]
+#sort(table(KOMPv10.1$procedure_name))
+#table(KOMPv10.1$procedure_name, KOMPv10.1$parameter_name)
+#table(KOMPv10.1$procedure_name, KOMPv10.1$statistical_method)
+table(KOMPv10.1$procedure_name, KOMPv10.1$data_type)
+
+#dat <- KOMPv10.1 %>% select(procedure_name=="Gross Pathology and Tissue Collection")
+
+# extract unidimensional data only.
+dim(KOMPv10.1)
+KOMPv10.1.ud <- KOMPv10.1 %>% filter(data_type=="unidimensional")
+dim(KOMPv10.1.ud)
+```
+### Heatmap Gene - Pheno
+
+### Subset OF data and generate Z-score
+```{r}
+
+table(allpheno$procedure_name)
+
+#"Auditory Brain Stem Response"
+#"Clinical Chemistry"
+#"Body Composition (DEXA lean/fat)"
+#"Intraperitoneal glucose tolerance test (IPGTT)"
+#"Hematology"
+
+# count the number of tests in each phenotype
+proc.list <- table(KOMPv10.1.ud$procedure_name)
+#proc.list <- proc.list[proc.list>1000]
+proc.list
+length(proc.list)
+
+pheno.list <- table(KOMPv10.1.ud$proc_param_name)
+pheno.list <- pheno.list[pheno.list>1000] # find list of phenotypes with more than 1000 tests (i.e. 1000 mutants tested)
+pheno.list <- names(pheno.list)
+pheno.list
+length(pheno.list) #122
+
+# Use phenotypes with more than 1000 tests (i.e. 1000 mutants tested)
+dim(KOMPv10.1.ud)
+ap.stat <- KOMPv10.1.ud %>% filter(proc_param_name %in% pheno.list)
+dim(ap.stat)
+
+mtest <- table(ap.stat$proc_param_name, ap.stat$marker_symbol)
+mtest <-as.data.frame.matrix(mtest)
+dim(mtest)
+
+if(FALSE){
+nmax <-max(mtest)
+library(circlize)
+col_fun = colorRamp2(c(0, nmax), c("white", "red"))
+col_fun(seq(0, nmax))
+pdf("~/Google Drive Miami/Miami_IMPC/output/KMOPv10.1_heatmap_gene_vs_pheno_after_filtering.pdf", width = 10, height = 10)
+ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 5), name="Count")
+draw(ht)
+dev.off()
+}
+
+table(ap.stat$procedure_name)
+table(allpheno$procedure_name)
+
+ap.stat = ap.stat %>% 
+  dplyr::select(phenotyping_center, procedure_name, parameter_name, zygosity, allele_symbol,
+         genotype_effect_parameter_estimate, genotype_effect_stderr_estimate,
+         genotype_effect_p_value, phenotyping_center, allele_name, marker_symbol) %>% 
+  filter(procedure_name == "Body Composition (DEXA lean/fat)") %>%
+  mutate(procedure_name=recode(procedure_name, "Body Composition (DEXA lean/fat)"="BC")) %>%
+  mutate(z_score = genotype_effect_parameter_estimate/genotype_effect_stderr_estimate,
+         proc_param_name=paste0(procedure_name,"_",parameter_name),
+         gene_pheno = paste0(parameter_name, "_", allele_symbol))
+
+table(ap.stat$parameter_name, ap.stat$procedure_name)
+
+length(unique(ap.stat$marker_symbol)) #4428
+length(unique(ap.stat$allele_symbol)) #4559
+length(unique(ap.stat$proc_param_name)) #9  # number of phenotypes in association statistics data set
+length(unique(allpheno$proc_param_name)) #10 # number of phenotypes in final control data
+
+pheno.list.stat <- unique(ap.stat$proc_param_name)
+pheno.list.ctrl <- unique(allpheno$proc_param_name)
+sum(pheno.list.stat %in% pheno.list.ctrl)
+sum(pheno.list.ctrl %in% pheno.list.stat)
+
+## extract common phenotype list
+common.pheno.list <- sort(intersect(pheno.list.ctrl, pheno.list.stat))
+common.pheno.list
+length(common.pheno.list)
+
+# Use summary statistics of common phenotypes
+dim(ap.stat)
+ap.stat <- ap.stat %>% filter(proc_param_name %in% common.pheno.list)
+dim(ap.stat)
+length(unique(ap.stat$proc_param_name))
+```
+
+### Find duplicates in gene-phenotype pair 
+```{r, fig.width=6, fig.height=1.5}
+mtest <- table(ap.stat$proc_param_name, ap.stat$marker_symbol)
+mtest <-as.data.frame.matrix(mtest)
+nmax <-max(mtest)
+col_fun = colorRamp2(c(0, nmax), c("white", "red"))
+col_fun(seq(0, nmax))
+ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 8), name="Count")
+draw(ht)
+```
+
+### Using Stouffer's method, merge multiple z-scores of a gene-phenotype pair into a z-score
+```{r}
+## sum(z-score)/sqrt(# of zscore)
+sumz <- function(z){ sum(z)/sqrt(length(z)) }
+ap.z = ap.stat %>%
+  dplyr::select(marker_symbol, proc_param_name, z_score) %>%
+  na.omit() %>%
+  group_by(marker_symbol, proc_param_name) %>% 
+  summarize(zscore = sumz(z_score)) ## combine z-scores
+dim(ap.z)
+
+```
+
+### Make z-score matrix (long to wide)
+```{r, fig.width=6, fig.height=2.5}
+nan2na <- function(df){ 
+  out <- data.frame(sapply(df, function(x) ifelse(is.nan(x), NA, x))) 
+  colnames(out) <- colnames(df)
+  out
+}
+ap.zmat = dcast(ap.z, marker_symbol ~ proc_param_name, value.var = "zscore", 
+             fun.aggregate = mean) %>% tibble::column_to_rownames(var="marker_symbol")
+ap.zmat = nan2na(ap.zmat) #convert nan to na
+dim(ap.zmat)
+
+id.mat <- 1*(!is.na(ap.zmat)) # multiply 1 to make this matrix numeric
+nrow(as.data.frame(colSums(id.mat)))
+dim(id.mat)
+
+# heatmap of gene - phenotype (red: tested, white: untested)
+if(FALSE){
+pdf("~/Google Drive Miami/Miami_IMPC/output/missing_tests_after_filtering_BC.pdf", width = 6, height = 2.7)
+ht = Heatmap(t(id.mat), 
+             cluster_rows = T, clustering_distance_rows ="binary",
+             cluster_columns = T, clustering_distance_columns = "binary",
+             show_row_dend = F, show_column_dend = F,  # do not show dendrogram
+             show_column_names = F, col = c("white","red"),
+             row_names_gp = gpar(fontsize = 10), name="Missing")
+draw(ht)
+dev.off()
+}
+```
+
+### Association Z-score Distribution
+
+We plot a association Z-score distribution for each phenotype.
+```{r, fig.width=10, fig.height=3}
+ggplot(melt(ap.zmat), aes(x=value)) + 
+  geom_histogram() + 
+  facet_wrap(~variable, scales="free", ncol=5)+
+  theme(strip.text.x = element_text(size = 6))
+```
+
+
+### Estimate genetic correlation matrix between phenotypes using Zscores
+
+Here, we estimate the genetic correlations between phenotypes using association Z-score matrix (num of genes:5479, num of phenotypes 14).
+```{r, fig.width=6, fig.height=2.5}
+ap.zmat <- ap.zmat[,common.pheno.list]
+ap.zcor = cor(ap.zmat, use="pairwise.complete.obs", method="spearman")
+
+#col <- colorRampPalette(c("steelblue", "white", "darkorange"))(100)
+#pheatmap(op.zcor, cluster_rows = T, cluster_cols=T, show_colnames=F, col=col)
+#op.cor.order <- op.cor.out$tree_row[["order"]]
+#op.zcor.org <- op.zcor # this will be used in correlation matrix test
+#op.zcor <- op.zcor[op.cor.order,]
+#op.zcor <- op.zcor[,op.cor.order]
+#pheatmap(ap.zcor, cluster_rows = F, cluster_cols=F, show_colnames=F, col=col)
+
+ht = Heatmap(ap.zcor, cluster_rows = T, cluster_columns = T, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 10),
+             #name="Genetic corr (Z-score)"
+             name="Genetic Corr (Zscore)"
+             )
+draw(ht)
+
+#pheno.order <- row_order(ht)
+#ap.zcor <- ap.zcor[pheno.order,pheno.order]
+
+```
+
+
+### phenotype corr VS genetic corr btw phenotypes
+
+We compare a correlation matrix obtained using control mice phenotype data v.s. a genetic correlation matrix estimated using association Z-scores. As you can see, both correlation heatmaps have similar correlation pattern. 
+```{r, fig.width=5, fig.height=3}
+
+ap.cor.rank.fig <- ap.cor.rank[common.pheno.list,common.pheno.list]
+ap.cor.fig <- ap.cor[common.pheno.list,common.pheno.list]
+ap.cor.combat.fig <- ap.cor.combat[common.pheno.list, common.pheno.list]
+ap.zcor.fig <- ap.zcor
+
+ht = Heatmap(ap.cor.rank.fig, cluster_rows = TRUE, cluster_columns = TRUE, show_column_names = F, #col = col_fun,
+              show_row_dend = F, show_column_dend = F,  # do not show dendrogram
+             row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (RankZ, Pearson)", column_title_gp = gpar(fontsize = 8),
+             name="Corr")
+pheno.order <- row_order(ht)
+draw(ht)
+
+if(FALSE){
+pdf("~/Google Drive Miami/Miami_IMPC/output/comp_pheno_corr_gene_corr_combat_BC.pdf", width = 9, height = 2)
+ap.cor.rank.fig <- ap.cor.rank.fig[pheno.order,pheno.order]
+ht1 = Heatmap(ap.cor.rank.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+              show_row_dend = F, show_column_dend = F,  # do not show dendrogram
+             row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (RankZ, Pearson)", column_title_gp = gpar(fontsize = 8),
+             name="Corr")
+ap.cor.fig <- ap.cor.fig[pheno.order,pheno.order]  
+ht2 = Heatmap(ap.cor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (Spearman)", column_title_gp = gpar(fontsize = 8),
+             name="Corr")
+
+ap.cor.combat.fig <- ap.cor.combat.fig[pheno.order,pheno.order]  
+ht3 = Heatmap(ap.cor.combat.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (Combat, Pearson)", column_title_gp = gpar(fontsize = 8),
+             name="Corr")
+
+ap.zcor.fig <- ap.zcor.fig[pheno.order,pheno.order]
+ht4 = Heatmap(ap.zcor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 8), column_title="Genetic Corr  (Pearson)", column_title_gp = gpar(fontsize = 8),
+             name="Corr"
+             )
+draw(ht1+ht2+ht3+ht4)
+dev.off()
+}
+
+```
+
+### Test of the correlation between genetic correlation matrices
+
+It looks like Jenrich (1970) test is too conservative here. Instead, we use Mantel test testing the correlation between two distance matrices.
+```{r}
+####################
+# Use Mantel test 
+# https://stats.idre.ucla.edu/r/faq/how-can-i-perform-a-mantel-test-in-r/
+# install.packages("ade4")
+library(ade4)
+to.upper<-function(X) X[upper.tri(X,diag=FALSE)]
+
+a1 <- to.upper(ap.cor.fig)
+a2 <- to.upper(ap.cor.rank.fig)
+a3 <- to.upper(ap.cor.combat.fig)
+a4 <- to.upper(ap.zcor.fig)
+
+plot(a4, a1)
+plot(a4, a2)
+plot(a4, a3)
+
+mantel.rtest(as.dist(1-ap.cor.fig), as.dist(1-ap.zcor.fig), nrepet = 9999) #nrepet = number of permutations
+mantel.rtest(as.dist(1-ap.cor.rank.fig), as.dist(1-ap.zcor.fig), nrepet = 9999)
+mantel.rtest(as.dist(1-ap.cor.combat.fig), as.dist(1-ap.zcor.fig), nrepet = 9999)
+```
+
+
+## Test imputation algorithm 
+
+### KOMPute algorithm 
+Impute z-scores of untested gene-pheno pair using phenotype correlation matrix
+```{r}
+if(FALSE){
+  library(devtools)
+  devtools::install_github("dleelab/kompute")
+}
+library(kompute)
+```
+
+
+### Simulation study - imputed vs measured
+
+We randomly select measured gene-phenotype association z-scores, mask those, impute them using kompute algorithm. Then we compare the imputed z-scores to the measured ones.  
+```{r}
+zmat <-t(ap.zmat) 
+dim(zmat)
+
+#filter genes with na < 20
+zmat0 <- is.na(zmat)
+num.na<-colSums(zmat0)
+summary(num.na)
+zmat <- zmat[,num.na<10]
+dim(zmat)
+
+#pheno.cor <- ap.cor.fig
+#pheno.cor <- ap.cor.rank.fig
+pheno.cor <- ap.cor.combat.fig
+#pheno.cor <- ap.zcor.fig
+
+zmat <- zmat[rownames(pheno.cor),,drop=FALSE]
+rownames(zmat)
+rownames(pheno.cor)
+colnames(pheno.cor)
+npheno <- nrow(zmat)
+
+# percentage of missing Z-scores in the original data 
+100*sum(is.na(zmat))/(nrow(zmat)*ncol(zmat)) # 43%
+
+nimp <- 2000 # # of missing/imputed Z-scores
+set.seed(1111)
+
+# find index of all measured zscores
+all.i <- 1:(nrow(zmat)*ncol(zmat))
+measured <- as.vector(!is.na(as.matrix(zmat)))
+measured.i <- all.i[measured]
+
+# mask 2000 measured z-scores
+mask.i <- sort(sample(measured.i, nimp))
+org.z = as.matrix(zmat)[mask.i]
+
+zvec <- as.vector(as.matrix(zmat))
+zvec[mask.i] <- NA
+zmat.imp <- matrix(zvec, nrow=npheno)
+rownames(zmat.imp) <- rownames(zmat)
+
+```
+
+### Run KOMPute
+```{r, fig.width=5, fig.height=4}
+kompute.res <- kompute(zmat.imp, pheno.cor, 0.01)
+
+# measured vs imputed
+length(org.z)
+imp.z <- as.matrix(kompute.res$zmat)[mask.i]
+imp.info <- as.matrix(kompute.res$infomat)[mask.i]  
+plot(imp.z, org.z)
+
+imp <- data.frame(org.z=org.z, imp.z=imp.z, info=imp.info)
+dim(imp)
+imp <- imp[complete.cases(imp),]
+imp <- subset(imp, info>=0 & info <= 1)
+dim(imp)
+cor.val <- round(cor(imp$imp.z, imp$org.z), digits=3)
+cor.val
+plot(imp$imp.z, imp$org.z)
+
+info.cutoff <- 0.9
+imp.sub <- subset(imp, info>info.cutoff)
+dim(imp.sub)
+summary(imp.sub$imp.z)
+summary(imp.sub$info)
+
+cor.val <- round(cor(imp.sub$imp.z, imp.sub$org.z), digits=3)
+cor.val
+g <- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
+    geom_point() +
+    labs(title=paste0("IMPC Behavior Data, Info>", info.cutoff, ", Cor=",cor.val),
+      x="Imputed Z-scores", y = "Measured Z-scores", col="Info") +
+    theme_minimal()
+g
+filename <- "~/Google Drive Miami/Miami_IMPC/output/realdata_measured_vs_imputed_info_BC.pdf"
+ggsave(filename, plot=g, height=4, width=5)
+
+```
