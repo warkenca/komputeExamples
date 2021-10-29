@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "Kompute Examples"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -8,4 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+## Real scRNA-Seq Studies
+* [Example 1) BC](kompute_test_10212021_BC.html)
+* [Example 2) CC](kompute_test_102121_CC.html)
+* [Example 3) OF](kompute_test_102121_OF.html)

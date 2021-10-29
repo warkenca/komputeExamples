@@ -11,7 +11,7 @@ library(devtools)
 devtools::install_github("warkenca/komputeExamples)
 ```
 
-## Load the package
+## Load the Package
 
 To load this package, enter the following command in R:
 
@@ -19,4 +19,4 @@ To load this package, enter the following command in R:
 library(komputeExamples)
 ```
 
-
+## Data List
