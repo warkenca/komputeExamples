@@ -11,4 +11,12 @@ library(devtools)
 devtools::install_github("warkenca/komputeExamples)
 ```
 
+## Load the package
+
+To load this package, enter the following command in R:
+
+```{r}
+library(komputeExamples)
+```
+
 
