@@ -36,7 +36,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Read all control phenotype data
 ```{r}
-load(file="~/Google Drive Miami/Miami_IMPC/data/v10.1/AllControls_small.Rdata")
+# load(file="~/Google Drive Miami/Miami_IMPC/data/v10.1/AllControls_small.Rdata")
+load(file="G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/data/v10.1/AllControls_small.Rdata")
 dim(allpheno)
 head(allpheno)
 ```
@@ -207,8 +208,9 @@ ggplot(melt(ap.mat.rank), aes(x=value)) +
 
 Please conduct a PVCA analysis on the phenotype matrix data (op.mat[,-1:-3]). I think you can measure the proportion of variance explained by each important covariate (sex, phenotyping_center, strain_name)
 ```{r}
-#source("G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/reference/PVCA/examples/PVCA.R")
-source("~/Google Drive Miami/Miami_IMPC/reference/PVCA/examples/PVCA.R")
+# source("~/Google Drive Miami/Miami_IMPC/reference/PVCA/examples/PVCA.R")
+source("G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/reference/PVCA/examples/PVCA.R")
+
 
 meta <- ap.mat.rank[,1:3] ## looking at covariates sex, phenotyping_center, and strain_name
 head(meta)
@@ -321,7 +323,8 @@ pheno.list <- rownames(ap.cor)
 ## KOMPV10.1 association summary stat
 ### Read KOMPv10.1
 ```{r}
-KOMPv10.1.file = "~/Google Drive Miami/Miami_IMPC/data/v10.1/IMPC_ALL_statistical_results.csv.gz"
+# KOMPv10.1.file = "~/Google Drive Miami/Miami_IMPC/data/v10.1/IMPC_ALL_statistical_results.csv.gz"
+KOMPv10.1.file = "G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/data/v10.1/IMPC_ALL_statistical_results.csv.gz"
 KOMPv10.1 = fread(KOMPv10.1.file, header=TRUE, sep=",")
 KOMPv10.1$parameter_name <- trimws(KOMPv10.1$parameter_name) #remove white spaces
 KOMPv10.1$proc_param_name <- paste0(KOMPv10.1$procedure_name,"_",KOMPv10.1$parameter_name)
@@ -681,7 +684,7 @@ g <- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
       x="Imputed Z-scores", y = "Measured Z-scores", col="Info") +
     theme_minimal()
 g
-filename <- "~/Google Drive Miami/Miami_IMPC/output/realdata_measured_vs_imputed_info_OF.pdf"
-ggsave(filename, plot=g, height=4, width=5)
+#filename <- "~/Google Drive Miami/Miami_IMPC/output/realdata_measured_vs_imputed_info_OF.pdf"
+#ggsave(filename, plot=g, height=4, width=5)
 
 ```

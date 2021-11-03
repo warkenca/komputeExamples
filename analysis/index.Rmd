@@ -8,7 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Real scRNA-Seq Studies
+## Examples
 * [Example 1) BC](kompute_test_10212021_BC.html)
 * [Example 2) CC](kompute_test_102121_CC.html)
 * [Example 3) OF](kompute_test_102121_OF.html)

@@ -1,0 +1,2690 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Coby Warkentin and Donghyung Lee" />
+
+<meta name="date" content="2021-11-03" />
+
+<title>kompute algorithm test - OF data</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">komputeExamples</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">kompute algorithm test - OF data</h1>
+<h4 class="author">Coby Warkentin and Donghyung Lee</h4>
+<h4 class="date">2021-11-03</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-11-03
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>komputeExamples/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20211027code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20211027)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20211027code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20211027)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestreedacf723cec48b7e066f879656178931177331ce2targetblankdacf723a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/warkenca/komputeExamples/tree/dacf723cec48b7e066f879656178931177331ce2" target="_blank">dacf723</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestreedacf723cec48b7e066f879656178931177331ce2targetblankdacf723a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/warkenca/komputeExamples/tree/dacf723cec48b7e066f879656178931177331ce2" target="_blank">dacf723</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/kompute_test_102121_CC.Rmd
+    Modified:   analysis/kompute_test_102121_OF.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/kompute_test_102121_OF.Rmd</code>) and HTML (<code>docs/kompute_test_102121_OF.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/warkenca/komputeExamples/blob/b7ebb1f606c7959858c236cc5725d6735414dec1/analysis/kompute_test_102121_OF.Rmd" target="_blank">b7ebb1f</a>
+</td>
+<td>
+GitHub
+</td>
+<td>
+2021-10-29
+</td>
+<td>
+Add files via upload
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="load-packages" class="section level3">
+<h3>Load packages</h3>
+<pre class="r"><code>rm(list=ls())
+library(data.table)
+library(dplyr)</code></pre>
+<pre><code>
+Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:data.table&#39;:
+
+    between, first, last</code></pre>
+<pre><code>The following objects are masked from &#39;package:stats&#39;:
+
+    filter, lag</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>#library(kableExtra)
+library(reshape2)</code></pre>
+<pre><code>
+Attaching package: &#39;reshape2&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:data.table&#39;:
+
+    dcast, melt</code></pre>
+<pre class="r"><code>library(ggplot2)
+library(tidyr) #spread</code></pre>
+<pre><code>
+Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:reshape2&#39;:
+
+    smiths</code></pre>
+<pre class="r"><code>#library(pheatmap)
+library(RColorBrewer)
+#library(GGally) #ggpairs
+library(irlba) # partial PCA</code></pre>
+<pre><code>Loading required package: Matrix</code></pre>
+<pre><code>
+Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:tidyr&#39;:
+
+    expand, pack, unpack</code></pre>
+<pre class="r"><code>#library(gridExtra)
+#library(cowplot)
+library(circlize)</code></pre>
+<pre><code>========================================
+circlize version 0.4.13
+CRAN page: https://cran.r-project.org/package=circlize
+Github page: https://github.com/jokergoo/circlize
+Documentation: https://jokergoo.github.io/circlize_book/book/
+
+If you use it in published research, please cite:
+Gu, Z. circlize implements and enhances circular visualization
+  in R. Bioinformatics 2014.
+
+This message can be suppressed by:
+  suppressPackageStartupMessages(library(circlize))
+========================================</code></pre>
+<pre class="r"><code>library(ComplexHeatmap)</code></pre>
+<pre><code>Loading required package: grid</code></pre>
+<pre><code>========================================
+ComplexHeatmap version 2.10.0
+Bioconductor page: http://bioconductor.org/packages/ComplexHeatmap/
+Github page: https://github.com/jokergoo/ComplexHeatmap
+Documentation: http://jokergoo.github.io/ComplexHeatmap-reference
+
+If you use it in published research, please cite:
+Gu, Z. Complex heatmaps reveal patterns and correlations in multidimensional 
+  genomic data. Bioinformatics 2016.
+
+The new InteractiveComplexHeatmap package can directly export static 
+complex heatmaps into an interactive Shiny app with zero effort. Have a try!
+
+This message can be suppressed by:
+  suppressPackageStartupMessages(library(ComplexHeatmap))
+========================================</code></pre>
+<pre class="r"><code>#options(max.print = 3000)</code></pre>
+</div>
+<div id="raw-control-phenotype" class="section level2">
+<h2>Raw Control Phenotype</h2>
+<div id="read-all-control-phenotype-data" class="section level3">
+<h3>Read all control phenotype data</h3>
+<pre class="r"><code># load(file=&quot;~/Google Drive Miami/Miami_IMPC/data/v10.1/AllControls_small.Rdata&quot;)
+load(file=&quot;G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/data/v10.1/AllControls_small.Rdata&quot;)
+dim(allpheno)</code></pre>
+<pre><code>[1] 12025349       15</code></pre>
+<pre class="r"><code>head(allpheno)</code></pre>
+<pre><code>  biological_sample_id procedure_stable_id
+1               242736        IMPC_ACS_003
+2               155527        IMPC_GRS_001
+3                72957        IMPC_OFD_001
+4               183476        IMPC_GRS_001
+5                81327        IMPC_OFD_001
+6               226658        IMPC_ACS_003
+                                   procedure_name parameter_stable_id
+1 Acoustic Startle and Pre-pulse Inhibition (PPI)    IMPC_ACS_036_001
+2                                   Grip Strength    IMPC_GRS_008_001
+3                                      Open Field    IMPC_OFD_020_001
+4                                   Grip Strength    IMPC_GRS_009_001
+5                                      Open Field    IMPC_OFD_007_001
+6 Acoustic Startle and Pre-pulse Inhibition (PPI)    IMPC_ACS_034_001
+                                        parameter_name data_point    sex
+1                        % Pre-pulse inhibition - PPI4    88.0373 female
+2              Forelimb grip strength measurement mean    75.3333 female
+3                           Distance travelled - total  6130.3000 female
+4 Forelimb and hindlimb grip strength measurement mean   120.3970   male
+5                             Whole arena resting time   607.0000 female
+6                        % Pre-pulse inhibition - PPI2    68.0742 female
+  age_in_weeks weight phenotyping_center   date_of_experiment strain_name
+1            9  18.15                JAX 2014-08-18T00:00:00Z   C57BL/6NJ
+2            9  20.00                BCM 2018-02-20T00:00:00Z    C57BL/6N
+3            9  21.20               RBRC 2015-08-03T00:00:00Z C57BL/6NTac
+4            9  28.40               WTSI 2015-03-02T00:00:00Z    C57BL/6N
+5            9  22.62               KMPC 2018-01-30T00:00:00Z C57BL/6NTac
+6           10  18.54                JAX 2015-12-16T00:00:00Z   C57BL/6NJ
+  developmental_stage_name observation_type data_type
+1              Early adult   unidimensional     FLOAT
+2              Early adult   unidimensional     FLOAT
+3              Early adult   unidimensional     FLOAT
+4              Early adult   unidimensional     FLOAT
+5              Early adult   unidimensional     FLOAT
+6              Early adult   unidimensional     FLOAT</code></pre>
+</div>
+<div id="correct-procedure-and-phenotype-names-filter-out-time-series-data" class="section level3">
+<h3>Correct procedure and phenotype names, filter out time series data</h3>
+<p>We use OF only.</p>
+<pre class="r"><code>allpheno = allpheno %&gt;% 
+  filter(procedure_name==&quot;Open Field&quot;) %&gt;%
+  mutate(proc_short_name=recode(procedure_name, &quot;Open Field&quot;=&quot;OF&quot;)) %&gt;%
+  mutate(parameter_name=recode(parameter_name,
+                               &quot;center - average Speed&quot;=&quot;Center average speed&quot;,
+                               &quot;center - distance&quot;=&quot;Center distance travelled&quot;,
+                               &quot;center - permanence time&quot;=&quot;Center permanence time&quot;,
+                               &quot;center - resting time&quot;=&quot;Center resting time&quot;,
+                               &quot;Latency to enter in the center&quot;=&quot;Latency to center entry&quot;,
+                               &quot;Number of entries in the center&quot;=&quot;Number of center entries&quot;,
+                               &quot;Periphery - average Speed&quot;=&quot;Periphery average speed&quot;,
+                               &quot;Periphery - distance&quot;=&quot;Periphery distance travelled&quot;,
+                               &quot;Periphery - Permanence Time&quot;=&quot;Periphery permanence time&quot;,
+                               &quot;Periphery - resting time&quot;=&quot;Periphery resting time&quot;,
+                               &quot;Whole Arena - average Speed&quot;=&quot;Whole arena average speed&quot;,
+                               &quot;Whole Arena - Permanence Time&quot;=&quot;Whole arena permanence&quot;,
+                               &quot;Whole Arena - resting time&quot;=&quot;Whole arena resting time&quot;)) %&gt;%
+  mutate(proc_param_name=paste0(proc_short_name,&quot;_&quot;,parameter_name)) %&gt;%
+  mutate(proc_param_name_stable_id=paste0(proc_short_name,&quot;_&quot;,parameter_name,&quot;_&quot;,parameter_stable_id))
+
+## Extract time series data and find out parameter names
+ts &lt;- allpheno %&gt;% filter(observation_type==&quot;time_series&quot;)
+table(ts$proc_param_name)</code></pre>
+<pre><code>
+        OF_Center average speed series    OF_Center distance travelled series 
+                                 36167                                  36328 
+      OF_Center permanence time series          OF_Center resting time series 
+                                 38864                                  30452 
+           OF_Distance Traveled - 5min                  OF_Distance travelled 
+                                  9410                                  87970 
+    OF_Number of center entries series                     OF_Number of Rears 
+                                 10692                                  51194 
+             OF_Number of rears - 5min      OF_Periphery average speed series 
+                                  9310                                  36324 
+OF_Periphery distance travelled series    OF_Periphery permanence time series 
+                                 36328                                  38864 
+      OF_Periphery resting time series    OF_Whole arena average speed series 
+                                 30452                                  38876 
+    OF_Whole arena resting time series 
+                                 36340 </code></pre>
+<pre class="r"><code># Filter out time series data
+allpheno &lt;- allpheno %&gt;% filter(observation_type!=&quot;time_series&quot;)
+table(allpheno$proc_param_name)</code></pre>
+<pre><code>
+        OF_Center average speed    OF_Center distance travelled 
+                          23007                           23789 
+      OF_Center permanence time          OF_Center resting time 
+                          24750                           17849 
+  OF_Distance travelled - total      OF_Latency to center entry 
+                          21956                           18034 
+    OF_Number of center entries      OF_Number of rears - total 
+                          18043                           12814 
+      OF_Percentage center time      OF_Periphery average speed 
+                          21733                           23008 
+OF_Periphery distance travelled    OF_Periphery permanence time 
+                          23790                           24751 
+      OF_Periphery resting time    OF_Whole arena average speed 
+                          17850                           24754 
+      OF_Whole arena permanence     OF_Whole arena resting time 
+                          23972                           24744 </code></pre>
+</div>
+<div id="heatmap-showing-measured-phenotypes" class="section level3">
+<h3>Heatmap showing measured phenotypes</h3>
+<p>This heatmaps show phenotypes measured for each control mouse. Columns represent mice and rows represent phenotypes.</p>
+<pre class="r"><code>mtest &lt;- table(allpheno$proc_param_name_stable_id, allpheno$biological_sample_id)
+mtest &lt;-as.data.frame.matrix(mtest)
+dim(mtest)</code></pre>
+<pre><code>[1]    51 24604</code></pre>
+<pre class="r"><code>if(FALSE){
+nmax &lt;-max(mtest)
+library(circlize)
+col_fun = colorRamp2(c(0, nmax), c(&quot;white&quot;, &quot;red&quot;))
+col_fun(seq(0, nmax))
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/measured_phenotypes_controls_OF.pdf&quot;, width = 12, height = 8)
+ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 8), name=&quot;Count&quot;)
+draw(ht)
+dev.off()
+}</code></pre>
+</div>
+<div id="remove-phenotypes-with-num-of-obs-15000" class="section level3">
+<h3>Remove phenotypes with num of obs &lt; 15000</h3>
+<pre class="r"><code>mtest &lt;- table(allpheno$proc_param_name, allpheno$biological_sample_id)
+dim(mtest)</code></pre>
+<pre><code>[1]    16 24604</code></pre>
+<pre class="r"><code>head(mtest[,1:10])</code></pre>
+<pre><code>                               
+                                21653 21713 21742 21745 21747 21751 21753 21756
+  OF_Center average speed           1     1     1     1     1     1     1     1
+  OF_Center distance travelled      1     1     1     1     1     1     1     1
+  OF_Center permanence time         1     1     1     1     1     1     1     1
+  OF_Center resting time            1     1     1     1     1     1     1     1
+  OF_Distance travelled - total     0     0     0     0     0     0     0     0
+  OF_Latency to center entry        1     1     1     1     1     1     1     1
+                               
+                                21759 21800
+  OF_Center average speed           1     1
+  OF_Center distance travelled      1     1
+  OF_Center permanence time         1     1
+  OF_Center resting time            1     1
+  OF_Distance travelled - total     0     0
+  OF_Latency to center entry        1     1</code></pre>
+<pre class="r"><code>mtest0 &lt;- mtest&gt;0
+head(mtest0[,1:10])</code></pre>
+<pre><code>                               
+                                21653 21713 21742 21745 21747 21751 21753 21756
+  OF_Center average speed        TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Center distance travelled   TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Center permanence time      TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Center resting time         TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Distance travelled - total FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+  OF_Latency to center entry     TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+                               
+                                21759 21800
+  OF_Center average speed        TRUE  TRUE
+  OF_Center distance travelled   TRUE  TRUE
+  OF_Center permanence time      TRUE  TRUE
+  OF_Center resting time         TRUE  TRUE
+  OF_Distance travelled - total FALSE FALSE
+  OF_Latency to center entry     TRUE  TRUE</code></pre>
+<pre class="r"><code>rowSums(mtest0)</code></pre>
+<pre><code>        OF_Center average speed    OF_Center distance travelled 
+                          22856                           23638 
+      OF_Center permanence time          OF_Center resting time 
+                          24599                           17698 
+  OF_Distance travelled - total      OF_Latency to center entry 
+                          21805                           17883 
+    OF_Number of center entries      OF_Number of rears - total 
+                          17892                           12814 
+      OF_Percentage center time      OF_Periphery average speed 
+                          21730                           22857 
+OF_Periphery distance travelled    OF_Periphery permanence time 
+                          23639                           24600 
+      OF_Periphery resting time    OF_Whole arena average speed 
+                          17699                           24603 
+      OF_Whole arena permanence     OF_Whole arena resting time 
+                          23821                           24593 </code></pre>
+<pre class="r"><code>rmv.pheno.list &lt;- rownames(mtest)[rowSums(mtest0)&lt;15000]
+rmv.pheno.list</code></pre>
+<pre><code>[1] &quot;OF_Number of rears - total&quot;</code></pre>
+<pre class="r"><code>dim(allpheno)</code></pre>
+<pre><code>[1] 344844     18</code></pre>
+<pre class="r"><code>allpheno &lt;- allpheno %&gt;% filter(!(proc_param_name %in% rmv.pheno.list))
+dim(allpheno)</code></pre>
+<pre><code>[1] 332030     18</code></pre>
+<pre class="r"><code># number of phenotypes left
+length(unique(allpheno$proc_param_name))</code></pre>
+<pre><code>[1] 15</code></pre>
+</div>
+<div id="romove-samples-with-num-of-measured-phenotypes-10" class="section level3">
+<h3>Romove samples with num of measured phenotypes &lt; 10</h3>
+<pre class="r"><code>mtest &lt;- table(allpheno$proc_param_name, allpheno$biological_sample_id)
+dim(mtest)</code></pre>
+<pre><code>[1]    15 24604</code></pre>
+<pre class="r"><code>head(mtest[,1:10])</code></pre>
+<pre><code>                               
+                                21653 21713 21742 21745 21747 21751 21753 21756
+  OF_Center average speed           1     1     1     1     1     1     1     1
+  OF_Center distance travelled      1     1     1     1     1     1     1     1
+  OF_Center permanence time         1     1     1     1     1     1     1     1
+  OF_Center resting time            1     1     1     1     1     1     1     1
+  OF_Distance travelled - total     0     0     0     0     0     0     0     0
+  OF_Latency to center entry        1     1     1     1     1     1     1     1
+                               
+                                21759 21800
+  OF_Center average speed           1     1
+  OF_Center distance travelled      1     1
+  OF_Center permanence time         1     1
+  OF_Center resting time            1     1
+  OF_Distance travelled - total     0     0
+  OF_Latency to center entry        1     1</code></pre>
+<pre class="r"><code>mtest0 &lt;- mtest&gt;0
+head(mtest0[,1:10])</code></pre>
+<pre><code>                               
+                                21653 21713 21742 21745 21747 21751 21753 21756
+  OF_Center average speed        TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Center distance travelled   TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Center permanence time      TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Center resting time         TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+  OF_Distance travelled - total FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+  OF_Latency to center entry     TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+                               
+                                21759 21800
+  OF_Center average speed        TRUE  TRUE
+  OF_Center distance travelled   TRUE  TRUE
+  OF_Center permanence time      TRUE  TRUE
+  OF_Center resting time         TRUE  TRUE
+  OF_Distance travelled - total FALSE FALSE
+  OF_Latency to center entry     TRUE  TRUE</code></pre>
+<pre class="r"><code>summary(colSums(mtest0))</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   1.00   11.00   15.00   13.41   15.00   15.00 </code></pre>
+<pre class="r"><code>rmv.sample.list &lt;- colnames(mtest)[colSums(mtest0)&lt;10]
+length(rmv.sample.list)</code></pre>
+<pre><code>[1] 1747</code></pre>
+<pre class="r"><code>dim(allpheno)</code></pre>
+<pre><code>[1] 332030     18</code></pre>
+<pre class="r"><code>allpheno &lt;- allpheno %&gt;% filter(!(biological_sample_id %in% rmv.sample.list))
+dim(allpheno)</code></pre>
+<pre><code>[1] 319816     18</code></pre>
+<pre class="r"><code># number of observations to use
+length(unique(allpheno$biological_sample_id))</code></pre>
+<pre><code>[1] 22857</code></pre>
+</div>
+<div id="heapmap-of-measured-phenotypes-after-filtering" class="section level3">
+<h3>Heapmap of measured phenotypes after filtering</h3>
+<pre class="r"><code>if(FALSE){
+mtest &lt;- table(allpheno$proc_param_name, allpheno$biological_sample_id)
+dim(mtest)
+mtest &lt;-as.data.frame.matrix(mtest)
+nmax &lt;-max(mtest)
+library(circlize)
+col_fun = colorRamp2(c(0, nmax), c(&quot;white&quot;, &quot;red&quot;))
+col_fun(seq(0, nmax))
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/measured_phenotypes_controls_after_filtering_OF.pdf&quot;, width = 10, height = 5)
+ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 5), name=&quot;Count&quot;)
+draw(ht)
+dev.off()
+}</code></pre>
+</div>
+<div id="reshape-the-data-long-to-wide-format" class="section level3">
+<h3>Reshape the data (long to wide format)</h3>
+<pre class="r"><code>ap.mat &lt;- allpheno %&gt;% 
+  dplyr::select(biological_sample_id, proc_param_name, data_point, sex, phenotyping_center, strain_name) %&gt;% 
+  ##consider weight or age in weeks
+  arrange(biological_sample_id) %&gt;%
+  distinct(biological_sample_id, proc_param_name, .keep_all=TRUE) %&gt;% ## remove duplicates, maybe mean() is better.
+  spread(proc_param_name, data_point) %&gt;%
+  tibble::column_to_rownames(var=&quot;biological_sample_id&quot;)
+head(ap.mat)</code></pre>
+<pre><code>         sex phenotyping_center                      strain_name
+21653 female               WTSI C57BL/6Brd-Tyr&lt;c-Brd&gt; * C57BL/6N
+21713 female               WTSI C57BL/6Brd-Tyr&lt;c-Brd&gt; * C57BL/6N
+21742   male               WTSI C57BL/6Brd-Tyr&lt;c-Brd&gt; * C57BL/6N
+21745   male               WTSI C57BL/6Brd-Tyr&lt;c-Brd&gt; * C57BL/6N
+21747   male               WTSI C57BL/6Brd-Tyr&lt;c-Brd&gt; * C57BL/6N
+21751   male               WTSI C57BL/6Brd-Tyr&lt;c-Brd&gt; * C57BL/6N
+      OF_Center average speed OF_Center distance travelled
+21653                    51.5                         4259
+21713                    40.1                         3266
+21742                    51.0                          710
+21745                    38.0                         2580
+21747                    31.4                         3022
+21751                    14.9                         1723
+      OF_Center permanence time OF_Center resting time
+21653                       102                     20
+21713                        87                      6
+21742                        17                      3
+21745                       100                     33
+21747                       134                     39
+21751                       240                    130
+      OF_Distance travelled - total OF_Latency to center entry
+21653                            NA                        5.0
+21713                            NA                        6.1
+21742                            NA                       24.0
+21745                            NA                        8.3
+21747                            NA                        6.6
+21751                            NA                       18.7
+      OF_Number of center entries OF_Percentage center time
+21653                         193                        NA
+21713                         221                        NA
+21742                          73                        NA
+21745                         165                        NA
+21747                         210                        NA
+21751                          75                        NA
+      OF_Periphery average speed OF_Periphery distance travelled
+21653                       35.3                           12923
+21713                       31.9                           11625
+21742                       19.1                            5769
+21745                       25.1                            7910
+21747                       26.0                            8208
+21751                       11.5                            2150
+      OF_Periphery permanence time OF_Periphery resting time
+21653                          498                       135
+21713                          513                       152
+21742                          583                       292
+21745                          500                       191
+21747                          466                       154
+21751                          360                       184
+      OF_Whole arena average speed OF_Whole arena permanence
+21653                         38.3                       600
+21713                         33.4                       600
+21742                         20.5                       600
+21745                         27.4                       600
+21747                         27.2                       600
+21751                         12.8                       600
+      OF_Whole arena resting time
+21653                         155
+21713                         158
+21742                         295
+21745                         224
+21747                         193
+21751                         314</code></pre>
+<pre class="r"><code>dim(ap.mat)</code></pre>
+<pre><code>[1] 22857    18</code></pre>
+<pre class="r"><code>summary(colSums(is.na(ap.mat[,-1:-3])))</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      0       0       1    1677    3882    5159 </code></pre>
+</div>
+<div id="distribution-of-each-phenotype" class="section level3">
+<h3>Distribution of each phenotype</h3>
+<pre class="r"><code>ggplot(melt(ap.mat), aes(x=value)) + 
+  geom_histogram() + 
+  facet_wrap(~variable, scales=&quot;free&quot;, ncol=5)+
+  theme(strip.text.x = element_text(size = 6))</code></pre>
+<pre><code>Using sex, phenotyping_center, strain_name as id variables</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 25156 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-9-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="rank-z-transformation" class="section level3">
+<h3>Rank Z transformation</h3>
+<pre class="r"><code>library(RNOmni)
+ap.mat.rank &lt;- ap.mat
+dim(ap.mat.rank)</code></pre>
+<pre><code>[1] 22857    18</code></pre>
+<pre class="r"><code>ap.mat.rank &lt;- ap.mat.rank[complete.cases(ap.mat.rank),]
+dim(ap.mat.rank)</code></pre>
+<pre><code>[1] 14863    18</code></pre>
+<pre class="r"><code>#rankZ &lt;- function(x){ qnorm((rank(x,na.last=&quot;keep&quot;)-0.5)/sum(!is.na(x))) }
+#ap.mat.rank &lt;- ap.mat
+#dim(ap.mat.rank)
+
+#ap.mat.rank &lt;- ap.mat.rank[complete.cases(ap.mat.rank),]
+#dim(ap.mat.rank)
+#library(RNOmni)
+#ap.mat.rank &lt;- cbind(ap.mat.rank[,1:3], apply(ap.mat.rank[,-1:-3], 2, RankNorm))
+
+ap.mat.rank &lt;- cbind(ap.mat.rank[,1:3], apply(ap.mat.rank[,-1:-3], 2, RankNorm))
+ggplot(melt(ap.mat.rank), aes(x=value)) + 
+  geom_histogram() + 
+  facet_wrap(~variable, scales=&quot;free&quot;, ncol=5)+
+  theme(strip.text.x = element_text(size = 6))</code></pre>
+<pre><code>Using sex, phenotyping_center, strain_name as id variables</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="task-1-principal-variance-component-analysis" class="section level3">
+<h3>[TASK 1] Principal Variance Component Analysis</h3>
+<p>Please conduct a PVCA analysis on the phenotype matrix data (op.mat[,-1:-3]). I think you can measure the proportion of variance explained by each important covariate (sex, phenotyping_center, strain_name)</p>
+<pre class="r"><code># source(&quot;~/Google Drive Miami/Miami_IMPC/reference/PVCA/examples/PVCA.R&quot;)
+source(&quot;G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/reference/PVCA/examples/PVCA.R&quot;)
+
+
+meta &lt;- ap.mat.rank[,1:3] ## looking at covariates sex, phenotyping_center, and strain_name
+head(meta)</code></pre>
+<pre><code>         sex phenotyping_center strain_name
+39638 female        MRC Harwell C57BL/6NTac
+39639 female               HMGU C57BL/6NCrl
+39640 female               HMGU C57BL/6NTac
+39641   male               HMGU C57BL/6NCrl
+39642 female        MRC Harwell C57BL/6NTac
+39643 female               HMGU C57BL/6NCrl</code></pre>
+<pre class="r"><code>dim(meta)</code></pre>
+<pre><code>[1] 14863     3</code></pre>
+<pre class="r"><code>summary(meta) # variables are still characters</code></pre>
+<pre><code>     sex            phenotyping_center strain_name       
+ Length:14863       Length:14863       Length:14863      
+ Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character  </code></pre>
+<pre class="r"><code>meta[sapply(meta, is.character)] &lt;- lapply(meta[sapply(meta, is.character)], as.factor)
+summary(meta) # now all variables are converted to factors</code></pre>
+<pre><code>     sex         phenotyping_center      strain_name  
+ female:7428   MRC Harwell:4532     C57BL/6N   :3655  
+ male  :7435   HMGU       :3119     C57BL/6NCrl:3510  
+               ICS        :2417     C57BL/6NJcl: 459  
+               RBRC       :1323     C57BL/6NTac:7239  
+               CCP-IMG    :1141                       
+               TCP        :1093                       
+               (Other)    :1238                       </code></pre>
+<pre class="r"><code>chisq.test(meta[,1],meta[,2])</code></pre>
+<pre><code>
+    Pearson&#39;s Chi-squared test
+
+data:  meta[, 1] and meta[, 2]
+X-squared = 3.7637, df = 7, p-value = 0.8066</code></pre>
+<pre class="r"><code>chisq.test(meta[,2],meta[,3]) </code></pre>
+<pre><code>
+    Pearson&#39;s Chi-squared test
+
+data:  meta[, 2] and meta[, 3]
+X-squared = 29526, df = 21, p-value &lt; 2.2e-16</code></pre>
+<pre class="r"><code>meta&lt;-meta[,-3] # phenotyping_center and strain_name strongly associated and this caused confouding in PVCA analysis so strain_name dropped.
+
+G &lt;- t(ap.mat.rank[,-1:-3]) ## phenotype matrix data
+
+set.seed(09302021)
+
+# Perform PVCA for 10 random samples of size 1000 (more computationally efficient)
+pvca.res &lt;- matrix(nrow=10, ncol=3)
+for (i in 1:10){
+  sample &lt;- sample(1:ncol(G), 1000, replace=FALSE)
+  pvca.res[i,] &lt;- PVCA(G[,sample], meta[sample,], threshold=0.6, inter=FALSE)
+}</code></pre>
+<pre><code>boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular</code></pre>
+<pre class="r"><code># Average effect size across samples
+pvca.means &lt;- colMeans(pvca.res)
+names(pvca.means) &lt;- c(colnames(meta), &quot;resid&quot;)
+
+# Plot PVCA
+pvca.plot &lt;- PlotPVCA(pvca.means, &quot;PVCA of Phenotype Matrix Data&quot;)
+pvca.plot</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#ggsave(filename = &quot;pvca_plot.png&quot;, pvca.plot, width=8, height=6)</code></pre>
+</div>
+<div id="task-2-combat-analysis---removing-batch-effects" class="section level3">
+<h3>[TASK 2] ComBat analysis - Removing batch effects</h3>
+<p>If a large proportion of variance is explained by these covariats, we need to remove their effects from the data.</p>
+<pre class="r"><code>library(sva)</code></pre>
+<pre><code>Loading required package: mgcv</code></pre>
+<pre><code>Loading required package: nlme</code></pre>
+<pre><code>
+Attaching package: &#39;nlme&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:lme4&#39;:
+
+    lmList</code></pre>
+<pre><code>The following object is masked from &#39;package:dplyr&#39;:
+
+    collapse</code></pre>
+<pre><code>This is mgcv 1.8-36. For overview type &#39;help(&quot;mgcv-package&quot;)&#39;.</code></pre>
+<pre><code>Loading required package: genefilter</code></pre>
+<pre><code>
+Attaching package: &#39;genefilter&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:ComplexHeatmap&#39;:
+
+    dist2</code></pre>
+<pre><code>Loading required package: BiocParallel</code></pre>
+<pre class="r"><code>combat_komp = ComBat(dat=G, batch=meta$phenotyping_center, par.prior=TRUE, prior.plots=TRUE, mod=NULL)</code></pre>
+<pre><code>Found 1 genes with uniform expression within a single batch (all zeros); these will not be adjusted for batch.</code></pre>
+<pre><code>Found8batches</code></pre>
+<pre><code>Adjusting for0covariate(s) or covariate level(s)</code></pre>
+<pre><code>Standardizing Data across genes</code></pre>
+<pre><code>Fitting L/S model and finding priors</code></pre>
+<pre><code>Finding parametric adjustments</code></pre>
+<pre><code>Adjusting the Data</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>combat_komp[,1:3]</code></pre>
+<pre><code>                                      39638       39639       39640
+OF_Center average speed          0.59446136 -0.10467275  0.12751142
+OF_Center distance travelled     0.49851881 -0.39612726  0.26323301
+OF_Center permanence time        0.05536160 -0.57404681  0.28108074
+OF_Center resting time           0.09818595 -0.94195175  0.58940330
+OF_Distance travelled - total    0.03620577 -0.07057520  0.03808406
+OF_Latency to center entry      -1.14540129 -0.37957832  1.26354212
+OF_Number of center entries      0.47965785 -0.53107162  0.46539687
+OF_Percentage center time        0.06084609 -0.57376582  0.28083754
+OF_Periphery average speed      -0.25956343 -0.13452539 -0.14510006
+OF_Periphery distance travelled -0.22719214  0.24178808 -0.14416337
+OF_Periphery permanence time     0.06091739  0.58467616 -0.29226506
+OF_Periphery resting time        0.40380327 -0.05837431 -0.19729518
+OF_Whole arena average speed     0.06158083 -0.15087855 -0.01278584
+OF_Whole arena permanence       -0.01863647 -0.01863647 -0.01863647
+OF_Whole arena resting time      0.31830086 -0.20745469  0.09044585</code></pre>
+<pre class="r"><code>G[,1:3] # for comparison, combat_komp is same form and same dimensions as G</code></pre>
+<pre><code>                                       39638        39639       39640
+OF_Center average speed          0.425513501  1.234197021  1.51675303
+OF_Center distance travelled     0.129374222  0.997641495  1.58080810
+OF_Center permanence time       -0.515972599  0.009697299  0.85747405
+OF_Center resting time           0.001686461 -1.202492878  0.34834230
+OF_Distance travelled - total   -0.470073474  1.298879853  1.41209135
+OF_Latency to center entry      -1.302416269 -0.496228459  0.76207343
+OF_Number of center entries     -0.024203070  0.906493664  1.75413567
+OF_Percentage center time       -0.514624462  0.010540573  0.85820501
+OF_Periphery average speed      -0.937318619  1.215628110  1.20336211
+OF_Periphery distance travelled -0.581360130  1.624666701  1.21668801
+OF_Periphery permanence time     0.568527427  0.023612640 -0.84970544
+OF_Periphery resting time        0.836591193 -1.419211432 -1.56339922
+OF_Whole arena average speed    -0.590470467  1.199717422  1.35690828
+OF_Whole arena permanence       -0.018636466 -0.018636466 -0.01863647
+OF_Whole arena resting time      0.811487506 -1.297508958 -0.92018584</code></pre>
+</div>
+<div id="pvca-on-residuals-from-combat-and-plot-it-center-effect-should-be-much-lower" class="section level3">
+<h3>PVCA on residuals from ComBat and plot it (center effect should be much lower)</h3>
+<pre class="r"><code>set.seed(09302021)
+
+# Perform PVCA for 10 samples (more computationally efficient)
+pvca.res.nobatch &lt;- matrix(nrow=10, ncol=3)
+for (i in 1:10){
+  sample &lt;- sample(1:ncol(combat_komp), 1000, replace=FALSE)
+  pvca.res.nobatch[i,] &lt;- PVCA(combat_komp[,sample], meta[sample,], threshold=0.6, inter=FALSE)
+}</code></pre>
+<pre><code>boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular
+boundary (singular) fit: see ?isSingular</code></pre>
+<pre class="r"><code># Average effect size across samples
+pvca.means.nobatch &lt;- colMeans(pvca.res.nobatch)
+names(pvca.means.nobatch) &lt;- c(colnames(meta), &quot;resid&quot;)
+
+# Plot PVCA
+pvca.plot.nobatch &lt;- PlotPVCA(pvca.means.nobatch, &quot;PVCA of Phenotype Matrix Data with Reduced Batch Effect&quot;)
+pvca.plot.nobatch</code></pre>
+<pre><code>Warning: Removed 1 rows containing missing values (geom_text).</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="compute-correlations-between-csd-gs-of-ppi-phenotypes" class="section level3">
+<h3>Compute correlations between CSD, GS, OF, PPI phenotypes</h3>
+<pre class="r"><code>ap.cor.rank &lt;- cor(ap.mat.rank[,-1:-3], use=&quot;pairwise.complete.obs&quot;) # pearson correlation coefficient
+#ap.cor &lt;- cor(ap.mat[,-1:-3], use=&quot;pairwise.complete.obs&quot;) # pearson correlation coefficient
+ap.cor &lt;- cor(ap.mat[,-1:-3], use=&quot;pairwise.complete.obs&quot;, method=&quot;spearman&quot;)
+
+ap.cor.combat &lt;- cor(t(combat_komp), use=&quot;pairwise.complete.obs&quot;)
+
+#ap.cor &lt;- cor(ap.mat[,-1:-3], use=&quot;pairwise.complete.obs&quot;, method=&quot;spearman&quot;) # use original phenotype data
+#ap.cor &lt;- cor(ap.mat.rank[,-1:-3], use=&quot;pairwise.complete.obs&quot;, method=&quot;spearman&quot;) # use rankZ transformed phenotype data
+
+#col &lt;- colorRampPalette(c(&quot;steelblue&quot;, &quot;white&quot;, &quot;darkorange&quot;))(100)
+#ap.cor.out &lt;- pheatmap(ap.cor, cluster_rows = T, cluster_cols=T, show_colnames=F, col=col, fontsize = 7)
+
+#col &lt;- colorRampPalette(c(&quot;white&quot;,&quot;darkorange&quot;))(100)
+#pheatmap(abs(op.cor), cluster_rows = T, cluster_cols=T, show_colnames=F, col=col)
+if(FALSE){
+#pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes.pdf&quot;, width = 11, height = 8)
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes_Pearson_OF.pdf&quot;, width = 5, height = 2.7)
+ht = Heatmap(ap.cor, show_column_names = F, row_names_gp = gpar(fontsize = 9), name=&quot;Corr&quot;)
+draw(ht)
+dev.off()
+
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes_rankZ_OF.pdf&quot;, width = 5, height = 2.7)
+ht = Heatmap(ap.cor.rank, show_column_names = F, row_names_gp = gpar(fontsize = 9), name=&quot;Corr&quot;)
+draw(ht)
+dev.off()
+
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/genetic_corr_btw_phenotypes_ComBat_Adjusted_OF.pdf&quot;, width = 5, height = 2.7)
+ht = Heatmap(ap.cor.combat, show_column_names = F, row_names_gp = gpar(fontsize = 9), name=&quot;Corr&quot;)
+draw(ht)
+dev.off()
+}
+
+pheno.list &lt;- rownames(ap.cor)</code></pre>
+</div>
+</div>
+<div id="kompv10.1-association-summary-stat" class="section level2">
+<h2>KOMPV10.1 association summary stat</h2>
+<div id="read-kompv10.1" class="section level3">
+<h3>Read KOMPv10.1</h3>
+<pre class="r"><code># KOMPv10.1.file = &quot;~/Google Drive Miami/Miami_IMPC/data/v10.1/IMPC_ALL_statistical_results.csv.gz&quot;
+KOMPv10.1.file = &quot;G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/data/v10.1/IMPC_ALL_statistical_results.csv.gz&quot;
+KOMPv10.1 = fread(KOMPv10.1.file, header=TRUE, sep=&quot;,&quot;)
+KOMPv10.1$parameter_name &lt;- trimws(KOMPv10.1$parameter_name) #remove white spaces
+KOMPv10.1$proc_param_name &lt;- paste0(KOMPv10.1$procedure_name,&quot;_&quot;,KOMPv10.1$parameter_name)
+
+#head(KOMPv10.1, 10)
+#sort(table(KOMPv10.1$procedure_name))
+#sort(table(KOMPv10.1$proc_param_name), decreasing = TRUE)[1:100]
+#sort(table(KOMPv10.1$procedure_name))
+#table(KOMPv10.1$procedure_name, KOMPv10.1$parameter_name)
+#table(KOMPv10.1$procedure_name, KOMPv10.1$statistical_method)
+table(KOMPv10.1$procedure_name, KOMPv10.1$data_type)</code></pre>
+<pre><code>                                                          
+                                                           adult-gross-path
+  Acoustic Startle and Pre-pulse Inhibition (PPI)                         0
+  Acoustic Startle&amp;PPI                                                    0
+  Allergy (GMC)                                                           0
+  Anti-nuclear antibody assay                                             0
+  Antigen Specific Immunoglobulin Assay                                   0
+  Auditory Brain Stem Response                                            0
+  Body Composition (DEXA lean/fat)                                        0
+  Body Weight                                                             0
+  Bodyweight (GMC)                                                        0
+  Bone marrow immunophenotyping                                           0
+  Buffy coat peripheral blood leukocyte immunophenotyping                 0
+  Calorimetry                                                             0
+  Challenge Whole Body Plethysmography                                    0
+  Clinical Chemistry                                                      0
+  Clinical chemistry (GMC)                                                0
+  Combined SHIRPA and Dysmorphology                                       0
+  Cortical Bone MicroCT                                                   0
+  DEXA                                                                    0
+  Dexa-scan analysis                                                      0
+  DSS Histology                                                           0
+  Dysmorphology                                                           0
+  Ear epidermis immunophenotyping                                         0
+  ECG (Electrocardiogram) (GMC)                                           0
+  Echo                                                                    0
+  Electrocardiogram (ECG)                                                 0
+  Electroconvulsive Threshold Testing                                     0
+  Electroretinography                                                     0
+  ELISA (GMC)                                                             0
+  ERG (Electroretinogram) (GMC)                                           0
+  Eye Morphology                                                          0
+  Eye size (GMC)                                                          0
+  FACS (GMC)                                                              0
+  FACs Analysis                                                           0
+  Fasted Clinical Chemistry                                               0
+  Fear Conditioning                                                       0
+  Femoral Microradiography                                                0
+  Fertility of Homozygous Knock-out Mice                                  0
+  Food efficiency (GMC)                                                   0
+  Grip-Strength                                                           0
+  Grip Strength                                                           0
+  Grip Strength (GMC)                                                     0
+  Gross Morphology Embryo E12.5                                           0
+  Gross Morphology Embryo E14.5-E15.5                                     0
+  Gross Morphology Embryo E18.5                                           0
+  Gross Morphology Embryo E9.5                                            0
+  Gross Morphology Placenta E12.5                                         0
+  Gross Morphology Placenta E14.5-E15.5                                   0
+  Gross Morphology Placenta E18.5                                         0
+  Gross Morphology Placenta E9.5                                          0
+  Gross Pathology and Tissue Collection                              633844
+  Haematology                                                             0
+  Haematology (GMC)                                                       0
+  Haematology test                                                        0
+  Heart Dissection                                                        0
+  Heart Weight                                                            0
+  Heart weight/tibia length                                               0
+  Hematology                                                              0
+  Hole-board Exploration                                                  0
+  Holeboard (GMC)                                                         0
+  Hot Plate                                                               0
+  Immunoglobulin                                                          0
+  Indirect Calorimetry                                                    0
+  Indirect ophthalmoscopy                                                 0
+  Insulin Blood Level                                                     0
+  Intraperitoneal glucose tolerance test (IPGTT)                          0
+  IPGTT                                                                   0
+  Light-Dark Test                                                         0
+  Mesenteric Lymph Node Immunophenotyping                                 0
+  Modified SHIRPA                                                         0
+  Nociception Hotplate (GMC)                                              0
+  Open-field                                                              0
+  Open Field                                                              0
+  Ophthalmoscope                                                          0
+  Organ Weight                                                            0
+  pDexa (GMC)                                                             0
+  Plasma Chemistry                                                        0
+  Rotarod                                                                 0
+  Rotarod A (GMC)                                                         0
+  Shirpa (GMC)                                                            0
+  Simplified IPGTT                                                        0
+  Sleep Wake                                                              0
+  Slit Lamp                                                               0
+  Spleen Immunophenotyping                                                0
+  Spontaneous breathing (GMC)                                             0
+  Tail Suspension                                                         0
+  Three-point Bend                                                        0
+  Trabecular Bone MicroCT                                                 0
+  Trichuris                                                               0
+  Urinalysis                                                              0
+  Vertebra Compression                                                    0
+  Vertebral Microradiography                                              0
+  Viability E12.5 Secondary Screen                                        0
+  Viability E14.5-E15.5 Secondary Screen                                  0
+  Viability E18.5 Secondary Screen                                        0
+  Viability E9.5 Secondary Screen                                         0
+  Viability Primary Screen                                                0
+  Whole blood peripheral blood leukocyte immunophenotyping                0
+  X-ray                                                                   0
+  X-Ray                                                                   0
+  X-Ray (GMC)                                                             0
+                                                          
+                                                           categorical embryo
+  Acoustic Startle and Pre-pulse Inhibition (PPI)                    0      0
+  Acoustic Startle&amp;PPI                                               0      0
+  Allergy (GMC)                                                      0      0
+  Anti-nuclear antibody assay                                      984      0
+  Antigen Specific Immunoglobulin Assay                              0      0
+  Auditory Brain Stem Response                                       0      0
+  Body Composition (DEXA lean/fat)                                   0      0
+  Body Weight                                                        0      0
+  Bodyweight (GMC)                                                   0      0
+  Bone marrow immunophenotyping                                      0      0
+  Buffy coat peripheral blood leukocyte immunophenotyping            0      0
+  Calorimetry                                                        0      0
+  Challenge Whole Body Plethysmography                               0      0
+  Clinical Chemistry                                                 0      0
+  Clinical chemistry (GMC)                                           0      0
+  Combined SHIRPA and Dysmorphology                             156103      0
+  Cortical Bone MicroCT                                              0      0
+  DEXA                                                               0      0
+  Dexa-scan analysis                                                 0      0
+  DSS Histology                                                     21      0
+  Dysmorphology                                                  17289      0
+  Ear epidermis immunophenotyping                                    0      0
+  ECG (Electrocardiogram) (GMC)                                      0      0
+  Echo                                                               0      0
+  Electrocardiogram (ECG)                                            0      0
+  Electroconvulsive Threshold Testing                                0      0
+  Electroretinography                                                0      0
+  ELISA (GMC)                                                        0      0
+  ERG (Electroretinogram) (GMC)                                      0      0
+  Eye Morphology                                                 85613      0
+  Eye size (GMC)                                                     0      0
+  FACS (GMC)                                                         0      0
+  FACs Analysis                                                      0      0
+  Fasted Clinical Chemistry                                          0      0
+  Fear Conditioning                                                  0      0
+  Femoral Microradiography                                           0      0
+  Fertility of Homozygous Knock-out Mice                             0      0
+  Food efficiency (GMC)                                              0      0
+  Grip-Strength                                                      0      0
+  Grip Strength                                                      0      0
+  Grip Strength (GMC)                                                0      0
+  Gross Morphology Embryo E12.5                                      0  40122
+  Gross Morphology Embryo E14.5-E15.5                                0  13670
+  Gross Morphology Embryo E18.5                                      0  21665
+  Gross Morphology Embryo E9.5                                       0  23135
+  Gross Morphology Placenta E12.5                                    0   4623
+  Gross Morphology Placenta E14.5-E15.5                              0   2685
+  Gross Morphology Placenta E18.5                                    0   2976
+  Gross Morphology Placenta E9.5                                     0   3827
+  Gross Pathology and Tissue Collection                              0      0
+  Haematology                                                        0      0
+  Haematology (GMC)                                                  0      0
+  Haematology test                                                   0      0
+  Heart Dissection                                                 570      0
+  Heart Weight                                                       0      0
+  Heart weight/tibia length                                        103      0
+  Hematology                                                         0      0
+  Hole-board Exploration                                             0      0
+  Holeboard (GMC)                                                    0      0
+  Hot Plate                                                          0      0
+  Immunoglobulin                                                     0      0
+  Indirect Calorimetry                                               0      0
+  Indirect ophthalmoscopy                                         3040      0
+  Insulin Blood Level                                                0      0
+  Intraperitoneal glucose tolerance test (IPGTT)                     0      0
+  IPGTT                                                              0      0
+  Light-Dark Test                                                    0      0
+  Mesenteric Lymph Node Immunophenotyping                            0      0
+  Modified SHIRPA                                                20876      0
+  Nociception Hotplate (GMC)                                         0      0
+  Open-field                                                         0      0
+  Open Field                                                         0      0
+  Ophthalmoscope                                                  8246      0
+  Organ Weight                                                       0      0
+  pDexa (GMC)                                                        0      0
+  Plasma Chemistry                                                   0      0
+  Rotarod                                                            0      0
+  Rotarod A (GMC)                                                    0      0
+  Shirpa (GMC)                                                       0      0
+  Simplified IPGTT                                                   0      0
+  Sleep Wake                                                         0      0
+  Slit Lamp                                                      14988      0
+  Spleen Immunophenotyping                                           0      0
+  Spontaneous breathing (GMC)                                        0      0
+  Tail Suspension                                                    1      0
+  Three-point Bend                                                   0      0
+  Trabecular Bone MicroCT                                            0      0
+  Trichuris                                                         10      0
+  Urinalysis                                                         0      0
+  Vertebra Compression                                               0      0
+  Vertebral Microradiography                                         0      0
+  Viability E12.5 Secondary Screen                                   0    422
+  Viability E14.5-E15.5 Secondary Screen                             0    210
+  Viability E18.5 Secondary Screen                                   0    176
+  Viability E9.5 Secondary Screen                                    0    316
+  Viability Primary Screen                                           0      0
+  Whole blood peripheral blood leukocyte immunophenotyping           0      0
+  X-ray                                                          60705      0
+  X-Ray                                                           1791      0
+  X-Ray (GMC)                                                       47      0
+                                                          
+                                                             line
+  Acoustic Startle and Pre-pulse Inhibition (PPI)               0
+  Acoustic Startle&amp;PPI                                          0
+  Allergy (GMC)                                                 0
+  Anti-nuclear antibody assay                                   0
+  Antigen Specific Immunoglobulin Assay                         0
+  Auditory Brain Stem Response                                  0
+  Body Composition (DEXA lean/fat)                              0
+  Body Weight                                                   0
+  Bodyweight (GMC)                                              0
+  Bone marrow immunophenotyping                                 0
+  Buffy coat peripheral blood leukocyte immunophenotyping       0
+  Calorimetry                                                   0
+  Challenge Whole Body Plethysmography                          0
+  Clinical Chemistry                                            0
+  Clinical chemistry (GMC)                                      0
+  Combined SHIRPA and Dysmorphology                             0
+  Cortical Bone MicroCT                                         0
+  DEXA                                                          0
+  Dexa-scan analysis                                            0
+  DSS Histology                                                 0
+  Dysmorphology                                                 0
+  Ear epidermis immunophenotyping                               0
+  ECG (Electrocardiogram) (GMC)                                 0
+  Echo                                                          0
+  Electrocardiogram (ECG)                                       0
+  Electroconvulsive Threshold Testing                           0
+  Electroretinography                                           0
+  ELISA (GMC)                                                   0
+  ERG (Electroretinogram) (GMC)                                 0
+  Eye Morphology                                                0
+  Eye size (GMC)                                                0
+  FACS (GMC)                                                    0
+  FACs Analysis                                                 0
+  Fasted Clinical Chemistry                                     0
+  Fear Conditioning                                             0
+  Femoral Microradiography                                      0
+  Fertility of Homozygous Knock-out Mice                     7512
+  Food efficiency (GMC)                                         0
+  Grip-Strength                                                 0
+  Grip Strength                                                 0
+  Grip Strength (GMC)                                           0
+  Gross Morphology Embryo E12.5                                 0
+  Gross Morphology Embryo E14.5-E15.5                           0
+  Gross Morphology Embryo E18.5                                 0
+  Gross Morphology Embryo E9.5                                  0
+  Gross Morphology Placenta E12.5                               0
+  Gross Morphology Placenta E14.5-E15.5                         0
+  Gross Morphology Placenta E18.5                               0
+  Gross Morphology Placenta E9.5                                0
+  Gross Pathology and Tissue Collection                         0
+  Haematology                                                   0
+  Haematology (GMC)                                             0
+  Haematology test                                              0
+  Heart Dissection                                              0
+  Heart Weight                                                  0
+  Heart weight/tibia length                                     0
+  Hematology                                                    0
+  Hole-board Exploration                                        0
+  Holeboard (GMC)                                               0
+  Hot Plate                                                     0
+  Immunoglobulin                                                0
+  Indirect Calorimetry                                          0
+  Indirect ophthalmoscopy                                       0
+  Insulin Blood Level                                           0
+  Intraperitoneal glucose tolerance test (IPGTT)                0
+  IPGTT                                                         0
+  Light-Dark Test                                               0
+  Mesenteric Lymph Node Immunophenotyping                       0
+  Modified SHIRPA                                               0
+  Nociception Hotplate (GMC)                                    0
+  Open-field                                                    0
+  Open Field                                                    0
+  Ophthalmoscope                                                0
+  Organ Weight                                                  0
+  pDexa (GMC)                                                   0
+  Plasma Chemistry                                              0
+  Rotarod                                                       0
+  Rotarod A (GMC)                                               0
+  Shirpa (GMC)                                                  0
+  Simplified IPGTT                                              0
+  Sleep Wake                                                    0
+  Slit Lamp                                                     0
+  Spleen Immunophenotyping                                      0
+  Spontaneous breathing (GMC)                                   0
+  Tail Suspension                                               0
+  Three-point Bend                                              0
+  Trabecular Bone MicroCT                                       0
+  Trichuris                                                     0
+  Urinalysis                                                    0
+  Vertebra Compression                                          0
+  Vertebral Microradiography                                    0
+  Viability E12.5 Secondary Screen                              0
+  Viability E14.5-E15.5 Secondary Screen                        0
+  Viability E18.5 Secondary Screen                              0
+  Viability E9.5 Secondary Screen                               0
+  Viability Primary Screen                                   7362
+  Whole blood peripheral blood leukocyte immunophenotyping      0
+  X-ray                                                         0
+  X-Ray                                                         0
+  X-Ray (GMC)                                                   0
+                                                          
+                                                           unidimensional
+  Acoustic Startle and Pre-pulse Inhibition (PPI)                   20676
+  Acoustic Startle&amp;PPI                                               8356
+  Allergy (GMC)                                                        27
+  Anti-nuclear antibody assay                                         982
+  Antigen Specific Immunoglobulin Assay                               482
+  Auditory Brain Stem Response                                       2149
+  Body Composition (DEXA lean/fat)                                  42582
+  Body Weight                                                        7263
+  Bodyweight (GMC)                                                     27
+  Bone marrow immunophenotyping                                      8043
+  Buffy coat peripheral blood leukocyte immunophenotyping            7560
+  Calorimetry                                                         731
+  Challenge Whole Body Plethysmography                                 46
+  Clinical Chemistry                                                99693
+  Clinical chemistry (GMC)                                            548
+  Combined SHIRPA and Dysmorphology                                  3645
+  Cortical Bone MicroCT                                                18
+  DEXA                                                               5529
+  Dexa-scan analysis                                                 4516
+  DSS Histology                                                       133
+  Dysmorphology                                                         0
+  Ear epidermis immunophenotyping                                    3112
+  ECG (Electrocardiogram) (GMC)                                       130
+  Echo                                                              16196
+  Electrocardiogram (ECG)                                           32701
+  Electroconvulsive Threshold Testing                                 409
+  Electroretinography                                                   5
+  ELISA (GMC)                                                          96
+  ERG (Electroretinogram) (GMC)                                       148
+  Eye Morphology                                                     3263
+  Eye size (GMC)                                                       34
+  FACS (GMC)                                                          185
+  FACs Analysis                                                      3644
+  Fasted Clinical Chemistry                                          3744
+  Fear Conditioning                                                   420
+  Femoral Microradiography                                             12
+  Fertility of Homozygous Knock-out Mice                                0
+  Food efficiency (GMC)                                               135
+  Grip-Strength                                                      2472
+  Grip Strength                                                     19766
+  Grip Strength (GMC)                                                  19
+  Gross Morphology Embryo E12.5                                         0
+  Gross Morphology Embryo E14.5-E15.5                                   0
+  Gross Morphology Embryo E18.5                                         0
+  Gross Morphology Embryo E9.5                                          0
+  Gross Morphology Placenta E12.5                                       0
+  Gross Morphology Placenta E14.5-E15.5                                 0
+  Gross Morphology Placenta E18.5                                       0
+  Gross Morphology Placenta E9.5                                        0
+  Gross Pathology and Tissue Collection                                 0
+  Haematology                                                        4731
+  Haematology (GMC)                                                   428
+  Haematology test                                                   6038
+  Heart Dissection                                                   1510
+  Heart Weight                                                       4312
+  Heart weight/tibia length                                           776
+  Hematology                                                        49606
+  Hole-board Exploration                                              991
+  Holeboard (GMC)                                                     513
+  Hot Plate                                                          2044
+  Immunoglobulin                                                      929
+  Indirect Calorimetry                                               4919
+  Indirect ophthalmoscopy                                               0
+  Insulin Blood Level                                                2081
+  Intraperitoneal glucose tolerance test (IPGTT)                    12990
+  IPGTT                                                               408
+  Light-Dark Test                                                   11077
+  Mesenteric Lymph Node Immunophenotyping                           44829
+  Modified SHIRPA                                                    1245
+  Nociception Hotplate (GMC)                                           91
+  Open-field                                                         7458
+  Open Field                                                        50546
+  Ophthalmoscope                                                      757
+  Organ Weight                                                       1671
+  pDexa (GMC)                                                         321
+  Plasma Chemistry                                                    894
+  Rotarod                                                            1798
+  Rotarod A (GMC)                                                       6
+  Shirpa (GMC)                                                        197
+  Simplified IPGTT                                                    622
+  Sleep Wake                                                         5333
+  Slit Lamp                                                             0
+  Spleen Immunophenotyping                                          56372
+  Spontaneous breathing (GMC)                                         576
+  Tail Suspension                                                     534
+  Three-point Bend                                                     30
+  Trabecular Bone MicroCT                                              28
+  Trichuris                                                             0
+  Urinalysis                                                         1034
+  Vertebra Compression                                                 21
+  Vertebral Microradiography                                           14
+  Viability E12.5 Secondary Screen                                      0
+  Viability E14.5-E15.5 Secondary Screen                                0
+  Viability E18.5 Secondary Screen                                      0
+  Viability E9.5 Secondary Screen                                       0
+  Viability Primary Screen                                              0
+  Whole blood peripheral blood leukocyte immunophenotyping              0
+  X-ray                                                              2543
+  X-Ray                                                               231
+  X-Ray (GMC)                                                           0
+                                                          
+                                                           unidimensional-ReferenceRange
+  Acoustic Startle and Pre-pulse Inhibition (PPI)                                      0
+  Acoustic Startle&amp;PPI                                                                 0
+  Allergy (GMC)                                                                        0
+  Anti-nuclear antibody assay                                                          0
+  Antigen Specific Immunoglobulin Assay                                                0
+  Auditory Brain Stem Response                                                     26586
+  Body Composition (DEXA lean/fat)                                                     0
+  Body Weight                                                                          0
+  Bodyweight (GMC)                                                                     0
+  Bone marrow immunophenotyping                                                        0
+  Buffy coat peripheral blood leukocyte immunophenotyping                              0
+  Calorimetry                                                                          0
+  Challenge Whole Body Plethysmography                                                 0
+  Clinical Chemistry                                                                   0
+  Clinical chemistry (GMC)                                                             0
+  Combined SHIRPA and Dysmorphology                                                    0
+  Cortical Bone MicroCT                                                                0
+  DEXA                                                                                 0
+  Dexa-scan analysis                                                                   0
+  DSS Histology                                                                        0
+  Dysmorphology                                                                        0
+  Ear epidermis immunophenotyping                                                      0
+  ECG (Electrocardiogram) (GMC)                                                        0
+  Echo                                                                                 0
+  Electrocardiogram (ECG)                                                              0
+  Electroconvulsive Threshold Testing                                                  0
+  Electroretinography                                                                  0
+  ELISA (GMC)                                                                          0
+  ERG (Electroretinogram) (GMC)                                                        0
+  Eye Morphology                                                                       0
+  Eye size (GMC)                                                                       0
+  FACS (GMC)                                                                           0
+  FACs Analysis                                                                        0
+  Fasted Clinical Chemistry                                                            0
+  Fear Conditioning                                                                    0
+  Femoral Microradiography                                                             0
+  Fertility of Homozygous Knock-out Mice                                               0
+  Food efficiency (GMC)                                                                0
+  Grip-Strength                                                                        0
+  Grip Strength                                                                        0
+  Grip Strength (GMC)                                                                  0
+  Gross Morphology Embryo E12.5                                                        0
+  Gross Morphology Embryo E14.5-E15.5                                                  0
+  Gross Morphology Embryo E18.5                                                        0
+  Gross Morphology Embryo E9.5                                                         0
+  Gross Morphology Placenta E12.5                                                      0
+  Gross Morphology Placenta E14.5-E15.5                                                0
+  Gross Morphology Placenta E18.5                                                      0
+  Gross Morphology Placenta E9.5                                                       0
+  Gross Pathology and Tissue Collection                                                0
+  Haematology                                                                          0
+  Haematology (GMC)                                                                    0
+  Haematology test                                                                     0
+  Heart Dissection                                                                     0
+  Heart Weight                                                                         0
+  Heart weight/tibia length                                                            0
+  Hematology                                                                           0
+  Hole-board Exploration                                                               0
+  Holeboard (GMC)                                                                      0
+  Hot Plate                                                                            0
+  Immunoglobulin                                                                       0
+  Indirect Calorimetry                                                                 0
+  Indirect ophthalmoscopy                                                              0
+  Insulin Blood Level                                                                  0
+  Intraperitoneal glucose tolerance test (IPGTT)                                       0
+  IPGTT                                                                                0
+  Light-Dark Test                                                                      0
+  Mesenteric Lymph Node Immunophenotyping                                              0
+  Modified SHIRPA                                                                      0
+  Nociception Hotplate (GMC)                                                           0
+  Open-field                                                                           0
+  Open Field                                                                           0
+  Ophthalmoscope                                                                       0
+  Organ Weight                                                                         0
+  pDexa (GMC)                                                                          0
+  Plasma Chemistry                                                                     0
+  Rotarod                                                                              0
+  Rotarod A (GMC)                                                                      0
+  Shirpa (GMC)                                                                         0
+  Simplified IPGTT                                                                     0
+  Sleep Wake                                                                           0
+  Slit Lamp                                                                            0
+  Spleen Immunophenotyping                                                             0
+  Spontaneous breathing (GMC)                                                          0
+  Tail Suspension                                                                      0
+  Three-point Bend                                                                     0
+  Trabecular Bone MicroCT                                                              0
+  Trichuris                                                                            0
+  Urinalysis                                                                           0
+  Vertebra Compression                                                                 0
+  Vertebral Microradiography                                                           0
+  Viability E12.5 Secondary Screen                                                     0
+  Viability E14.5-E15.5 Secondary Screen                                               0
+  Viability E18.5 Secondary Screen                                                     0
+  Viability E9.5 Secondary Screen                                                      0
+  Viability Primary Screen                                                             0
+  Whole blood peripheral blood leukocyte immunophenotyping                         29520
+  X-ray                                                                            10450
+  X-Ray                                                                              414
+  X-Ray (GMC)                                                                          0</code></pre>
+<pre class="r"><code>#dat &lt;- KOMPv10.1 %&gt;% select(procedure_name==&quot;Gross Pathology and Tissue Collection&quot;)
+
+# extract unidimensional data only.
+dim(KOMPv10.1)</code></pre>
+<pre><code>[1] 1779903      88</code></pre>
+<pre class="r"><code>KOMPv10.1.ud &lt;- KOMPv10.1 %&gt;% filter(data_type==&quot;unidimensional&quot;)
+dim(KOMPv10.1.ud)</code></pre>
+<pre><code>[1] 580001     88</code></pre>
+</div>
+<div id="heatmap-gene---pheno" class="section level3">
+<h3>Heatmap Gene - Pheno</h3>
+</div>
+<div id="subset-of-data-and-generate-z-score" class="section level3">
+<h3>Subset OF data and generate Z-score</h3>
+<pre class="r"><code>table(allpheno$procedure_name)</code></pre>
+<pre><code>
+Open Field 
+    319816 </code></pre>
+<pre class="r"><code>#&quot;Auditory Brain Stem Response&quot;
+#&quot;Clinical Chemistry&quot;
+#&quot;Body Composition (DEXA lean/fat)&quot;
+#&quot;Intraperitoneal glucose tolerance test (IPGTT)&quot;
+#&quot;Hematology&quot;
+
+# count the number of tests in each phenotype
+proc.list &lt;- table(KOMPv10.1.ud$procedure_name)
+#proc.list &lt;- proc.list[proc.list&gt;1000]
+proc.list</code></pre>
+<pre><code>
+        Acoustic Startle and Pre-pulse Inhibition (PPI) 
+                                                  20676 
+                                   Acoustic Startle&amp;PPI 
+                                                   8356 
+                                          Allergy (GMC) 
+                                                     27 
+                            Anti-nuclear antibody assay 
+                                                    982 
+                  Antigen Specific Immunoglobulin Assay 
+                                                    482 
+                           Auditory Brain Stem Response 
+                                                   2149 
+                       Body Composition (DEXA lean/fat) 
+                                                  42582 
+                                            Body Weight 
+                                                   7263 
+                                       Bodyweight (GMC) 
+                                                     27 
+                          Bone marrow immunophenotyping 
+                                                   8043 
+Buffy coat peripheral blood leukocyte immunophenotyping 
+                                                   7560 
+                                            Calorimetry 
+                                                    731 
+                   Challenge Whole Body Plethysmography 
+                                                     46 
+                                     Clinical Chemistry 
+                                                  99693 
+                               Clinical chemistry (GMC) 
+                                                    548 
+                      Combined SHIRPA and Dysmorphology 
+                                                   3645 
+                                  Cortical Bone MicroCT 
+                                                     18 
+                                                   DEXA 
+                                                   5529 
+                                     Dexa-scan analysis 
+                                                   4516 
+                                          DSS Histology 
+                                                    133 
+                        Ear epidermis immunophenotyping 
+                                                   3112 
+                          ECG (Electrocardiogram) (GMC) 
+                                                    130 
+                                                   Echo 
+                                                  16196 
+                                Electrocardiogram (ECG) 
+                                                  32701 
+                    Electroconvulsive Threshold Testing 
+                                                    409 
+                                    Electroretinography 
+                                                      5 
+                                            ELISA (GMC) 
+                                                     96 
+                          ERG (Electroretinogram) (GMC) 
+                                                    148 
+                                         Eye Morphology 
+                                                   3263 
+                                         Eye size (GMC) 
+                                                     34 
+                                             FACS (GMC) 
+                                                    185 
+                                          FACs Analysis 
+                                                   3644 
+                              Fasted Clinical Chemistry 
+                                                   3744 
+                                      Fear Conditioning 
+                                                    420 
+                               Femoral Microradiography 
+                                                     12 
+                                  Food efficiency (GMC) 
+                                                    135 
+                                          Grip-Strength 
+                                                   2472 
+                                          Grip Strength 
+                                                  19766 
+                                    Grip Strength (GMC) 
+                                                     19 
+                                            Haematology 
+                                                   4731 
+                                      Haematology (GMC) 
+                                                    428 
+                                       Haematology test 
+                                                   6038 
+                                       Heart Dissection 
+                                                   1510 
+                                           Heart Weight 
+                                                   4312 
+                              Heart weight/tibia length 
+                                                    776 
+                                             Hematology 
+                                                  49606 
+                                 Hole-board Exploration 
+                                                    991 
+                                        Holeboard (GMC) 
+                                                    513 
+                                              Hot Plate 
+                                                   2044 
+                                         Immunoglobulin 
+                                                    929 
+                                   Indirect Calorimetry 
+                                                   4919 
+                                    Insulin Blood Level 
+                                                   2081 
+         Intraperitoneal glucose tolerance test (IPGTT) 
+                                                  12990 
+                                                  IPGTT 
+                                                    408 
+                                        Light-Dark Test 
+                                                  11077 
+                Mesenteric Lymph Node Immunophenotyping 
+                                                  44829 
+                                        Modified SHIRPA 
+                                                   1245 
+                             Nociception Hotplate (GMC) 
+                                                     91 
+                                             Open-field 
+                                                   7458 
+                                             Open Field 
+                                                  50546 
+                                         Ophthalmoscope 
+                                                    757 
+                                           Organ Weight 
+                                                   1671 
+                                            pDexa (GMC) 
+                                                    321 
+                                       Plasma Chemistry 
+                                                    894 
+                                                Rotarod 
+                                                   1798 
+                                        Rotarod A (GMC) 
+                                                      6 
+                                           Shirpa (GMC) 
+                                                    197 
+                                       Simplified IPGTT 
+                                                    622 
+                                             Sleep Wake 
+                                                   5333 
+                               Spleen Immunophenotyping 
+                                                  56372 
+                            Spontaneous breathing (GMC) 
+                                                    576 
+                                        Tail Suspension 
+                                                    534 
+                                       Three-point Bend 
+                                                     30 
+                                Trabecular Bone MicroCT 
+                                                     28 
+                                             Urinalysis 
+                                                   1034 
+                                   Vertebra Compression 
+                                                     21 
+                             Vertebral Microradiography 
+                                                     14 
+                                                  X-ray 
+                                                   2543 
+                                                  X-Ray 
+                                                    231 </code></pre>
+<pre class="r"><code>length(proc.list)</code></pre>
+<pre><code>[1] 79</code></pre>
+<pre class="r"><code>pheno.list &lt;- table(KOMPv10.1.ud$proc_param_name)
+pheno.list &lt;- pheno.list[pheno.list&gt;1000] # find list of phenotypes with more than 1000 tests (i.e. 1000 mutants tested)
+pheno.list &lt;- names(pheno.list)
+pheno.list</code></pre>
+<pre><code>  [1] &quot;Acoustic Startle and Pre-pulse Inhibition (PPI)_% Pre-pulse inhibition - Global&quot;     
+  [2] &quot;Acoustic Startle and Pre-pulse Inhibition (PPI)_% Pre-pulse inhibition - PPI1&quot;       
+  [3] &quot;Acoustic Startle and Pre-pulse Inhibition (PPI)_% Pre-pulse inhibition - PPI2&quot;       
+  [4] &quot;Acoustic Startle and Pre-pulse Inhibition (PPI)_% Pre-pulse inhibition - PPI3&quot;       
+  [5] &quot;Acoustic Startle and Pre-pulse Inhibition (PPI)_% Pre-pulse inhibition - PPI4&quot;       
+  [6] &quot;Acoustic Startle and Pre-pulse Inhibition (PPI)_Response amplitude - S&quot;              
+  [7] &quot;Body Composition (DEXA lean/fat)_BMC/Body weight&quot;                                    
+  [8] &quot;Body Composition (DEXA lean/fat)_Body length&quot;                                        
+  [9] &quot;Body Composition (DEXA lean/fat)_Bone Area&quot;                                          
+ [10] &quot;Body Composition (DEXA lean/fat)_Bone Mineral Content (excluding skull)&quot;             
+ [11] &quot;Body Composition (DEXA lean/fat)_Bone Mineral Density (excluding skull)&quot;             
+ [12] &quot;Body Composition (DEXA lean/fat)_Fat mass&quot;                                           
+ [13] &quot;Body Composition (DEXA lean/fat)_Fat/Body weight&quot;                                    
+ [14] &quot;Body Composition (DEXA lean/fat)_Lean mass&quot;                                          
+ [15] &quot;Body Composition (DEXA lean/fat)_Lean/Body weight&quot;                                   
+ [16] &quot;Body Weight_Body Weight&quot;                                                             
+ [17] &quot;Clinical Chemistry_Alanine aminotransferase&quot;                                         
+ [18] &quot;Clinical Chemistry_Albumin&quot;                                                          
+ [19] &quot;Clinical Chemistry_Alkaline phosphatase&quot;                                             
+ [20] &quot;Clinical Chemistry_Alpha-amylase&quot;                                                    
+ [21] &quot;Clinical Chemistry_Aspartate aminotransferase&quot;                                       
+ [22] &quot;Clinical Chemistry_Calcium&quot;                                                          
+ [23] &quot;Clinical Chemistry_Chloride&quot;                                                         
+ [24] &quot;Clinical Chemistry_Creatine kinase&quot;                                                  
+ [25] &quot;Clinical Chemistry_Creatinine&quot;                                                       
+ [26] &quot;Clinical Chemistry_Free fatty acids&quot;                                                 
+ [27] &quot;Clinical Chemistry_Fructosamine&quot;                                                     
+ [28] &quot;Clinical Chemistry_Glucose&quot;                                                          
+ [29] &quot;Clinical Chemistry_Glycerol&quot;                                                         
+ [30] &quot;Clinical Chemistry_HDL-cholesterol&quot;                                                  
+ [31] &quot;Clinical Chemistry_Iron&quot;                                                             
+ [32] &quot;Clinical Chemistry_LDL-cholesterol&quot;                                                  
+ [33] &quot;Clinical Chemistry_Magnesium&quot;                                                        
+ [34] &quot;Clinical Chemistry_Phosphorus&quot;                                                       
+ [35] &quot;Clinical Chemistry_Potassium&quot;                                                        
+ [36] &quot;Clinical Chemistry_Sodium&quot;                                                           
+ [37] &quot;Clinical Chemistry_Total bilirubin&quot;                                                  
+ [38] &quot;Clinical Chemistry_Total cholesterol&quot;                                                
+ [39] &quot;Clinical Chemistry_Total protein&quot;                                                    
+ [40] &quot;Clinical Chemistry_Triglyceride&quot;                                                     
+ [41] &quot;Clinical Chemistry_Triglycerides&quot;                                                    
+ [42] &quot;Clinical Chemistry_Urea&quot;                                                             
+ [43] &quot;Clinical Chemistry_Urea (Blood Urea Nitrogen - BUN)&quot;                                 
+ [44] &quot;Combined SHIRPA and Dysmorphology_Locomotor activity&quot;                                
+ [45] &quot;Echo_Cardiac Output&quot;                                                                 
+ [46] &quot;Echo_Ejection Fraction&quot;                                                              
+ [47] &quot;Echo_Fractional Shortening&quot;                                                          
+ [48] &quot;Echo_HR&quot;                                                                             
+ [49] &quot;Echo_LVAWd&quot;                                                                          
+ [50] &quot;Echo_LVIDd&quot;                                                                          
+ [51] &quot;Echo_LVIDs&quot;                                                                          
+ [52] &quot;Echo_LVPWd&quot;                                                                          
+ [53] &quot;Echo_LVPWs&quot;                                                                          
+ [54] &quot;Echo_Stroke Volume&quot;                                                                  
+ [55] &quot;Electrocardiogram (ECG)_CV&quot;                                                          
+ [56] &quot;Electrocardiogram (ECG)_HR&quot;                                                          
+ [57] &quot;Electrocardiogram (ECG)_HRV&quot;                                                         
+ [58] &quot;Electrocardiogram (ECG)_PQ&quot;                                                          
+ [59] &quot;Electrocardiogram (ECG)_PR&quot;                                                          
+ [60] &quot;Electrocardiogram (ECG)_QRS&quot;                                                         
+ [61] &quot;Electrocardiogram (ECG)_QTc&quot;                                                         
+ [62] &quot;Electrocardiogram (ECG)_QTc Dispersion&quot;                                              
+ [63] &quot;Electrocardiogram (ECG)_rMSSD&quot;                                                       
+ [64] &quot;Electrocardiogram (ECG)_RR&quot;                                                          
+ [65] &quot;Electrocardiogram (ECG)_ST&quot;                                                          
+ [66] &quot;Grip Strength_Forelimb and hindlimb grip strength measurement mean&quot;                  
+ [67] &quot;Grip Strength_Forelimb and hindlimb grip strength normalised against body weight&quot;    
+ [68] &quot;Grip Strength_Forelimb grip strength measurement mean&quot;                               
+ [69] &quot;Grip Strength_Forelimb grip strength normalised against body weight&quot;                 
+ [70] &quot;Heart Weight_Heart weight&quot;                                                           
+ [71] &quot;Hematology_Basophil cell count&quot;                                                      
+ [72] &quot;Hematology_Basophil differential count&quot;                                              
+ [73] &quot;Hematology_Eosinophil cell count&quot;                                                    
+ [74] &quot;Hematology_Eosinophil differential count&quot;                                            
+ [75] &quot;Hematology_Hematocrit&quot;                                                               
+ [76] &quot;Hematology_Hemoglobin&quot;                                                               
+ [77] &quot;Hematology_Lymphocyte cell count&quot;                                                    
+ [78] &quot;Hematology_Lymphocyte differential count&quot;                                            
+ [79] &quot;Hematology_Mean cell hemoglobin concentration&quot;                                       
+ [80] &quot;Hematology_Mean cell volume&quot;                                                         
+ [81] &quot;Hematology_Mean corpuscular hemoglobin&quot;                                              
+ [82] &quot;Hematology_Mean platelet volume&quot;                                                     
+ [83] &quot;Hematology_Monocyte cell count&quot;                                                      
+ [84] &quot;Hematology_Monocyte differential count&quot;                                              
+ [85] &quot;Hematology_Neutrophil cell count&quot;                                                    
+ [86] &quot;Hematology_Neutrophil differential count&quot;                                            
+ [87] &quot;Hematology_Platelet count&quot;                                                           
+ [88] &quot;Hematology_Red blood cell count&quot;                                                     
+ [89] &quot;Hematology_Red blood cell distribution width&quot;                                        
+ [90] &quot;Hematology_White blood cell count&quot;                                                   
+ [91] &quot;Hot Plate_Time of first response&quot;                                                    
+ [92] &quot;Indirect Calorimetry_Respiratory Exchange Ratio&quot;                                     
+ [93] &quot;Insulin Blood Level_Insulin&quot;                                                         
+ [94] &quot;Intraperitoneal glucose tolerance test (IPGTT)_Area under glucose response curve&quot;    
+ [95] &quot;Intraperitoneal glucose tolerance test (IPGTT)_Fasted blood glucose concentration&quot;   
+ [96] &quot;Intraperitoneal glucose tolerance test (IPGTT)_Initial response to glucose challenge&quot;
+ [97] &quot;Light-Dark Test_Dark side time spent&quot;                                                
+ [98] &quot;Light-Dark Test_Fecal boli&quot;                                                          
+ [99] &quot;Light-Dark Test_Latency to first transition into dark&quot;                               
+[100] &quot;Light-Dark Test_Light side time spent&quot;                                               
+[101] &quot;Light-Dark Test_Percent time in dark&quot;                                                
+[102] &quot;Light-Dark Test_Percent time in light&quot;                                               
+[103] &quot;Light-Dark Test_Side changes&quot;                                                        
+[104] &quot;Light-Dark Test_Time mobile dark side&quot;                                               
+[105] &quot;Light-Dark Test_Time mobile light side&quot;                                              
+[106] &quot;Modified SHIRPA_Locomotor activity&quot;                                                  
+[107] &quot;Open Field_Center average speed&quot;                                                     
+[108] &quot;Open Field_Center distance travelled&quot;                                                
+[109] &quot;Open Field_Center permanence time&quot;                                                   
+[110] &quot;Open Field_Center resting time&quot;                                                      
+[111] &quot;Open Field_Distance travelled - total&quot;                                               
+[112] &quot;Open Field_Latency to center entry&quot;                                                  
+[113] &quot;Open Field_Number of center entries&quot;                                                 
+[114] &quot;Open Field_Number of rears - total&quot;                                                  
+[115] &quot;Open Field_Percentage center time&quot;                                                   
+[116] &quot;Open Field_Periphery average speed&quot;                                                  
+[117] &quot;Open Field_Periphery distance travelled&quot;                                             
+[118] &quot;Open Field_Periphery permanence time&quot;                                                
+[119] &quot;Open Field_Periphery resting time&quot;                                                   
+[120] &quot;Open Field_Whole arena average speed&quot;                                                
+[121] &quot;Open Field_Whole arena resting time&quot;                                                 
+[122] &quot;X-ray_Tibia length&quot;                                                                  </code></pre>
+<pre class="r"><code>length(pheno.list) #122</code></pre>
+<pre><code>[1] 122</code></pre>
+<pre class="r"><code># Use phenotypes with more than 1000 tests (i.e. 1000 mutants tested)
+dim(KOMPv10.1.ud)</code></pre>
+<pre><code>[1] 580001     88</code></pre>
+<pre class="r"><code>ap.stat &lt;- KOMPv10.1.ud %&gt;% filter(proc_param_name %in% pheno.list)
+dim(ap.stat)</code></pre>
+<pre><code>[1] 358088     88</code></pre>
+<pre class="r"><code>mtest &lt;- table(ap.stat$proc_param_name, ap.stat$marker_symbol)
+mtest &lt;-as.data.frame.matrix(mtest)
+dim(mtest)</code></pre>
+<pre><code>[1]  122 5954</code></pre>
+<pre class="r"><code>if(FALSE){
+nmax &lt;-max(mtest)
+library(circlize)
+col_fun = colorRamp2(c(0, nmax), c(&quot;white&quot;, &quot;red&quot;))
+col_fun(seq(0, nmax))
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/KMOPv10.1_heatmap_gene_vs_pheno_after_filtering.pdf&quot;, width = 10, height = 10)
+ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 5), name=&quot;Count&quot;)
+draw(ht)
+dev.off()
+}
+
+table(ap.stat$procedure_name)</code></pre>
+<pre><code>
+Acoustic Startle and Pre-pulse Inhibition (PPI) 
+                                          20676 
+               Body Composition (DEXA lean/fat) 
+                                          42582 
+                                    Body Weight 
+                                           1242 
+                             Clinical Chemistry 
+                                          95963 
+              Combined SHIRPA and Dysmorphology 
+                                           3645 
+                                           Echo 
+                                          12435 
+                        Electrocardiogram (ECG) 
+                                          32701 
+                                  Grip Strength 
+                                          18995 
+                                   Heart Weight 
+                                           3657 
+                                     Hematology 
+                                          48130 
+                                      Hot Plate 
+                                           1329 
+                           Indirect Calorimetry 
+                                           2215 
+                            Insulin Blood Level 
+                                           2081 
+ Intraperitoneal glucose tolerance test (IPGTT) 
+                                          12990 
+                                Light-Dark Test 
+                                          11077 
+                                Modified SHIRPA 
+                                           1245 
+                                     Open Field 
+                                          45326 
+                                          X-ray 
+                                           1799 </code></pre>
+<pre class="r"><code>table(allpheno$procedure_name)</code></pre>
+<pre><code>
+Open Field 
+    319816 </code></pre>
+<pre class="r"><code>ap.stat = ap.stat %&gt;% 
+  dplyr::select(phenotyping_center, procedure_name, parameter_name, zygosity, allele_symbol,
+         genotype_effect_parameter_estimate, genotype_effect_stderr_estimate,
+         genotype_effect_p_value, phenotyping_center, allele_name, marker_symbol) %&gt;% 
+  filter(procedure_name == &quot;Open Field&quot;) %&gt;%
+  mutate(procedure_name=recode(procedure_name, &quot;Open Field&quot;=&quot;OF&quot;)) %&gt;%
+  mutate(z_score = genotype_effect_parameter_estimate/genotype_effect_stderr_estimate,
+         proc_param_name=paste0(procedure_name,&quot;_&quot;,parameter_name),
+         gene_pheno = paste0(parameter_name, &quot;_&quot;, allele_symbol))
+
+table(ap.stat$parameter_name, ap.stat$procedure_name)</code></pre>
+<pre><code>                              
+                                 OF
+  Center average speed         3335
+  Center distance travelled    3591
+  Center permanence time       3632
+  Center resting time          1802
+  Distance travelled - total   3550
+  Latency to center entry      1818
+  Number of center entries     1816
+  Number of rears - total      2772
+  Percentage center time       3375
+  Periphery average speed      3335
+  Periphery distance travelled 3591
+  Periphery permanence time    3633
+  Periphery resting time       1803
+  Whole arena average speed    3637
+  Whole arena resting time     3636</code></pre>
+<pre class="r"><code>length(unique(ap.stat$marker_symbol)) #3362</code></pre>
+<pre><code>[1] 3362</code></pre>
+<pre class="r"><code>length(unique(ap.stat$allele_symbol)) #3412</code></pre>
+<pre><code>[1] 3412</code></pre>
+<pre class="r"><code>length(unique(ap.stat$proc_param_name)) #15  # number of phenotypes in association statistics data set</code></pre>
+<pre><code>[1] 15</code></pre>
+<pre class="r"><code>length(unique(allpheno$proc_param_name)) #15 # number of phenotypes in final control data</code></pre>
+<pre><code>[1] 15</code></pre>
+<pre class="r"><code>pheno.list.stat &lt;- unique(ap.stat$proc_param_name)
+pheno.list.ctrl &lt;- unique(allpheno$proc_param_name)
+sum(pheno.list.stat %in% pheno.list.ctrl)</code></pre>
+<pre><code>[1] 14</code></pre>
+<pre class="r"><code>sum(pheno.list.ctrl %in% pheno.list.stat)</code></pre>
+<pre><code>[1] 14</code></pre>
+<pre class="r"><code>## extract common phenotype list
+common.pheno.list &lt;- sort(intersect(pheno.list.ctrl, pheno.list.stat))
+common.pheno.list</code></pre>
+<pre><code> [1] &quot;OF_Center average speed&quot;         &quot;OF_Center distance travelled&quot;   
+ [3] &quot;OF_Center permanence time&quot;       &quot;OF_Center resting time&quot;         
+ [5] &quot;OF_Distance travelled - total&quot;   &quot;OF_Latency to center entry&quot;     
+ [7] &quot;OF_Number of center entries&quot;     &quot;OF_Percentage center time&quot;      
+ [9] &quot;OF_Periphery average speed&quot;      &quot;OF_Periphery distance travelled&quot;
+[11] &quot;OF_Periphery permanence time&quot;    &quot;OF_Periphery resting time&quot;      
+[13] &quot;OF_Whole arena average speed&quot;    &quot;OF_Whole arena resting time&quot;    </code></pre>
+<pre class="r"><code>length(common.pheno.list)</code></pre>
+<pre><code>[1] 14</code></pre>
+<pre class="r"><code># Use summary statistics of common phenotypes
+dim(ap.stat)</code></pre>
+<pre><code>[1] 45326    13</code></pre>
+<pre class="r"><code>ap.stat &lt;- ap.stat %&gt;% filter(proc_param_name %in% common.pheno.list)
+dim(ap.stat)</code></pre>
+<pre><code>[1] 42554    13</code></pre>
+<pre class="r"><code>length(unique(ap.stat$proc_param_name))</code></pre>
+<pre><code>[1] 14</code></pre>
+</div>
+<div id="find-duplicates-in-gene-phenotype-pair" class="section level3">
+<h3>Find duplicates in gene-phenotype pair</h3>
+<pre class="r"><code>mtest &lt;- table(ap.stat$proc_param_name, ap.stat$marker_symbol)
+mtest &lt;-as.data.frame.matrix(mtest)
+nmax &lt;-max(mtest)
+col_fun = colorRamp2(c(0, nmax), c(&quot;white&quot;, &quot;red&quot;))
+col_fun(seq(0, nmax))</code></pre>
+<pre><code> [1] &quot;#FFFFFFFF&quot; &quot;#FFEEE7FF&quot; &quot;#FFDCD0FF&quot; &quot;#FFCBB9FF&quot; &quot;#FFB9A2FF&quot; &quot;#FFA78CFF&quot;
+ [7] &quot;#FF9576FF&quot; &quot;#FF8161FF&quot; &quot;#FF6D4CFF&quot; &quot;#FF5636FF&quot; &quot;#FF3A1FFF&quot; &quot;#FF0000FF&quot;</code></pre>
+<pre class="r"><code>ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+             row_names_gp = gpar(fontsize = 8), name=&quot;Count&quot;)</code></pre>
+<pre><code>`use_raster` is automatically set to TRUE for a matrix with more than
+2000 columns You can control `use_raster` argument by explicitly
+setting TRUE/FALSE to it.
+
+Set `ht_opt$message = FALSE` to turn off this message.</code></pre>
+<pre><code>&#39;magick&#39; package is suggested to install to give better rasterization.
+
+Set `ht_opt$message = FALSE` to turn off this message.</code></pre>
+<pre class="r"><code>draw(ht)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="using-stouffers-method-merge-multiple-z-scores-of-a-gene-phenotype-pair-into-a-z-score" class="section level3">
+<h3>Using Stouffer’s method, merge multiple z-scores of a gene-phenotype pair into a z-score</h3>
+<pre class="r"><code>## sum(z-score)/sqrt(# of zscore)
+sumz &lt;- function(z){ sum(z)/sqrt(length(z)) }
+ap.z = ap.stat %&gt;%
+  dplyr::select(marker_symbol, proc_param_name, z_score) %&gt;%
+  na.omit() %&gt;%
+  group_by(marker_symbol, proc_param_name) %&gt;% 
+  summarize(zscore = sumz(z_score)) ## combine z-scores</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;marker_symbol&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>dim(ap.z)</code></pre>
+<pre><code>[1] 35836     3</code></pre>
+</div>
+<div id="make-z-score-matrix-long-to-wide" class="section level3">
+<h3>Make z-score matrix (long to wide)</h3>
+<pre class="r"><code>nan2na &lt;- function(df){ 
+  out &lt;- data.frame(sapply(df, function(x) ifelse(is.nan(x), NA, x))) 
+  colnames(out) &lt;- colnames(df)
+  out
+}
+ap.zmat = dcast(ap.z, marker_symbol ~ proc_param_name, value.var = &quot;zscore&quot;, 
+             fun.aggregate = mean) %&gt;% tibble::column_to_rownames(var=&quot;marker_symbol&quot;)
+ap.zmat = nan2na(ap.zmat) #convert nan to na
+dim(ap.zmat)</code></pre>
+<pre><code>[1] 3360   14</code></pre>
+<pre class="r"><code>id.mat &lt;- 1*(!is.na(ap.zmat)) # multiply 1 to make this matrix numeric
+nrow(as.data.frame(colSums(id.mat)))</code></pre>
+<pre><code>[1] 14</code></pre>
+<pre class="r"><code>dim(id.mat)</code></pre>
+<pre><code>[1] 3360   14</code></pre>
+<pre class="r"><code># heatmap of gene - phenotype (red: tested, white: untested)
+if(FALSE){
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/missing_tests_after_filtering_OF.pdf&quot;, width = 6, height = 2.5)
+ht = Heatmap(t(id.mat), 
+             cluster_rows = T, clustering_distance_rows =&quot;binary&quot;,
+             cluster_columns = T, clustering_distance_columns = &quot;binary&quot;,
+             show_row_dend = F, show_column_dend = F,  # do not show dendrogram
+             show_column_names = F, col = c(&quot;white&quot;,&quot;red&quot;),
+             row_names_gp = gpar(fontsize = 10), name=&quot;Missing&quot;)
+draw(ht)
+dev.off()
+}</code></pre>
+</div>
+<div id="association-z-score-distribution" class="section level3">
+<h3>Association Z-score Distribution</h3>
+<p>We plot a association Z-score distribution for each phenotype.</p>
+<pre class="r"><code>ggplot(melt(ap.zmat), aes(x=value)) + 
+  geom_histogram() + 
+  facet_wrap(~variable, scales=&quot;free&quot;, ncol=5)+
+  theme(strip.text.x = element_text(size = 6))</code></pre>
+<pre><code>No id variables; using all as measure variables</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>Warning: Removed 11204 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="estimate-genetic-correlation-matrix-between-phenotypes-using-zscores" class="section level3">
+<h3>Estimate genetic correlation matrix between phenotypes using Zscores</h3>
+<p>Here, we estimate the genetic correlations between phenotypes using association Z-score matrix (num of genes:5479, num of phenotypes 14).</p>
+<pre class="r"><code>ap.zmat &lt;- ap.zmat[,common.pheno.list]
+ap.zcor = cor(ap.zmat, use=&quot;pairwise.complete.obs&quot;)
+
+#col &lt;- colorRampPalette(c(&quot;steelblue&quot;, &quot;white&quot;, &quot;darkorange&quot;))(100)
+#pheatmap(op.zcor, cluster_rows = T, cluster_cols=T, show_colnames=F, col=col)
+#op.cor.order &lt;- op.cor.out$tree_row[[&quot;order&quot;]]
+#op.zcor.org &lt;- op.zcor # this will be used in correlation matrix test
+#op.zcor &lt;- op.zcor[op.cor.order,]
+#op.zcor &lt;- op.zcor[,op.cor.order]
+#pheatmap(ap.zcor, cluster_rows = F, cluster_cols=F, show_colnames=F, col=col)
+
+ht = Heatmap(ap.zcor, cluster_rows = T, cluster_columns = T, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 10),
+             #name=&quot;Genetic corr (Z-score)&quot;
+             name=&quot;Genetic Corr (Zscore)&quot;
+             )
+draw(ht)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#pheno.order &lt;- row_order(ht)
+#ap.zcor &lt;- ap.zcor[pheno.order,pheno.order]</code></pre>
+</div>
+<div id="phenotype-corr-vs-genetic-corr-btw-phenotypes" class="section level3">
+<h3>phenotype corr VS genetic corr btw phenotypes</h3>
+<p>We compare a correlation matrix obtained using control mice phenotype data v.s. a genetic correlation matrix estimated using association Z-scores. As you can see, both correlation heatmaps have similar correlation pattern.</p>
+<pre class="r"><code>ap.cor.rank.fig &lt;- ap.cor.rank[common.pheno.list,common.pheno.list]
+ap.cor.fig &lt;- ap.cor[common.pheno.list,common.pheno.list]
+ap.cor.combat.fig &lt;- ap.cor.combat[common.pheno.list, common.pheno.list]
+ap.zcor.fig &lt;- ap.zcor
+
+ht = Heatmap(ap.cor.rank.fig, cluster_rows = TRUE, cluster_columns = TRUE, show_column_names = F, #col = col_fun,
+              show_row_dend = F, show_column_dend = F,  # do not show dendrogram
+             row_names_gp = gpar(fontsize = 8), column_title=&quot;Phenotype Corr (RankZ, Pearson)&quot;, column_title_gp = gpar(fontsize = 8),
+             name=&quot;Corr&quot;)
+pheno.order &lt;- row_order(ht)</code></pre>
+<pre><code>Warning: The heatmap has not been initialized. You might have different results
+if you repeatedly execute this function, e.g. when row_km/column_km was
+set. It is more suggested to do as `ht = draw(ht); row_order(ht)`.</code></pre>
+<pre class="r"><code>draw(ht)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if(FALSE){
+pdf(&quot;~/Google Drive Miami/Miami_IMPC/output/comp_pheno_corr_gene_corr_OF.pdf&quot;, width = 10, height = 2.5)
+ap.cor.rank.fig &lt;- ap.cor.rank.fig[pheno.order,pheno.order]
+ht1 = Heatmap(ap.cor.rank.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+              show_row_dend = F, show_column_dend = F,  # do not show dendrogram
+             row_names_gp = gpar(fontsize = 8), column_title=&quot;Phenotype Corr (RankZ, Pearson)&quot;, column_title_gp = gpar(fontsize = 8),
+             name=&quot;Corr&quot;)
+ap.cor.fig &lt;- ap.cor.fig[pheno.order,pheno.order]  
+ht2 = Heatmap(ap.cor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 8), column_title=&quot;Phenotype Corr (Spearman)&quot;, column_title_gp = gpar(fontsize = 8),
+             name=&quot;Corr&quot;)
+
+ap.cor.combat.fig &lt;- ap.cor.combat.fig[pheno.order,pheno.order]  
+ht3 = Heatmap(ap.cor.combat.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 8), column_title=&quot;Phenotype Corr (Combat, Pearson)&quot;, column_title_gp = gpar(fontsize = 8),
+             name=&quot;Corr&quot;)
+
+ap.zcor.fig &lt;- ap.zcor.fig[pheno.order,pheno.order]
+ht4 = Heatmap(ap.zcor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 8), column_title=&quot;Genetic Corr  (Pearson)&quot;, column_title_gp = gpar(fontsize = 8),
+             name=&quot;Corr&quot;
+             )
+draw(ht1+ht2+ht3+ht4)
+dev.off()
+}</code></pre>
+</div>
+<div id="test-of-the-correlation-between-genetic-correlation-matrices" class="section level3">
+<h3>Test of the correlation between genetic correlation matrices</h3>
+<p>It looks like Jenrich (1970) test is too conservative here. Instead, we use Mantel test testing the correlation between two distance matrices.</p>
+<pre class="r"><code>####################
+# Use Mantel test 
+# https://stats.idre.ucla.edu/r/faq/how-can-i-perform-a-mantel-test-in-r/
+# install.packages(&quot;ade4&quot;)
+library(ade4)
+to.upper&lt;-function(X) X[upper.tri(X,diag=FALSE)]
+
+a1 &lt;- to.upper(ap.cor.fig)
+a2 &lt;- to.upper(ap.cor.rank.fig)
+a3 &lt;- to.upper(ap.cor.combat.fig)
+a4 &lt;- to.upper(ap.zcor.fig)
+
+plot(a4, a1)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(a4, a2)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-23-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(a4, a3)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-23-3.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>mantel.rtest(as.dist(1-ap.cor.fig), as.dist(1-ap.zcor.fig), nrepet = 9999) #nrepet = number of permutations</code></pre>
+<pre><code>Monte-Carlo test
+Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
+
+Observation: 0.9377157 
+
+Based on 9999 replicates
+Simulated p-value: 1e-04 
+Alternative hypothesis: greater 
+
+     Std.Obs  Expectation     Variance 
+8.2371110249 0.0007368824 0.0129392679 </code></pre>
+<pre class="r"><code>mantel.rtest(as.dist(1-ap.cor.rank.fig), as.dist(1-ap.zcor.fig), nrepet = 9999)</code></pre>
+<pre><code>Monte-Carlo test
+Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
+
+Observation: 0.9513592 
+
+Based on 9999 replicates
+Simulated p-value: 1e-04 
+Alternative hypothesis: greater 
+
+    Std.Obs Expectation    Variance 
+8.200659732 0.001238584 0.013423319 </code></pre>
+<pre class="r"><code>mantel.rtest(as.dist(1-ap.cor.combat.fig), as.dist(1-ap.zcor.fig), nrepet = 9999)</code></pre>
+<pre><code>Monte-Carlo test
+Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
+
+Observation: 0.9660052 
+
+Based on 9999 replicates
+Simulated p-value: 1e-04 
+Alternative hypothesis: greater 
+
+      Std.Obs   Expectation      Variance 
+ 8.7304435478 -0.0008632403  0.0122648468 </code></pre>
+</div>
+</div>
+<div id="test-imputation-algorithm" class="section level2">
+<h2>Test imputation algorithm</h2>
+<div id="kompute-algorithm" class="section level3">
+<h3>KOMPute algorithm</h3>
+<p>Impute z-scores of untested gene-pheno pair using phenotype correlation matrix</p>
+<pre class="r"><code>if(FALSE){
+  library(devtools)
+  devtools::install_github(&quot;dleelab/kompute&quot;)
+}
+library(kompute)</code></pre>
+</div>
+<div id="simulation-study---imputed-vs-measured" class="section level3">
+<h3>Simulation study - imputed vs measured</h3>
+<p>We randomly select measured gene-phenotype association z-scores, mask those, impute them using kompute algorithm. Then we compare the imputed z-scores to the measured ones.</p>
+<pre class="r"><code>zmat &lt;-t(ap.zmat) 
+dim(zmat)</code></pre>
+<pre><code>[1]   14 3360</code></pre>
+<pre class="r"><code>#filter genes with na &lt; 20
+zmat0 &lt;- is.na(zmat)
+num.na&lt;-colSums(zmat0)
+summary(num.na)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  0.000   0.000   4.000   3.335   5.000  13.000 </code></pre>
+<pre class="r"><code>zmat &lt;- zmat[,num.na&lt;10]
+dim(zmat)</code></pre>
+<pre><code>[1]   14 3244</code></pre>
+<pre class="r"><code>#pheno.cor &lt;- ap.cor.fig
+#pheno.cor &lt;- ap.cor.rank.fig
+pheno.cor &lt;- ap.cor.combat.fig
+#pheno.cor &lt;- ap.zcor.fig
+
+zmat &lt;- zmat[rownames(pheno.cor),,drop=FALSE]
+rownames(zmat)</code></pre>
+<pre><code> [1] &quot;OF_Center average speed&quot;         &quot;OF_Center distance travelled&quot;   
+ [3] &quot;OF_Center permanence time&quot;       &quot;OF_Center resting time&quot;         
+ [5] &quot;OF_Distance travelled - total&quot;   &quot;OF_Latency to center entry&quot;     
+ [7] &quot;OF_Number of center entries&quot;     &quot;OF_Percentage center time&quot;      
+ [9] &quot;OF_Periphery average speed&quot;      &quot;OF_Periphery distance travelled&quot;
+[11] &quot;OF_Periphery permanence time&quot;    &quot;OF_Periphery resting time&quot;      
+[13] &quot;OF_Whole arena average speed&quot;    &quot;OF_Whole arena resting time&quot;    </code></pre>
+<pre class="r"><code>rownames(pheno.cor)</code></pre>
+<pre><code> [1] &quot;OF_Center average speed&quot;         &quot;OF_Center distance travelled&quot;   
+ [3] &quot;OF_Center permanence time&quot;       &quot;OF_Center resting time&quot;         
+ [5] &quot;OF_Distance travelled - total&quot;   &quot;OF_Latency to center entry&quot;     
+ [7] &quot;OF_Number of center entries&quot;     &quot;OF_Percentage center time&quot;      
+ [9] &quot;OF_Periphery average speed&quot;      &quot;OF_Periphery distance travelled&quot;
+[11] &quot;OF_Periphery permanence time&quot;    &quot;OF_Periphery resting time&quot;      
+[13] &quot;OF_Whole arena average speed&quot;    &quot;OF_Whole arena resting time&quot;    </code></pre>
+<pre class="r"><code>colnames(pheno.cor)</code></pre>
+<pre><code> [1] &quot;OF_Center average speed&quot;         &quot;OF_Center distance travelled&quot;   
+ [3] &quot;OF_Center permanence time&quot;       &quot;OF_Center resting time&quot;         
+ [5] &quot;OF_Distance travelled - total&quot;   &quot;OF_Latency to center entry&quot;     
+ [7] &quot;OF_Number of center entries&quot;     &quot;OF_Percentage center time&quot;      
+ [9] &quot;OF_Periphery average speed&quot;      &quot;OF_Periphery distance travelled&quot;
+[11] &quot;OF_Periphery permanence time&quot;    &quot;OF_Periphery resting time&quot;      
+[13] &quot;OF_Whole arena average speed&quot;    &quot;OF_Whole arena resting time&quot;    </code></pre>
+<pre class="r"><code>npheno &lt;- nrow(zmat)
+
+# percentage of missing Z-scores in the original data 
+100*sum(is.na(zmat))/(nrow(zmat)*ncol(zmat)) # 43%</code></pre>
+<pre><code>[1] 21.92179</code></pre>
+<pre class="r"><code>nimp &lt;- 2000 # # of missing/imputed Z-scores
+set.seed(1111)
+
+# find index of all measured zscores
+all.i &lt;- 1:(nrow(zmat)*ncol(zmat))
+measured &lt;- as.vector(!is.na(as.matrix(zmat)))
+measured.i &lt;- all.i[measured]
+
+# mask 2000 measured z-scores
+mask.i &lt;- sort(sample(measured.i, nimp))
+org.z = as.matrix(zmat)[mask.i]
+
+zvec &lt;- as.vector(as.matrix(zmat))
+zvec[mask.i] &lt;- NA
+zmat.imp &lt;- matrix(zvec, nrow=npheno)
+rownames(zmat.imp) &lt;- rownames(zmat)</code></pre>
+</div>
+<div id="run-kompute" class="section level3">
+<h3>Run KOMPute</h3>
+<pre class="r"><code>kompute.res &lt;- kompute(zmat.imp, pheno.cor, 0.01)</code></pre>
+<pre><code>
+KOMPute running...</code></pre>
+<pre><code># of genes: 3244</code></pre>
+<pre><code># of phenotypes: 14</code></pre>
+<pre><code># of imputed Z-scores: 11956</code></pre>
+<pre class="r"><code># measured vs imputed
+length(org.z)</code></pre>
+<pre><code>[1] 2000</code></pre>
+<pre class="r"><code>imp.z &lt;- as.matrix(kompute.res$zmat)[mask.i]
+imp.info &lt;- as.matrix(kompute.res$infomat)[mask.i]  
+plot(imp.z, org.z)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>imp &lt;- data.frame(org.z=org.z, imp.z=imp.z, info=imp.info)
+dim(imp)</code></pre>
+<pre><code>[1] 2000    3</code></pre>
+<pre class="r"><code>imp &lt;- imp[complete.cases(imp),]
+imp &lt;- subset(imp, info&gt;=0 &amp; info &lt;= 1)
+dim(imp)</code></pre>
+<pre><code>[1] 2000    3</code></pre>
+<pre class="r"><code>cor.val &lt;- round(cor(imp$imp.z, imp$org.z), digits=3)
+cor.val</code></pre>
+<pre><code>[1] 0.935</code></pre>
+<pre class="r"><code>plot(imp$imp.z, imp$org.z)</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-26-2.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>info.cutoff &lt;- 0.9
+imp.sub &lt;- subset(imp, info&gt;info.cutoff)
+dim(imp.sub)</code></pre>
+<pre><code>[1] 1013    3</code></pre>
+<pre class="r"><code>summary(imp.sub$imp.z)</code></pre>
+<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+-5.45353 -1.00154 -0.02325 -0.02372  0.92737  6.79400 </code></pre>
+<pre class="r"><code>summary(imp.sub$info)</code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.9005  0.9360  0.9536  0.9540  0.9785  0.9878 </code></pre>
+<pre class="r"><code>cor.val &lt;- round(cor(imp.sub$imp.z, imp.sub$org.z), digits=3)
+cor.val</code></pre>
+<pre><code>[1] 0.986</code></pre>
+<pre class="r"><code>g &lt;- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
+    geom_point() +
+    labs(title=paste0(&quot;IMPC Behavior Data, Info&gt;&quot;, info.cutoff, &quot;, Cor=&quot;,cor.val),
+      x=&quot;Imputed Z-scores&quot;, y = &quot;Measured Z-scores&quot;, col=&quot;Info&quot;) +
+    theme_minimal()
+g</code></pre>
+<p><img src="figure/kompute_test_102121_OF.Rmd/unnamed-chunk-26-3.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#filename &lt;- &quot;~/Google Drive Miami/Miami_IMPC/output/realdata_measured_vs_imputed_info_OF.pdf&quot;
+#ggsave(filename, plot=g, height=4, width=5)</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.1 (2021-08-10)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19042)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252 
+[2] LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] kompute_0.1.0         ade4_1.7-18           sva_3.42.0           
+ [4] BiocParallel_1.28.0   genefilter_1.76.0     mgcv_1.8-36          
+ [7] nlme_3.1-152          lme4_1.1-27.1         RNOmni_1.0.0         
+[10] ComplexHeatmap_2.10.0 circlize_0.4.13       irlba_2.3.3          
+[13] Matrix_1.3-4          RColorBrewer_1.1-2    tidyr_1.1.4          
+[16] ggplot2_3.3.5         reshape2_1.4.4        dplyr_1.0.7          
+[19] data.table_1.14.2    
+
+loaded via a namespace (and not attached):
+ [1] bitops_1.0-7           matrixStats_0.61.0     fs_1.5.0              
+ [4] bit64_4.0.5            doParallel_1.0.16      httr_1.4.2            
+ [7] GenomeInfoDb_1.30.0    rprojroot_2.0.2        tools_4.1.1           
+[10] utf8_1.2.2             R6_2.5.1               DBI_1.1.1             
+[13] BiocGenerics_0.40.0    colorspace_2.0-2       GetoptLong_1.0.5      
+[16] withr_2.4.2            tidyselect_1.1.1       bit_4.0.4             
+[19] compiler_4.1.1         git2r_0.28.0           Biobase_2.54.0        
+[22] labeling_0.4.2         scales_1.1.1           stringr_1.4.0         
+[25] digest_0.6.28          minqa_1.2.4            R.utils_2.11.0        
+[28] rmarkdown_2.11         XVector_0.34.0         pkgconfig_2.0.3       
+[31] htmltools_0.5.2        limma_3.50.0           fastmap_1.1.0         
+[34] highr_0.9              rlang_0.4.12           GlobalOptions_0.1.2   
+[37] RSQLite_2.2.8          shape_1.4.6            jquerylib_0.1.4       
+[40] farver_2.1.0           generics_0.1.1         R.oo_1.24.0           
+[43] RCurl_1.98-1.5         magrittr_2.0.1         GenomeInfoDbData_1.2.7
+[46] Rcpp_1.0.7             munsell_0.5.0          S4Vectors_0.32.0      
+[49] fansi_0.5.0            R.methodsS3_1.8.1      lifecycle_1.0.1       
+[52] edgeR_3.36.0           stringi_1.7.5          whisker_0.4           
+[55] yaml_2.2.1             zlibbioc_1.40.0        MASS_7.3-54           
+[58] plyr_1.8.6             blob_1.2.2             parallel_4.1.1        
+[61] promises_1.2.0.1       crayon_1.4.1           lattice_0.20-44       
+[64] Biostrings_2.62.0      splines_4.1.1          annotate_1.72.0       
+[67] KEGGREST_1.34.0        locfit_1.5-9.4         knitr_1.36            
+[70] pillar_1.6.4           boot_1.3-28            rjson_0.2.20          
+[73] codetools_0.2-18       stats4_4.1.1           XML_3.99-0.8          
+[76] glue_1.4.2             evaluate_0.14          png_0.1-7             
+[79] vctrs_0.3.8            nloptr_1.2.2.2         httpuv_1.6.3          
+[82] foreach_1.5.1          gtable_0.3.0           purrr_0.3.4           
+[85] clue_0.3-60            assertthat_0.2.1       cachem_1.0.6          
+[88] xfun_0.27              xtable_1.8-4           later_1.3.0           
+[91] survival_3.2-11        tibble_3.1.5           iterators_1.0.13      
+[94] memoise_2.0.0          AnnotationDbi_1.56.0   IRanges_2.28.0        
+[97] workflowr_1.6.2        cluster_2.1.2          ellipsis_0.3.2        </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
