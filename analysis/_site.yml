@@ -9,9 +9,12 @@ navbar:
     href: about.html
   - text: License
     href: license.html
+  right:
+  - icon: fa-github
+    href: https://github.com/warkenca/komputeExamples
 output:
   workflowr::wflow_html:
     toc: yes
-    toc_float: yes
+    toc_float: no
     theme: cosmo
     highlight: textmate
