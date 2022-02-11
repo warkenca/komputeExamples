@@ -1,5 +1,5 @@
 ---
-title: "KOMPUTE method testing - CC data"
+title: "KOMPUTE method testing - OF data"
 author: "Coby Warkentin and Donghyung Lee"
 date: "`r Sys.Date()`"
 output: workflowr::wflow_html
@@ -24,16 +24,16 @@ library(ComplexHeatmap)
 
 ## Prep control phenotype data
 
-### Load Clinical Chemistry control phenotypes
+### Load Open Field control phenotypes
 ```{r load_data, echo=TRUE}
-CC.data <- readRDS("data/CC.data.rds")
-dim(CC.data)
+OF.data <- readRDS("data/OF.data.rds")
+dim(OF.data)
 ```
 
 ### Heatmap showing measured phenotypes 
 This heatmaps show phenotypes measured for each control mouse. Columns represent mice and rows represent phenotypes. 
 ```{r heatmap_pheno, fig.width=12, fig.height=14}
-mtest <- table(CC.data$proc_param_name_stable_id, CC.data$biological_sample_id)
+mtest <- table(OF.data$proc_param_name_stable_id, OF.data$biological_sample_id)
 mtest <-as.data.frame.matrix(mtest)
 dim(mtest)
 if(FALSE){
@@ -47,51 +47,51 @@ draw(ht)
 }
 ```
 
-### Remove phenotypes with num of obs < 20000
+### Remove phenotypes with num of obs < 15000
 ```{r}
-mtest <- table(CC.data$proc_param_name, CC.data$biological_sample_id)
+mtest <- table(OF.data$proc_param_name, OF.data$biological_sample_id)
 dim(mtest)
 #head(mtest[,1:10])
 mtest0 <- mtest>0
 #head(mtest0[,1:10])
 rowSums(mtest0)
-rmv.pheno.list <- rownames(mtest)[rowSums(mtest0)<20000]
+rmv.pheno.list <- rownames(mtest)[rowSums(mtest0)<15000]
 #rmv.pheno.list
-dim(CC.data)
-CC.data <- CC.data %>% filter(!(proc_param_name %in% rmv.pheno.list))
-dim(CC.data)
+dim(OF.data)
+OF.data <- OF.data %>% filter(!(proc_param_name %in% rmv.pheno.list))
+dim(OF.data)
 # number of phenotypes left
-length(unique(CC.data$proc_param_name))
+length(unique(OF.data$proc_param_name))
 ```
 
-### Romove samples with num of measured phenotypes < 15
+### Remove samples with num of measured phenotypes < 10
 ```{r rmv_samp, echo=TRUE}
-mtest <- table(CC.data$proc_param_name, CC.data$biological_sample_id)
+mtest <- table(OF.data$proc_param_name, OF.data$biological_sample_id)
 dim(mtest)
 head(mtest[,1:10])
 mtest0 <- mtest>0
 head(mtest0[,1:10])
 summary(colSums(mtest0))
-rmv.sample.list <- colnames(mtest)[colSums(mtest0)<15]
+rmv.sample.list <- colnames(mtest)[colSums(mtest0)<10]
 length(rmv.sample.list)
-dim(CC.data)
-CC.data <- CC.data %>% filter(!(biological_sample_id %in% rmv.sample.list))
-dim(CC.data)
+dim(OF.data)
+OF.data <- OF.data %>% filter(!(biological_sample_id %in% rmv.sample.list))
+dim(OF.data)
 # number of observations to use
-length(unique(CC.data$biological_sample_id))
+length(unique(OF.data$biological_sample_id))
 ```
 
 ### Heapmap of measured phenotypes after filtering
 ```{r}
 if(FALSE){
-mtest <- table(CC.data$proc_param_name, CC.data$biological_sample_id)
+mtest <- table(OF.data$proc_param_name, OF.data$biological_sample_id)
 dim(mtest)
 mtest <-as.data.frame.matrix(mtest)
 nmax <-max(mtest)
 library(circlize)
 col_fun = colorRamp2(c(0, nmax), c("white", "red"))
 col_fun(seq(0, nmax))
-pdf("~/Google Drive Miami/Miami_IMPC/output/measured_phenotypes_controls_after_filtering_CC.pdf", width = 10, height = 3)
+pdf("~/Google Drive Miami/Miami_IMPC/output/measured_phenotypes_controls_after_filtering_OF.pdf", width = 10, height = 3)
 ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
              row_names_gp = gpar(fontsize = 7), name="Count")
 draw(ht)
@@ -101,21 +101,21 @@ dev.off()
 
 ### Reshape the data (long to wide)
 ```{r reshape_pheno}
-CC.mat <- CC.data %>% 
+OF.mat <- OF.data %>% 
   dplyr::select(biological_sample_id, proc_param_name, data_point, sex, phenotyping_center, strain_name) %>% 
   ##consider weight or age in weeks
   arrange(biological_sample_id) %>%
   distinct(biological_sample_id, proc_param_name, .keep_all=TRUE) %>% ## remove duplicates, maybe mean() is better.
   spread(proc_param_name, data_point) %>%
   tibble::column_to_rownames(var="biological_sample_id")
-head(CC.mat)
-dim(CC.mat)
-summary(colSums(is.na(CC.mat[,-1:-3])))
+head(OF.mat)
+dim(OF.mat)
+summary(colSums(is.na(OF.mat[,-1:-3])))
 ```
 
 ### Distribution of each phenotype
 ```{r pheno_dist,  fig.width=10, fig.height=5, message=FALSE, warning=FALSE}
-ggplot(melt(CC.mat), aes(x=value)) + 
+ggplot(melt(OF.mat), aes(x=value)) + 
   geom_histogram() + 
   facet_wrap(~variable, scales="free", ncol=5)+
   theme(strip.text.x = element_text(size = 6))
@@ -125,17 +125,17 @@ ggplot(melt(CC.mat), aes(x=value)) +
 ### Rank Z transformation
 ```{r rankZ_trans, fig.width=10, fig.height=5, message=FALSE, warning=FALSE}
 library(RNOmni)
-CC.mat.rank <- CC.mat
-dim(CC.mat.rank)
-CC.mat.rank <- CC.mat.rank[complete.cases(CC.mat.rank),]
-dim(CC.mat.rank)
+OF.mat.rank <- OF.mat
+dim(OF.mat.rank)
+OF.mat.rank <- OF.mat.rank[complete.cases(OF.mat.rank),]
+dim(OF.mat.rank)
 
-dim(CC.mat)
-CC.mat <- CC.mat[complete.cases(CC.mat),]
-dim(CC.mat)
+dim(OF.mat)
+OF.mat <- OF.mat[complete.cases(OF.mat),]
+dim(OF.mat)
 
-CC.mat.rank <- cbind(CC.mat.rank[,1:3], apply(CC.mat.rank[,-1:-3], 2, RankNorm))
-ggplot(melt(CC.mat.rank), aes(x=value)) + 
+OF.mat.rank <- cbind(OF.mat.rank[,1:3], apply(OF.mat.rank[,-1:-3], 2, RankNorm))
+ggplot(melt(OF.mat.rank), aes(x=value)) + 
   geom_histogram() + 
   facet_wrap(~variable, scales="free", ncol=5)+
   theme(strip.text.x = element_text(size = 6))
@@ -146,7 +146,7 @@ Here we conducted a PVCA analysis on the phenotype matrix data and measure the p
 ```{r PVCA, fig.width=6, fig.height=5, message=FALSE, warning=FALSE}
 source("code/PVCA.R")
 
-meta <- CC.mat.rank[,1:3] ## looking at covariates sex, phenotyping_center, and strain_name
+meta <- OF.mat.rank[,1:3] ## looking at covariates sex, phenotyping_center, and strain_name
 head(meta)
 dim(meta)
 summary(meta) # variables are still characters
@@ -158,7 +158,7 @@ chisq.test(meta[,2],meta[,3])
 
 meta<-meta[,-3] # phenotyping_center and strain_name strongly associated and this caused confouding in PVCA analysis so strain_name dropped.
 
-G <- t(CC.mat.rank[,-1:-3]) ## phenotype matrix data
+G <- t(OF.mat.rank[,-1:-3]) ## phenotype matrix data
 
 set.seed(09302021)
 
@@ -211,53 +211,53 @@ pvca.plot.nobatch
 
 ### Compute correlations between phenotypes
 ```{r, fig.width=6, fig.height=3}
-CC.cor.rank <- cor(CC.mat.rank[,-1:-3], use="pairwise.complete.obs") # pearson correlation coefficient
-CC.cor <- cor(CC.mat[,-1:-3], use="pairwise.complete.obs", method="spearman") # spearman
-CC.cor.combat <- cor(t(combat_komp), use="pairwise.complete.obs")
-pheno.list <- rownames(CC.cor)
+OF.cor.rank <- cor(OF.mat.rank[,-1:-3], use="pairwise.complete.obs") # pearson correlation coefficient
+OF.cor <- cor(OF.mat[,-1:-3], use="pairwise.complete.obs", method="spearman") # spearman
+OF.cor.combat <- cor(t(combat_komp), use="pairwise.complete.obs")
+pheno.list <- rownames(OF.cor)
 
-ht1 = Heatmap(CC.cor, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Spearm. Corr.")
+ht1 = Heatmap(OF.cor, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Spearm. Corr.")
 draw(ht1)
-ht2 = Heatmap(CC.cor.rank, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Corr. RankZ")
+ht2 = Heatmap(OF.cor.rank, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Corr. RankZ")
 draw(ht2)
-ht3 = Heatmap(CC.cor.combat, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Corr. ComBat")
+ht3 = Heatmap(OF.cor.combat, show_column_names = F, row_names_gp = gpar(fontsize = 9), name="Corr. ComBat")
 draw(ht3)
 ```
 
 
 ## Prep IMPC summary stat
 
-### Read CC summary stat (IMPCv10.1)
+### Read OF summary stat (IMPCv10.1)
 ```{r KOMP_stats}
-CC.stat <- readRDS("data/CC.stat.rds")
-dim(CC.stat)
-table(CC.stat$parameter_name, CC.stat$procedure_name)
+OF.stat <- readRDS("data/OF.stat.rds")
+dim(OF.stat)
+table(OF.stat$parameter_name, OF.stat$procedure_name)
 
-length(unique(CC.stat$marker_symbol)) #3983
-length(unique(CC.stat$allele_symbol)) #4152
-length(unique(CC.stat$proc_param_name)) #27  # number of phenotypes in association statistics data set
-length(unique(CC.data$proc_param_name)) #19 # number of phenotypes in final control data
+length(unique(OF.stat$marker_symbol)) #3362
+length(unique(OF.stat$allele_symbol)) #3412
+length(unique(OF.stat$proc_param_name)) #15  # number of phenotypes in association statistics data set
+length(unique(OF.data$proc_param_name)) #15 # number of phenotypes in final control data
 
-pheno.list.stat <- unique(CC.stat$proc_param_name)
-pheno.list.ctrl <- unique(CC.data$proc_param_name)
+pheno.list.stat <- unique(OF.stat$proc_param_name)
+pheno.list.ctrl <- unique(OF.data$proc_param_name)
 sum(pheno.list.stat %in% pheno.list.ctrl)
 sum(pheno.list.ctrl %in% pheno.list.stat)
 
 ## extract common phenotype list
 common.pheno.list <- sort(intersect(pheno.list.ctrl, pheno.list.stat))
 common.pheno.list
-length(common.pheno.list)
+length(common.pheno.list) # 14 - each data set had one phenotype not present in the other
 
 ## Use summary statistics of common phenotypes
-dim(CC.stat)
-CC.stat <- CC.stat %>% filter(proc_param_name %in% common.pheno.list)
-dim(CC.stat)
-length(unique(CC.stat$proc_param_name))
+dim(OF.stat)
+OF.stat <- OF.stat %>% filter(proc_param_name %in% common.pheno.list)
+dim(OF.stat)
+length(unique(OF.stat$proc_param_name))
 ```
 
 ### Duplicates in gene-phenotype pair 
 ```{r gene_pheno_dup, fig.width=6, fig.height=2}
-mtest <- table(CC.stat$proc_param_name, CC.stat$marker_symbol)
+mtest <- table(OF.stat$proc_param_name, OF.stat$marker_symbol)
 mtest <-as.data.frame.matrix(mtest)
 nmax <-max(mtest)
 col_fun = colorRamp2(c(0, nmax), c("white", "red"))
@@ -271,12 +271,12 @@ draw(ht)
 ```{r Stouffer}
 ## sum(z-score)/sqrt(# of zscore)
 sumz <- function(z){ sum(z)/sqrt(length(z)) }
-CC.z = CC.stat %>%
+OF.z = OF.stat %>%
   dplyr::select(marker_symbol, proc_param_name, z_score) %>%
   na.omit() %>%
   group_by(marker_symbol, proc_param_name) %>% 
   summarize(zscore = sumz(z_score)) ## combine z-scores
-dim(CC.z)
+dim(OF.z)
 
 ```
 
@@ -287,12 +287,12 @@ nan2na <- function(df){
   colnames(out) <- colnames(df)
   out
 }
-CC.zmat = dcast(CC.z, marker_symbol ~ proc_param_name, value.var = "zscore", 
+OF.zmat = dcast(OF.z, marker_symbol ~ proc_param_name, value.var = "zscore", 
              fun.aggregate = mean) %>% tibble::column_to_rownames(var="marker_symbol")
-CC.zmat = nan2na(CC.zmat) #convert nan to na
-dim(CC.zmat)
+OF.zmat = nan2na(OF.zmat) #convert nan to na
+dim(OF.zmat)
 
-id.mat <- 1*(!is.na(CC.zmat)) # multiply 1 to make this matrix numeric
+id.mat <- 1*(!is.na(OF.zmat)) # multiply 1 to make this matrix numeric
 nrow(as.data.frame(colSums(id.mat)))
 dim(id.mat)
 
@@ -309,7 +309,7 @@ draw(ht)
 ### Z-score Distribution
 We plot association Z-score distribution for each phenotype.
 ```{r, fig.width=10, fig.height=5, message=FALSE, warning=FALSE}
-ggplot(melt(CC.zmat), aes(x=value)) + 
+ggplot(melt(OF.zmat), aes(x=value)) + 
   geom_histogram() + 
   facet_wrap(~variable, scales="free", ncol=5)+
   theme(strip.text.x = element_text(size = 6))
@@ -320,9 +320,9 @@ ggplot(melt(CC.zmat), aes(x=value)) +
 
 Here, we estimate the genetic correlations between phenotypes using association Z-score matrix (num of genes:3983, num of phenotypes 19).
 ```{r, fig.width=7, fig.height=3}
-CC.zmat <- CC.zmat[,common.pheno.list]
-CC.zcor = cor(CC.zmat, use="pairwise.complete.obs")
-ht = Heatmap(CC.zcor, cluster_rows = T, cluster_columns = T, show_column_names = F, #col = col_fun,
+OF.zmat <- OF.zmat[,common.pheno.list]
+OF.zcor = cor(OF.zmat, use="pairwise.complete.obs")
+ht = Heatmap(OF.zcor, cluster_rows = T, cluster_columns = T, show_column_names = F, #col = col_fun,
              row_names_gp = gpar(fontsize = 10),
              name="Genetic Corr (Z-score)"
              )
@@ -335,34 +335,34 @@ draw(ht)
 We compare a correlation matrix obtained using control mice phenotype data v.s. a genetic correlation matrix estimated using association Z-scores. As you can see, both correlation heatmaps have similar correlation pattern. 
 ```{r comp_pheno_corr_gene_corr, fig.width=12, fig.height=3}
 
-CC.cor.rank.fig <- CC.cor.rank[common.pheno.list,common.pheno.list]
-CC.cor.fig <- CC.cor[common.pheno.list,common.pheno.list]
-CC.cor.combat.fig <- CC.cor.combat[common.pheno.list, common.pheno.list]
-CC.zcor.fig <- CC.zcor
+OF.cor.rank.fig <- OF.cor.rank[common.pheno.list,common.pheno.list]
+OF.cor.fig <- OF.cor[common.pheno.list,common.pheno.list]
+OF.cor.combat.fig <- OF.cor.combat[common.pheno.list, common.pheno.list]
+OF.zcor.fig <- OF.zcor
 
 
-ht = Heatmap(CC.cor.rank.fig, cluster_rows = TRUE, cluster_columns = TRUE, show_column_names = F, #col = col_fun,
+ht = Heatmap(OF.cor.rank.fig, cluster_rows = TRUE, cluster_columns = TRUE, show_column_names = F, #col = col_fun,
               show_row_dend = F, show_column_dend = F,  # do not show dendrogram
              row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (RankZ, Pearson)", column_title_gp = gpar(fontsize = 8),
              name="Corr")
 pheno.order <- row_order(ht)
 #draw(ht)
 
-CC.cor.rank.fig <- CC.cor.rank.fig[pheno.order,pheno.order]
-ht1 = Heatmap(CC.cor.rank.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+OF.cor.rank.fig <- OF.cor.rank.fig[pheno.order,pheno.order]
+ht1 = Heatmap(OF.cor.rank.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
               show_row_dend = F, show_column_dend = F,  # do not show dendrogram
              row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (RankZ, Pearson)", column_title_gp = gpar(fontsize = 8),
              name="Corr")
-CC.cor.fig <- CC.cor.fig[pheno.order,pheno.order]  
-ht2 = Heatmap(CC.cor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+OF.cor.fig <- OF.cor.fig[pheno.order,pheno.order]  
+ht2 = Heatmap(OF.cor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
              row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (Spearman)", column_title_gp = gpar(fontsize = 8),
              name="Corr")
-CC.cor.combat.fig <- CC.cor.combat.fig[pheno.order,pheno.order]  
-ht3 = Heatmap(CC.cor.combat.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+OF.cor.combat.fig <- OF.cor.combat.fig[pheno.order,pheno.order]  
+ht3 = Heatmap(OF.cor.combat.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
              row_names_gp = gpar(fontsize = 8), column_title="Phenotype Corr (Combat, Pearson)", column_title_gp = gpar(fontsize = 8),
              name="Corr")
-CC.zcor.fig <- CC.zcor.fig[pheno.order,pheno.order]
-ht4 = Heatmap(CC.zcor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+OF.zcor.fig <- OF.zcor.fig[pheno.order,pheno.order]
+ht4 = Heatmap(OF.zcor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
              row_names_gp = gpar(fontsize = 8), column_title="Genetic Corr  (Pearson)", column_title_gp = gpar(fontsize = 8),
              name="Corr"
              )
@@ -380,18 +380,18 @@ We use the Mantel's test for testing the correlation between two distance matric
 library(ade4)
 to.upper<-function(X) X[upper.tri(X,diag=FALSE)]
 
-a1 <- to.upper(CC.cor.fig)
-a2 <- to.upper(CC.cor.rank.fig)
-a3 <- to.upper(CC.cor.combat.fig)
-a4 <- to.upper(CC.zcor.fig)
+a1 <- to.upper(OF.cor.fig)
+a2 <- to.upper(OF.cor.rank.fig)
+a3 <- to.upper(OF.cor.combat.fig)
+a4 <- to.upper(OF.zcor.fig)
 
 plot(a4, a1)
 plot(a4, a2)
 plot(a4, a3)
 
-mantel.rtest(as.dist(1-CC.cor.fig), as.dist(1-CC.zcor.fig), nrepet = 9999) #nrepet = number of permutations
-mantel.rtest(as.dist(1-CC.cor.rank.fig), as.dist(1-CC.zcor.fig), nrepet = 9999)
-mantel.rtest(as.dist(1-CC.cor.combat.fig), as.dist(1-CC.zcor.fig), nrepet = 9999)
+mantel.rtest(as.dist(1-OF.cor.fig), as.dist(1-OF.zcor.fig), nrepet = 9999) #nrepet = number of permutations
+mantel.rtest(as.dist(1-OF.cor.rank.fig), as.dist(1-OF.zcor.fig), nrepet = 9999)
+mantel.rtest(as.dist(1-OF.cor.combat.fig), as.dist(1-OF.zcor.fig), nrepet = 9999)
 ```
 
 
@@ -411,7 +411,7 @@ library(kompute)
 
 We randomly select measured gene-phenotype association z-scores, mask those, impute them using KOMPUTE method. Then we compare the imputed z-scores to the measured ones.  
 ```{r}
-zmat <-t(CC.zmat) 
+zmat <-t(OF.zmat) 
 dim(zmat)
 
 ## filter genes with na < 10
@@ -421,10 +421,10 @@ summary(num.na)
 zmat <- zmat[,num.na<10]
 dim(zmat)
 
-#pheno.cor <- CC.cor.fig
-#pheno.cor <- CC.cor.rank.fig
-pheno.cor <- CC.cor.combat.fig
-#pheno.cor <- CC.zcor.fig
+#pheno.cor <- OF.cor.fig
+#pheno.cor <- OF.cor.rank.fig
+pheno.cor <- OF.cor.combat.fig
+#pheno.cor <- OF.zcor.fig
 
 zmat <- zmat[rownames(pheno.cor),,drop=FALSE]
 rownames(zmat)

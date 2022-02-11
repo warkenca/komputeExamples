@@ -72,28 +72,26 @@ table(ts$proc_param_name)
 
 # Filter out time series data
 allpheno <- allpheno %>% filter(observation_type!="time_series")
+
+
 table(allpheno$proc_param_name)
 ```
 
 
 ### Heatmap showing measured phenotypes 
-
 This heatmaps show phenotypes measured for each control mouse. Columns represent mice and rows represent phenotypes. 
-```{r, fig.width=12, fig.height=8}
+```{r heatmap_pheno, fig.width=12, fig.height=14}
 mtest <- table(allpheno$proc_param_name_stable_id, allpheno$biological_sample_id)
 mtest <-as.data.frame.matrix(mtest)
 dim(mtest)
-
 if(FALSE){
 nmax <-max(mtest)
 library(circlize)
 col_fun = colorRamp2(c(0, nmax), c("white", "red"))
 col_fun(seq(0, nmax))
-pdf("~/Google Drive Miami/Miami_IMPC/output/measured_phenotypes_controls_OF.pdf", width = 12, height = 8)
 ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
              row_names_gp = gpar(fontsize = 8), name="Count")
 draw(ht)
-dev.off()
 }
 ```
 
@@ -101,18 +99,15 @@ dev.off()
 ```{r}
 mtest <- table(allpheno$proc_param_name, allpheno$biological_sample_id)
 dim(mtest)
-head(mtest[,1:10])
+#head(mtest[,1:10])
 mtest0 <- mtest>0
-head(mtest0[,1:10])
+#head(mtest0[,1:10])
 rowSums(mtest0)
-
 rmv.pheno.list <- rownames(mtest)[rowSums(mtest0)<15000]
-rmv.pheno.list
-
+#rmv.pheno.list
 dim(allpheno)
 allpheno <- allpheno %>% filter(!(proc_param_name %in% rmv.pheno.list))
 dim(allpheno)
-
 # number of phenotypes left
 length(unique(allpheno$proc_param_name))
 ```

@@ -9,6 +9,6 @@ editor_options:
 ---
 
 ## Examples
-* [Example 1) Test imputation algorithm using Body Composition data](kompute_test_10212021_BC.html)
+* [Example 1) Test imputation algorithm using Body Composition data](kompute_test_BC.html)
 * [Example 2) Test imputation algorithm using Clinical Chemistry data](kompute_test_CC.html)
-* [Example 3) Test imputation algorithm using Open Field data](kompute_test_102121_OF.html)
+* [Example 3) Test imputation algorithm using Open Field data](kompute_test_OF.html)
