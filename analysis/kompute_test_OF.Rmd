@@ -176,6 +176,10 @@ names(pvca.means) <- c(colnames(meta), "resid")
 # Plot PVCA
 pvca.plot <- PlotPVCA(pvca.means, "PVCA of Phenotype Matrix Data")
 pvca.plot
+
+png(file="docs/figure/figures.Rmd/pvca_OF_1.png", width=600, height=350)
+pvca.plot
+dev.off()
 ```
 
 ### Removing batch effects using ComBat
@@ -206,6 +210,10 @@ names(pvca.means.nobatch) <- c(colnames(meta), "resid")
 # Plot PVCA
 pvca.plot.nobatch <- PlotPVCA(pvca.means.nobatch, "PVCA of Phenotype Matrix Data with Reduced Batch Effect")
 pvca.plot.nobatch
+
+png(file="docs/figure/figures.Rmd/pvca_OF_2.png", width=600, height=350)
+pvca.plot.nobatch
+dev.off()
 ```
 
 
@@ -367,6 +375,10 @@ ht4 = Heatmap(OF.zcor.fig, cluster_rows = FALSE, cluster_columns = FALSE, show_c
              name="Corr"
              )
 draw(ht1+ht2+ht3+ht4)
+
+png(file="docs/figure/figures.Rmd/cors_OF.png", width=800, height=250)
+draw(ht1+ht2+ht3+ht4)
+dev.off()
 ```
 
 ### Test of the correlation between genetic correlation matrices
@@ -480,8 +492,13 @@ cor.val <- round(cor(imp.sub$imp.z, imp.sub$org.z), digits=3)
 cor.val
 g <- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
     geom_point() +
-    labs(title=paste0("IMPC Behavior Data, Info>", info.cutoff, ", Cor=",cor.val),
+    labs(title=paste0("IMPC Behavior Data (OF), Info>", info.cutoff, ", Cor=",cor.val),
       x="Imputed Z-scores", y = "Measured Z-scores", col="Info") +
     theme_minimal()
 g
+
+# save plot
+png(file="docs/figure/figures.Rmd/sim_results_OF.png", width=600, height=350)
+g
+dev.off()
 ```

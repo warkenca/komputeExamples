@@ -1,5 +1,6 @@
 library(dplyr)
 library(ComplexHeatmap)
+library(data.table)
 
 ############################################
 ## Preprocess IMPC Control Phenotype data ##

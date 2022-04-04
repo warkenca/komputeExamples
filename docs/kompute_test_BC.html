@@ -11,7 +11,7 @@
 
 <meta name="author" content="Coby Warkentin and Donghyung Lee" />
 
-<meta name="date" content="2022-02-11" />
+<meta name="date" content="2022-04-04" />
 
 <title>KOMPUTE method testing - BC data</title>
 
@@ -283,7 +283,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">KOMPUTE method testing - BC data</h1>
 <h4 class="author">Coby Warkentin and Donghyung Lee</h4>
-<h4 class="date">2022-02-11</h4>
+<h4 class="date">2022-04-04</h4>
 
 </div>
 
@@ -345,7 +345,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-02-11
+<strong>Last updated:</strong> 2022-04-04
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -369,7 +369,7 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 </div>
 <div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -436,16 +436,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree0d6806288bad7cf7f5c5994ce1e277ddfa2e8b06targetblank0d68062a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/warkenca/komputeExamples/tree/0d6806288bad7cf7f5c5994ce1e277ddfa2e8b06" target="_blank">0d68062</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree8ef467b35419ceff89077700426516a701f7be9ftargetblank8ef467ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/warkenca/komputeExamples/tree/8ef467b35419ceff89077700426516a701f7be9f" target="_blank">8ef467b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree0d6806288bad7cf7f5c5994ce1e277ddfa2e8b06targetblank0d68062a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree8ef467b35419ceff89077700426516a701f7be9ftargetblank8ef467ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/warkenca/komputeExamples/tree/0d6806288bad7cf7f5c5994ce1e277ddfa2e8b06" target="_blank">0d68062</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/warkenca/komputeExamples/tree/8ef467b35419ceff89077700426516a701f7be9f" target="_blank">8ef467b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -454,24 +454,16 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/Fig1.png
 
 Untracked files:
-    Untracked:  analysis/kompute_test_BC.Rmd
-    Untracked:  code/prep_BC_data.R
-    Untracked:  data/BC.data.rds
-    Untracked:  data/BC.stat.rds
+    Untracked:  analysis/figures.Rmd
 
 Unstaged changes:
-    Modified:   analysis/kompute_test_102121_OF.Rmd
+    Modified:   analysis/kompute_test_BC.Rmd
     Modified:   analysis/kompute_test_CC.Rmd
     Modified:   analysis/kompute_test_OF.Rmd
     Modified:   code/prep_OF_data.R
-
-Staged changes:
-    New:        analysis/kompute_test_OF.Rmd
-    New:        code/prep_OF_data.R
-    New:        data/OF.data.rds
-    New:        data/OF.stat.rds
 
 </code></pre>
 <p>
@@ -484,9 +476,69 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/kompute_test_BC.Rmd</code>) and HTML (<code>docs/kompute_test_BC.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/warkenca/komputeExamples/blob/6e7e1461cc0ae0541b5700400d85554769f5e50f/analysis/kompute_test_BC.Rmd" target="_blank">6e7e146</a>
+</td>
+<td>
+Coby Warkentin
+</td>
+<td>
+2022-02-11
+</td>
+<td>
+Published updated BC and OF examples
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/warkenca/komputeExamples/6e7e1461cc0ae0541b5700400d85554769f5e50f/docs/kompute_test_BC.html" target="_blank">6e7e146</a>
+</td>
+<td>
+Coby Warkentin
+</td>
+<td>
+2022-02-11
+</td>
+<td>
+Published updated BC and OF examples
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -779,6 +831,11 @@ names(pvca.means) &lt;- c(colnames(meta), &quot;resid&quot;)
 pvca.plot &lt;- PlotPVCA(pvca.means, &quot;PVCA of Phenotype Matrix Data&quot;)
 pvca.plot</code></pre>
 <p><img src="figure/kompute_test_BC.Rmd/PVCA-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>png(file=&quot;docs/figure/figures.Rmd/pvca_BC_1.png&quot;, width=600, height=350)
+pvca.plot
+dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
 </div>
 <div id="removing-batch-effects-using-combat" class="section level3">
 <h3>Removing batch effects using ComBat</h3>
@@ -856,6 +913,11 @@ names(pvca.means.nobatch) &lt;- c(colnames(meta), &quot;resid&quot;)
 pvca.plot.nobatch &lt;- PlotPVCA(pvca.means.nobatch, &quot;PVCA of Phenotype Matrix Data with Reduced Batch Effect&quot;)
 pvca.plot.nobatch</code></pre>
 <p><img src="figure/kompute_test_BC.Rmd/PVCA_resid-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>png(file=&quot;docs/figure/figures.Rmd/pvca_BC_2.png&quot;, width=600, height=350)
+pvca.plot.nobatch
+dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
 </div>
 <div id="compute-correlations-between-phenotypes" class="section level3">
 <h3>Compute correlations between phenotypes</h3>
@@ -1049,6 +1111,14 @@ draw(ht1+ht2+ht3+ht4)</code></pre>
 <pre><code>Warning: Heatmap/annotation names are duplicated: Corr, Corr</code></pre>
 <pre><code>Warning: Heatmap/annotation names are duplicated: Corr, Corr, Corr</code></pre>
 <p><img src="figure/kompute_test_BC.Rmd/comp_pheno_corr_gene_corr-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>png(file=&quot;docs/figure/figures.Rmd/cors_BC.png&quot;, width=800, height=250)
+draw(ht1+ht2+ht3+ht4)</code></pre>
+<pre><code>Warning: Heatmap/annotation names are duplicated: Corr</code></pre>
+<pre><code>Warning: Heatmap/annotation names are duplicated: Corr, Corr</code></pre>
+<pre><code>Warning: Heatmap/annotation names are duplicated: Corr, Corr, Corr</code></pre>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
 </div>
 <div id="test-of-the-correlation-between-genetic-correlation-matrices" class="section level3">
 <h3>Test of the correlation between genetic correlation matrices</h3>
@@ -1233,11 +1303,17 @@ cor.val</code></pre>
 <pre><code>[1] 0.904</code></pre>
 <pre class="r"><code>g &lt;- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
     geom_point() +
-    labs(title=paste0(&quot;IMPC Behavior Data, Info&gt;&quot;, info.cutoff, &quot;, Cor=&quot;,cor.val),
+    labs(title=paste0(&quot;IMPC Behavior Data (BC), Info&gt;&quot;, info.cutoff, &quot;, Cor=&quot;,cor.val),
       x=&quot;Imputed Z-scores&quot;, y = &quot;Measured Z-scores&quot;, col=&quot;Info&quot;) +
     theme_minimal()
 g</code></pre>
 <p><img src="figure/kompute_test_BC.Rmd/KOMPUTE_res-3.png" width="480" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># save plot
+png(file=&quot;docs/figure/figures.Rmd/sim_results_BC.png&quot;, width=600, height=350)
+g
+dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1288,22 +1364,22 @@ loaded via a namespace (and not attached):
 [40] generics_0.1.1         RCurl_1.98-1.5         magrittr_2.0.1        
 [43] GenomeInfoDbData_1.2.7 Rcpp_1.0.7             munsell_0.5.0         
 [46] S4Vectors_0.32.0       fansi_0.5.0            lifecycle_1.0.1       
-[49] edgeR_3.36.0           stringi_1.7.5          yaml_2.2.1            
-[52] zlibbioc_1.40.0        MASS_7.3-54            plyr_1.8.6            
-[55] blob_1.2.2             parallel_4.1.1         promises_1.2.0.1      
-[58] crayon_1.4.1           lattice_0.20-44        Biostrings_2.62.0     
-[61] splines_4.1.1          annotate_1.72.0        KEGGREST_1.34.0       
-[64] locfit_1.5-9.4         knitr_1.36             pillar_1.6.4          
-[67] boot_1.3-28            rjson_0.2.20           codetools_0.2-18      
-[70] stats4_4.1.1           XML_3.99-0.8           glue_1.4.2            
-[73] evaluate_0.14          png_0.1-7              vctrs_0.3.8           
-[76] nloptr_1.2.2.2         httpuv_1.6.3           foreach_1.5.1         
-[79] gtable_0.3.0           purrr_0.3.4            clue_0.3-60           
-[82] assertthat_0.2.1       cachem_1.0.6           xfun_0.27             
-[85] xtable_1.8-4           later_1.3.0            survival_3.2-11       
-[88] tibble_3.1.5           iterators_1.0.13       memoise_2.0.0         
-[91] AnnotationDbi_1.56.0   IRanges_2.28.0         workflowr_1.6.2       
-[94] cluster_2.1.2          ellipsis_0.3.2        </code></pre>
+[49] edgeR_3.36.0           stringi_1.7.5          whisker_0.4           
+[52] yaml_2.2.1             zlibbioc_1.40.0        MASS_7.3-54           
+[55] plyr_1.8.6             blob_1.2.2             parallel_4.1.1        
+[58] promises_1.2.0.1       crayon_1.4.1           lattice_0.20-44       
+[61] Biostrings_2.62.0      splines_4.1.1          annotate_1.72.0       
+[64] KEGGREST_1.34.0        locfit_1.5-9.4         knitr_1.36            
+[67] pillar_1.6.4           boot_1.3-28            rjson_0.2.20          
+[70] codetools_0.2-18       stats4_4.1.1           XML_3.99-0.8          
+[73] glue_1.4.2             evaluate_0.14          png_0.1-7             
+[76] vctrs_0.3.8            nloptr_1.2.2.2         httpuv_1.6.3          
+[79] foreach_1.5.1          gtable_0.3.0           purrr_0.3.4           
+[82] clue_0.3-60            assertthat_0.2.1       cachem_1.0.6          
+[85] xfun_0.27              xtable_1.8-4           later_1.3.0           
+[88] survival_3.2-11        tibble_3.1.5           iterators_1.0.13      
+[91] memoise_2.0.0          AnnotationDbi_1.56.0   IRanges_2.28.0        
+[94] workflowr_1.6.2        cluster_2.1.2          ellipsis_0.3.2        </code></pre>
 </div>
 </div>
 </div>

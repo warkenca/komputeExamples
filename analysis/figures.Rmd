@@ -1,0 +1,145 @@
+---
+title: "Figures and Tables"
+author: "Coby Warkentin"
+date: "2/20/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(circlize)
+library(ComplexHeatmap)
+```
+
+```{r}
+BC.stat <- readRDS("../data/BC.stat.rds")
+CC.stat <- readRDS("../data/CC.stat.rds")
+OF.stat <- readRDS("../data/OF.stat.rds")
+head(OF.stat)
+full.stat <- BC.stat %>%
+  rbind(CC.stat) %>%
+  rbind(OF.stat)
+# marker_symbol, z_score, proc_param_name
+```
+
+
+```{r}
+# Combine domain name and phenotype name, paste0
+# Combine parameter vector and procedure vector with paste for character column
+# Use beta to calculate Z scores
+# Table of phenotype name (parameter_name), domain name (procedure_name), gene, and z-score
+# domain is procedure
+# OF_name - he already has this created in summary data: proc_param_name
+# IF z-score is available, 1, otherwise 0
+# COLUMNS ARE GENES, NOT MICE
+```
+
+```{r}
+# Figure 2a and 2b: PVCA before and after
+# Figure: Combat correlation and genetic correlation
+# Mantels test plots: supplementary figures
+# Figure: Final KOMPute simulation plot
+```
+
+## Figures
+
+### Figure 1: Heatmap of Z-scores
+
+```{r}
+dim(z.freq)
+```
+
+
+```{r heatmap_pheno, fig.width=10, fig.height=6, fig.cap="Figure 1: Heatmap of Phenotypes Measured for Each Control Mouse"}
+
+## heatmap of gene - phenotype pairs (red: tested, white: untested)
+z.freq <- table(full.stat$proc_param_name, full.stat$marker_symbol)
+dim(z.freq)
+z.id.mat <- ifelse(z.freq==0, 0, 1)
+#ht = Heatmap(as.matrix(z.id.mat), cluster_rows = FALSE, cluster_columns = FALSE, show_row_names = FALSE, show_column_names = FALSE,
+#             col = c("white", "red"), row_names_gp = gpar(fontsize = 8), name="Z-score present")
+#draw(ht)
+
+ht = Heatmap(z.id.mat, 
+             cluster_rows = T, clustering_distance_rows ="binary",
+             cluster_columns = T, clustering_distance_columns = "binary",
+             show_row_dend = F, show_column_dend = F,  # do not show dendrogram
+             show_column_names = F, show_row_names = F, col = c("white","red"),
+             heatmap_legend_param = list(title_gp=gpar(fontsize=20)), name="Missing")
+draw(ht)
+
+
+# Put all R code for data for figures in a new code file
+# Make a separate RMD for each figure
+
+#mtest <- table(full.stat$proc_param_name_stable_id, full.stat$biological_sample_id)
+#mtest <-as.data.frame.matrix(mtest)
+
+#if(TRUE){
+#nmax <-max(mtest)
+#col_fun = colorRamp2(c(0, nmax), c("white", "red"))
+#col_fun(seq(0, nmax))
+#ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
+#             row_names_gp = gpar(fontsize = 8), show_row_names = F, name="Count")
+#draw(ht)
+#}
+```
+
+
+
+
+## Tables
+
+```{r}
+load(file="~/Google Drive Miami/Miami_IMPC/data/v10.1/AllControls_small.Rdata")
+#load(file="G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/data/v10.1/AllControls_small.Rdata")
+dim(allpheno)
+head(allpheno)
+unique(allpheno$procedure_name)
+```
+
+```{r}
+BC.data <- readRDS("../data/BC.data.rds")
+CC.data <- readRDS("../data/CC.data.rds")
+OF.data <- readRDS("../data/OF.data.rds")
+head(OF.data)
+full.data <- BC.data %>%
+  rbind(CC.data) %>%
+  rbind(OF.data)
+```
+
+
+
+```{r}
+# Table 1: IMPC phenotype data
+
+# Difference between id and name?
+length(unique(allpheno$procedure_stable_id)) # 198
+length(unique(allpheno$procedure_name)) # 101
+
+library(tidyverse)
+allpheno2 <- allpheno %>%
+  group_by(procedure_name) %>%
+  summarize(params = length(unique(parameter_name)))
+head(allpheno2)
+
+# Some paramater names are the same across multiple procedures
+sum(allpheno2$params) # 1549
+length(unique(allpheno$parameter_name)) # 1181
+
+unique(allpheno$procedure_name)
+
+table(allpheno$procedure_name)
+```
+
+```{r}
+table(full.data$proc_param_name)
+```
+
+
+Types of phenotype/ phenotype domain
+Number of observations
+Number of phenotypes used in the analysis
+
+
