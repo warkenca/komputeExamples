@@ -21,8 +21,8 @@ komp.res60 <- simulation(n.samples=n.samples, pheno.cor=pheno.cor, mask.prop=.6,
 
 # KOMPUTE simulations with 0.8 info cutoff
 komp.info.res20 <- simulation(n.samples=n.samples, pheno.cor=pheno.cor, mask.prop=.2, method="kompute", info.cutoff = 0.8)
-komp.info.res40 <- simulation(n.samples=n.samples, pheno.cor=pheno.cor, mask.prop=.2, method="kompute", info.cutoff = 0.8)
-komp.info.res60 <- simulation(n.samples=n.samples, pheno.cor=pheno.cor, mask.prop=.2, method="kompute", info.cutoff = 0.8)
+komp.info.res40 <- simulation(n.samples=n.samples, pheno.cor=pheno.cor, mask.prop=.4, method="kompute", info.cutoff = 0.8)
+komp.info.res60 <- simulation(n.samples=n.samples, pheno.cor=pheno.cor, mask.prop=.6, method="kompute", info.cutoff = 0.8)
 
 # Create table of correlations
 cor.table <- data.frame(c(mc.res20$cor, komp.res20$cor, komp.info.res20$cor),

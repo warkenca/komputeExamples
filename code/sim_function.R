@@ -1,5 +1,12 @@
-# Function to simulate from MVN(0, Sigma) for a specified number of variables/samples
-simulation <- function(n.samples, pheno.cor, mask.prop, method="svd", info.cutoff=0){
+# This function performs a simulation from a MVN(0, Sigma) distribution and imputes a specified percentage of masked values using either matrix completion or KOMPUTE
+#' @param n.samples The number of samples to simulate
+#' @param pheno.cor The mxm phenotypic correlation matrix of the m phenotypes considered, functioning as Sigma in the MVN(0, Sigma) simulation
+#' @param mask.prop The proportion of z-scores that should be masked for the imputation
+#' @param method Should be either "mc" or "kompute" to denote the matrix completion or kompute method, respectively
+#' @param info.cutoff The minimum imputation information score necessary to be included; 0 indicates all values are kept regardless of info score (all are always kept for the matrix completion method)
+#' @return A list containing two objects: the plot of imputed vs original z-scores, and the correlation coefficient
+
+simulation <- function(n.samples, pheno.cor, mask.prop, method="mc", info.cutoff=0){
 
   npheno <- nrow(pheno.cor)
   sim.z <- mvrnorm(n=n.samples, mu=rep(0, npheno), Sigma=pheno.cor)
@@ -18,10 +25,10 @@ simulation <- function(n.samples, pheno.cor, mask.prop, method="svd", info.cutof
 
 
   # Matrix completion method
-  if(method=="svd"){
-    svd.res <- svd.impute(zmat.imp, r)
+  if(method=="mc"){
+    mc.res <- svd.impute(zmat.imp, r)
     org.z <- sim.z[mask.i]
-    imp.z <- svd.res[mask.i]
+    imp.z <- mc.res[mask.i]
 
   } else if(method=="kompute"){ # KOMPUTE method
     kompute.res <- kompute(zmat.imp, pheno.cor, 0.01)
@@ -42,7 +49,7 @@ simulation <- function(n.samples, pheno.cor, mask.prop, method="svd", info.cutof
 
   # Calculate correlation
   cor.val <- round(cor(imp.z, org.z), digits=3)
-  type <- ifelse(method=="svd", "Matrix Completion", "KOMPUTE")
+  type <- ifelse(method=="mc", "Matrix Completion", "KOMPUTE")
 
   # Create plot
   if(info.cutoff==0){
