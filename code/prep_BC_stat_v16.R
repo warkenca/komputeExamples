@@ -7,7 +7,7 @@ library(data.table)
 #######################################
 
 ## Read KOMPv16
-KOMPv16.file = "~/Google Drive Miami/Miami_IMPC/data/v16/IMPC_ALL_statistical_results.csv.gz"
+KOMPv16.file = "~/Google Drive Miami/Miami_IMPC/data/v16/statistical-results-ALL.csv.gz"
 #KOMPv16.file = "G:/.shortcut-targets-by-id/1SeBOMb4GZ2Gkldxp4QNEnFWHOiAqtRTz/Miami_IMPC/data/v16/IMPC_ALL_statistical_results.csv.gz"
 KOMPv16 = fread(KOMPv16.file, header=TRUE, sep=",")
 KOMPv16$parameter_name <- trimws(KOMPv16$parameter_name) #remove white spaces
@@ -31,7 +31,7 @@ pheno.list <- table(KOMPv16$proc_param_name)
 pheno.list <- pheno.list[pheno.list>1000] # find list of phenotypes with more than 1000 tests (i.e. 1000 mutants tested)
 pheno.list <- names(pheno.list)
 pheno.list
-length(pheno.list) #122
+length(pheno.list) #152
 
 # Use phenotypes with more than 1000 tests (i.e. 1000 mutants tested)
 dim(KOMPv16)
