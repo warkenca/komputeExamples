@@ -300,6 +300,9 @@ CC.zmat = dcast(CC.z, marker_symbol ~ proc_param_name, value.var = "zscore",
 CC.zmat = nan2na(CC.zmat) #convert nan to na
 dim(CC.zmat)
 
+dim(CC.zmat)
+saveRDS(CC.zmat, file = "data/CC.zmat.rds")
+
 id.mat <- 1*(!is.na(CC.zmat)) # multiply 1 to make this matrix numeric
 nrow(as.data.frame(colSums(id.mat)))
 dim(id.mat)

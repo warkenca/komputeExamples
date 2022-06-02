@@ -296,7 +296,9 @@ nan2na <- function(df){
 BC.zmat = dcast(BC.z, marker_symbol ~ proc_param_name, value.var = "zscore", 
              fun.aggregate = mean) %>% tibble::column_to_rownames(var="marker_symbol")
 BC.zmat = nan2na(BC.zmat) #convert nan to na
+
 dim(BC.zmat)
+saveRDS(BC.zmat, file = "data/BC.zmat.rds")
 
 id.mat <- 1*(!is.na(BC.zmat)) # multiply 1 to make this matrix numeric
 nrow(as.data.frame(colSums(id.mat)))

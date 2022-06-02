@@ -300,6 +300,9 @@ OF.zmat = dcast(OF.z, marker_symbol ~ proc_param_name, value.var = "zscore",
 OF.zmat = nan2na(OF.zmat) #convert nan to na
 dim(OF.zmat)
 
+dim(OF.zmat)
+saveRDS(OF.zmat, file = "data/OF.zmat.rds")
+
 id.mat <- 1*(!is.na(OF.zmat)) # multiply 1 to make this matrix numeric
 nrow(as.data.frame(colSums(id.mat)))
 dim(id.mat)
