@@ -1,0 +1,20 @@
+---
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(kableExtra)
+library(dplyr)
+```
+
+```{r, echo=F}
+freqs <- readRDS(file = "../data/table1.data.rds")
+freqs[,1] <- substring(freqs[,1], 4)
+table <- kable(freqs) %>%
+  row_spec(0, bold=T) %>%
+  kable_styling(full_width=F)
+#save_kable(table, file="../docs/figure/figures.Rmd/Table1.pdf")
+```
+

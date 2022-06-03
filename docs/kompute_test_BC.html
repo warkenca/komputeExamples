@@ -11,11 +11,11 @@
 
 <meta name="author" content="Coby Warkentin and Donghyung Lee" />
 
-<meta name="date" content="2022-04-04" />
+<meta name="date" content="2022-06-02" />
 
 <title>KOMPUTE method testing - BC data</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -74,6 +74,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -94,6 +95,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -246,7 +250,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -283,7 +287,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">KOMPUTE method testing - BC data</h1>
 <h4 class="author">Coby Warkentin and Donghyung Lee</h4>
-<h4 class="date">2022-04-04</h4>
+<h4 class="date">2022-06-02</h4>
 
 </div>
 
@@ -345,7 +349,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-04-04
+<strong>Last updated:</strong> 2022-06-02
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -436,16 +440,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree8ef467b35419ceff89077700426516a701f7be9ftargetblank8ef467ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/warkenca/komputeExamples/tree/8ef467b35419ceff89077700426516a701f7be9f" target="_blank">8ef467b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestreeafdb32000be9cd04809a85fda244a2079ef9b6e3targetblankafdb320a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/warkenca/komputeExamples/tree/afdb32000be9cd04809a85fda244a2079ef9b6e3" target="_blank">afdb320</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree8ef467b35419ceff89077700426516a701f7be9ftargetblank8ef467ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestreeafdb32000be9cd04809a85fda244a2079ef9b6e3targetblankafdb320a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/warkenca/komputeExamples/tree/8ef467b35419ceff89077700426516a701f7be9f" target="_blank">8ef467b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/warkenca/komputeExamples/tree/afdb32000be9cd04809a85fda244a2079ef9b6e3" target="_blank">afdb320</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -457,13 +461,17 @@ Ignored files:
     Ignored:    analysis/Fig1.png
 
 Untracked files:
-    Untracked:  analysis/figures.Rmd
+    Untracked:  analysis/Fig1.pdf
+    Untracked:  code/figure4.R
+    Untracked:  code/table1.R
+    Untracked:  code/table1.Rmd
+    Untracked:  code/table1.pdf
+    Untracked:  code/table1_cache/
+    Untracked:  data/table1.data.rds
 
 Unstaged changes:
     Modified:   analysis/kompute_test_BC.Rmd
-    Modified:   analysis/kompute_test_CC.Rmd
-    Modified:   analysis/kompute_test_OF.Rmd
-    Modified:   code/prep_OF_data.R
+    Modified:   data/BC.zmat.rds
 
 </code></pre>
 <p>
@@ -502,6 +510,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/warkenca/komputeExamples/blob/711a9486084dc298a3128eaca73b323b8d4bd8c1/analysis/kompute_test_BC.Rmd" target="_blank">711a948</a>
+</td>
+<td>
+leed13
+</td>
+<td>
+2022-06-02
+</td>
+<td>
+code creating zmat added
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/warkenca/komputeExamples/blob/274d911b2d6e8e5766ddb33d79498f1704b01508/analysis/kompute_test_BC.Rmd" target="_blank">274d911</a>
+</td>
+<td>
+Coby Warkentin
+</td>
+<td>
+2022-04-04
+</td>
+<td>
+Manuscript first draft updates
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/warkenca/komputeExamples/274d911b2d6e8e5766ddb33d79498f1704b01508/docs/kompute_test_BC.html" target="_blank">274d911</a>
+</td>
+<td>
+Coby Warkentin
+</td>
+<td>
+2022-04-04
+</td>
+<td>
+Manuscript first draft updates
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -555,7 +614,11 @@ library(RColorBrewer)
 #library(irlba) # partial PCA
 #library(cowplot)
 library(circlize)
-library(ComplexHeatmap)</code></pre>
+library(ComplexHeatmap)
+library(patchwork)</code></pre>
+<pre><code>Warning: package &#39;patchwork&#39; was built under R version 4.1.3</code></pre>
+<pre class="r"><code>library(ggpubr)</code></pre>
+<pre><code>Warning: package &#39;ggpubr&#39; was built under R version 4.1.3</code></pre>
 </div>
 <div id="prep-control-phenotype-data" class="section level2">
 <h2>Prep control phenotype data</h2>
@@ -855,6 +918,9 @@ Attaching package: &#39;nlme&#39;</code></pre>
 <pre><code>Loading required package: genefilter</code></pre>
 <pre><code>
 Attaching package: &#39;genefilter&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:patchwork&#39;:
+
+    area</code></pre>
 <pre><code>The following object is masked from &#39;package:ComplexHeatmap&#39;:
 
     dist2</code></pre>
@@ -918,6 +984,31 @@ pvca.plot.nobatch
 dev.off()</code></pre>
 <pre><code>png 
   2 </code></pre>
+<pre class="r"><code># Supplementary Figure 1
+pvca.plot &lt;- pvca.plot +
+  labs(title=&quot;&quot;) +
+  scale_x_discrete(limits=names(pvca.means), labels=c(&quot;Sex&quot;, &quot;Pheno center&quot;, &quot;Residual&quot;)) +
+  theme(axis.text.x = element_text(angle=0, vjust=1, hjust=.5))</code></pre>
+<pre><code>Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+replace the existing scale.</code></pre>
+<pre class="r"><code>pvca.plot.nobatch &lt;- pvca.plot.nobatch +
+  labs(y=&quot;&quot;, title=&quot;&quot;) +
+  scale_x_discrete(limits=names(pvca.means.nobatch), labels=c(&quot;Sex&quot;, &quot;Pheno center&quot;, &quot;Residual&quot;)) +
+  theme(axis.text.x = element_text(angle=0, vjust=1, hjust=.5))</code></pre>
+<pre><code>Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+replace the existing scale.</code></pre>
+<pre class="r"><code>pvca.plots &lt;- ggarrange(pvca.plot, pvca.plot.nobatch, labels = &quot;AUTO&quot;)
+
+png(file=&quot;docs/figure/figures.Rmd/pvca_BC_supp.png&quot;, width=700, height=400)
+pvca.plots
+dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
+<pre class="r"><code>pdf(file=&quot;docs/figure/figures.Rmd/pvca_BC_supp.pdf&quot;, width=8, height=5)
+pvca.plots
+dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
 </div>
 <div id="compute-correlations-between-phenotypes" class="section level3">
 <h3>Compute correlations between phenotypes</h3>
@@ -928,38 +1019,38 @@ pheno.list &lt;- rownames(BC.cor)
 
 ht1 = Heatmap(BC.cor, show_column_names = F, row_names_gp = gpar(fontsize = 9), name=&quot;Spearm. Corr.&quot;)
 draw(ht1)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ht2 = Heatmap(BC.cor.rank, show_column_names = F, row_names_gp = gpar(fontsize = 9), name=&quot;Corr. RankZ&quot;)
 draw(ht2)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-3-2.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-4-2.png" width="576" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ht3 = Heatmap(BC.cor.combat, show_column_names = F, row_names_gp = gpar(fontsize = 9), name=&quot;Corr. ComBat&quot;)
 draw(ht3)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-3-3.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-4-3.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="prep-impc-summary-stat" class="section level2">
 <h2>Prep IMPC summary stat</h2>
 <div id="read-bc-summary-stat-impcv10.1" class="section level3">
 <h3>Read BC summary stat (IMPCv10.1)</h3>
-<pre class="r"><code>BC.stat &lt;- readRDS(&quot;data/BC.stat.rds&quot;)
+<pre class="r"><code>BC.stat &lt;- readRDS(&quot;data/BC.stat.v16.rds&quot;)
 dim(BC.stat)</code></pre>
-<pre><code>[1] 42582     8</code></pre>
+<pre><code>[1] 56743     8</code></pre>
 <pre class="r"><code>table(BC.stat$parameter_name, BC.stat$procedure_name)</code></pre>
 <pre><code>                                        
                                            BC
-  BMC/Body weight                        4780
-  Body length                            4197
-  Bone Area                              4780
-  Bone Mineral Content (excluding skull) 4780
-  Bone Mineral Density (excluding skull) 4780
-  Fat mass                               4816
-  Fat/Body weight                        4815
-  Lean mass                              4817
-  Lean/Body weight                       4817</code></pre>
+  BMC/Body weight                        6943
+  Body length                            6121
+  Bone Area                              6945
+  Bone Mineral Content (excluding skull) 5825
+  Bone Mineral Density (excluding skull) 6945
+  Fat mass                               2884
+  Fat/Body weight                        7026
+  Lean mass                              7028
+  Lean/Body weight                       7026</code></pre>
 <pre class="r"><code>length(unique(BC.stat$marker_symbol)) #3362</code></pre>
-<pre><code>[1] 4428</code></pre>
+<pre><code>[1] 6145</code></pre>
 <pre class="r"><code>length(unique(BC.stat$allele_symbol)) #3412</code></pre>
-<pre><code>[1] 4559</code></pre>
+<pre><code>[1] 6313</code></pre>
 <pre class="r"><code>length(unique(BC.stat$proc_param_name)) #15  # number of phenotypes in association statistics data set</code></pre>
 <pre><code>[1] 9</code></pre>
 <pre class="r"><code>length(unique(BC.data$proc_param_name)) #15 # number of phenotypes in final control data</code></pre>
@@ -986,10 +1077,10 @@ common.pheno.list</code></pre>
 <pre><code>[1] 9</code></pre>
 <pre class="r"><code>## Use summary statistics of common phenotypes
 dim(BC.stat)</code></pre>
-<pre><code>[1] 42582     8</code></pre>
+<pre><code>[1] 56743     8</code></pre>
 <pre class="r"><code>BC.stat &lt;- BC.stat %&gt;% filter(proc_param_name %in% common.pheno.list)
 dim(BC.stat)</code></pre>
-<pre><code>[1] 42582     8</code></pre>
+<pre><code>[1] 56743     8</code></pre>
 <pre class="r"><code>length(unique(BC.stat$proc_param_name))</code></pre>
 <pre><code>[1] 9</code></pre>
 </div>
@@ -1000,9 +1091,9 @@ mtest &lt;-as.data.frame.matrix(mtest)
 nmax &lt;-max(mtest)
 col_fun = colorRamp2(c(0, nmax), c(&quot;white&quot;, &quot;red&quot;))
 col_fun(seq(0, nmax))</code></pre>
-<pre><code> [1] &quot;#FFFFFFFF&quot; &quot;#FFF0EBFF&quot; &quot;#FFE2D7FF&quot; &quot;#FFD3C4FF&quot; &quot;#FFC4B0FF&quot; &quot;#FFB59DFF&quot;
- [7] &quot;#FFA68BFF&quot; &quot;#FF9678FF&quot; &quot;#FF8666FF&quot; &quot;#FF7554FF&quot; &quot;#FF6342FF&quot; &quot;#FF4E2FFF&quot;
-[13] &quot;#FF351BFF&quot; &quot;#FF0000FF&quot;</code></pre>
+<pre><code> [1] &quot;#FFFFFFFF&quot; &quot;#FFF1ECFF&quot; &quot;#FFE4DAFF&quot; &quot;#FFD6C8FF&quot; &quot;#FFC8B6FF&quot; &quot;#FFBAA4FF&quot;
+ [7] &quot;#FFAC93FF&quot; &quot;#FF9E81FF&quot; &quot;#FF8F70FF&quot; &quot;#FF805FFF&quot; &quot;#FF704FFF&quot; &quot;#FF5F3EFF&quot;
+[13] &quot;#FF4B2DFF&quot; &quot;#FF331AFF&quot; &quot;#FF0000FF&quot;</code></pre>
 <pre class="r"><code>ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
              row_names_gp = gpar(fontsize = 8), name=&quot;Count&quot;)
 draw(ht)</code></pre>
@@ -1019,7 +1110,7 @@ BC.z = BC.stat %&gt;%
   summarize(zscore = sumz(z_score)) ## combine z-scores</code></pre>
 <pre><code>`summarise()` has grouped output by &#39;marker_symbol&#39;. You can override using the `.groups` argument.</code></pre>
 <pre class="r"><code>dim(BC.z)</code></pre>
-<pre><code>[1] 32174     3</code></pre>
+<pre><code>[1] 49316     3</code></pre>
 </div>
 <div id="make-z-score-matrix-long-to-wide" class="section level3">
 <h3>Make z-score matrix (long to wide)</h3>
@@ -1031,13 +1122,16 @@ BC.z = BC.stat %&gt;%
 BC.zmat = dcast(BC.z, marker_symbol ~ proc_param_name, value.var = &quot;zscore&quot;, 
              fun.aggregate = mean) %&gt;% tibble::column_to_rownames(var=&quot;marker_symbol&quot;)
 BC.zmat = nan2na(BC.zmat) #convert nan to na
+
 dim(BC.zmat)</code></pre>
-<pre><code>[1] 4412    9</code></pre>
-<pre class="r"><code>id.mat &lt;- 1*(!is.na(BC.zmat)) # multiply 1 to make this matrix numeric
+<pre><code>[1] 6145    9</code></pre>
+<pre class="r"><code>saveRDS(BC.zmat, file = &quot;data/BC.zmat.rds&quot;)
+
+id.mat &lt;- 1*(!is.na(BC.zmat)) # multiply 1 to make this matrix numeric
 nrow(as.data.frame(colSums(id.mat)))</code></pre>
 <pre><code>[1] 9</code></pre>
 <pre class="r"><code>dim(id.mat)</code></pre>
-<pre><code>[1] 4412    9</code></pre>
+<pre><code>[1] 6145    9</code></pre>
 <pre class="r"><code>## heatmap of gene - phenotype (red: tested, white: untested)
 ht = Heatmap(t(id.mat), 
              cluster_rows = T, clustering_distance_rows =&quot;binary&quot;,
@@ -1046,7 +1140,7 @@ ht = Heatmap(t(id.mat),
              show_column_names = F, col = c(&quot;white&quot;,&quot;red&quot;),
              row_names_gp = gpar(fontsize = 10), name=&quot;Missing&quot;)
 draw(ht)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
 <div id="z-score-distribution" class="section level3">
 <h3>Z-score Distribution</h3>
@@ -1055,7 +1149,7 @@ draw(ht)</code></pre>
   geom_histogram() + 
   facet_wrap(~variable, scales=&quot;free&quot;, ncol=5)+
   theme(strip.text.x = element_text(size = 6))</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="estimate-genetic-correlation-matrix-between-phenotypes-using-zscores" class="section level3">
 <h3>Estimate genetic correlation matrix between phenotypes using Zscores</h3>
@@ -1067,7 +1161,7 @@ ht = Heatmap(BC.zcor, cluster_rows = T, cluster_columns = T, show_column_names =
              name=&quot;Genetic Corr (Z-score)&quot;
              )
 draw(ht)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="phenotype-corr-vs-genetic-corr-btw-phenotypes" class="section level3">
 <h3>Phenotype Corr VS Genetic Corr btw phenotypes</h3>
@@ -1119,6 +1213,35 @@ draw(ht1+ht2+ht3+ht4)</code></pre>
 <pre class="r"><code>dev.off()</code></pre>
 <pre><code>png 
   2 </code></pre>
+<pre class="r"><code># Supplementary Figure 2
+BC.cor.combat.fig2 &lt;- BC.cor.combat.fig
+BC.zcor.fig2 &lt;- BC.zcor.fig
+rownames(BC.cor.combat.fig2) &lt;- substring(rownames(BC.cor.combat.fig2), 4)
+rownames(BC.zcor.fig2) &lt;- substring(rownames(BC.zcor.fig), 4)
+rownames(BC.cor.combat.fig2)[c(6,7)] = c(&quot;Bone Mineral Content&quot;, &quot;Bone Mineral Density&quot;)
+rownames(BC.zcor.fig2)[c(6,7)] = c(&quot;Bone Mineral Content&quot;, &quot;Bone Mineral Density&quot;)
+
+ht3 = Heatmap(BC.cor.combat.fig2, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 12), column_title=&quot;Phenotypic Correlation&quot;, column_title_gp = gpar(fontsize = 15),
+             name=&quot;Corr&quot;,
+             heatmap_legend_param = list(title_gp=gpar(fontsize=15), labels_gp=gpar(fontsize=12),
+                                         legend_height=unit(50, &quot;mm&quot;)))
+ht4 = Heatmap(BC.zcor.fig2, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 12), column_title=&quot;Genetic Correlation&quot;, column_title_gp = gpar(fontsize = 15),
+             name=&quot;Corr&quot;)
+
+png(file=&quot;docs/figure/figures.Rmd/cors_BC_supp.png&quot;, width=625, height=250)
+draw(ht4+ht3)</code></pre>
+<pre><code>Warning: Heatmap/annotation names are duplicated: Corr</code></pre>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
+<pre class="r"><code>pdf(file=&quot;docs/figure/figures.Rmd/cors_BC_supp.pdf&quot;, width=12, height=4.9)
+draw(ht4+ht3)</code></pre>
+<pre><code>Warning: Heatmap/annotation names are duplicated: Corr</code></pre>
+<pre class="r"><code>dev.off()</code></pre>
+<pre><code>png 
+  2 </code></pre>
 </div>
 <div id="test-of-the-correlation-between-genetic-correlation-matrices" class="section level3">
 <h3>Test of the correlation between genetic correlation matrices</h3>
@@ -1136,47 +1259,47 @@ a3 &lt;- to.upper(BC.cor.combat.fig)
 a4 &lt;- to.upper(BC.zcor.fig)
 
 plot(a4, a1)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(a4, a2)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-8-2.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>plot(a4, a3)</code></pre>
-<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/kompute_test_BC.Rmd/unnamed-chunk-8-3.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>mantel.rtest(as.dist(1-BC.cor.fig), as.dist(1-BC.zcor.fig), nrepet = 9999) #nrepet = number of permutations</code></pre>
 <pre><code>Monte-Carlo test
 Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
 
-Observation: 0.7588338 
+Observation: 0.4370464 
 
 Based on 9999 replicates
-Simulated p-value: 1e-04 
+Simulated p-value: 0.021 
 Alternative hypothesis: greater 
 
-     Std.Obs  Expectation     Variance 
-4.2777904374 0.0007922433 0.0314012571 </code></pre>
+    Std.Obs Expectation    Variance 
+2.453637855 0.001171964 0.031557454 </code></pre>
 <pre class="r"><code>mantel.rtest(as.dist(1-BC.cor.rank.fig), as.dist(1-BC.zcor.fig), nrepet = 9999)</code></pre>
 <pre><code>Monte-Carlo test
 Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
 
-Observation: 0.7527398 
+Observation: 0.4337823 
 
 Based on 9999 replicates
-Simulated p-value: 1e-04 
+Simulated p-value: 0.0271 
 Alternative hypothesis: greater 
 
      Std.Obs  Expectation     Variance 
- 4.138201139 -0.001075877  0.033182353 </code></pre>
+2.3911329604 0.0001676754 0.0328851895 </code></pre>
 <pre class="r"><code>mantel.rtest(as.dist(1-BC.cor.combat.fig), as.dist(1-BC.zcor.fig), nrepet = 9999)</code></pre>
 <pre><code>Monte-Carlo test
 Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
 
-Observation: 0.9076102 
+Observation: 0.5414239 
 
 Based on 9999 replicates
-Simulated p-value: 1e-04 
+Simulated p-value: 0.0194 
 Alternative hypothesis: greater 
 
-      Std.Obs   Expectation      Variance 
- 4.7809904425 -0.0005658379  0.0360831394 </code></pre>
+     Std.Obs  Expectation     Variance 
+2.8569754548 0.0005258874 0.0358441090 </code></pre>
 </div>
 </div>
 <div id="test-kompute-imputation-algorithm" class="section level2">
@@ -1194,16 +1317,16 @@ library(kompute)</code></pre>
 <p>We randomly select measured gene-phenotype association z-scores, mask those, impute them using KOMPUTE method. Then we compare the imputed z-scores to the measured ones.</p>
 <pre class="r"><code>zmat &lt;-t(BC.zmat) 
 dim(zmat)</code></pre>
-<pre><code>[1]    9 4412</code></pre>
+<pre><code>[1]    9 6145</code></pre>
 <pre class="r"><code>## filter genes with na &lt; 10
 zmat0 &lt;- is.na(zmat)
 num.na&lt;-colSums(zmat0)
 summary(num.na)</code></pre>
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  0.000   0.000   1.000   1.708   3.000   8.000 </code></pre>
+ 0.0000  1.0000  1.0000  0.9746  1.0000  8.0000 </code></pre>
 <pre class="r"><code>zmat &lt;- zmat[,num.na&lt;10]
 dim(zmat)</code></pre>
-<pre><code>[1]    9 4412</code></pre>
+<pre><code>[1]    9 6145</code></pre>
 <pre class="r"><code>#pheno.cor &lt;- BC.cor.fig
 #pheno.cor &lt;- BC.cor.rank.fig
 pheno.cor &lt;- BC.cor.combat.fig
@@ -1244,7 +1367,7 @@ rownames(zmat)</code></pre>
 
 ## percentage of missing Z-scores in the original data 
 100*sum(is.na(zmat))/(nrow(zmat)*ncol(zmat)) # 21%</code></pre>
-<pre><code>[1] 18.97351</code></pre>
+<pre><code>[1] 10.82904</code></pre>
 <pre class="r"><code>nimp &lt;- 2000 # # of missing/imputed Z-scores
 set.seed(1111)
 
@@ -1266,9 +1389,9 @@ rownames(zmat.imp) &lt;- rownames(zmat)</code></pre>
 <pre class="r"><code>kompute.res &lt;- kompute(zmat.imp, pheno.cor, 0.01)</code></pre>
 <pre><code>
 KOMPute running...</code></pre>
-<pre><code># of genes: 4412</code></pre>
+<pre><code># of genes: 6145</code></pre>
 <pre><code># of phenotypes: 9</code></pre>
-<pre><code># of imputed Z-scores: 9534</code></pre>
+<pre><code># of imputed Z-scores: 7989</code></pre>
 <pre class="r"><code># measured vs imputed
 length(org.z)</code></pre>
 <pre><code>[1] 2000</code></pre>
@@ -1282,25 +1405,25 @@ dim(imp)</code></pre>
 <pre class="r"><code>imp &lt;- imp[complete.cases(imp),]
 imp &lt;- subset(imp, info&gt;=0 &amp; info &lt;= 1)
 dim(imp)</code></pre>
-<pre><code>[1] 1995    3</code></pre>
+<pre><code>[1] 2000    3</code></pre>
 <pre class="r"><code>cor.val &lt;- round(cor(imp$imp.z, imp$org.z), digits=3)
 cor.val</code></pre>
-<pre><code>[1] 0.852</code></pre>
+<pre><code>[1] 0.701</code></pre>
 <pre class="r"><code>plot(imp$imp.z, imp$org.z)</code></pre>
 <p><img src="figure/kompute_test_BC.Rmd/KOMPUTE_res-2.png" width="480" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>info.cutoff &lt;- 0.8
 imp.sub &lt;- subset(imp, info&gt;info.cutoff)
 dim(imp.sub)</code></pre>
-<pre><code>[1] 1174    3</code></pre>
+<pre><code>[1] 1226    3</code></pre>
 <pre class="r"><code>summary(imp.sub$imp.z)</code></pre>
-<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
--8.72493 -1.12303 -0.08752 -0.21512  0.80615  7.03123 </code></pre>
+<pre><code>      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+-10.817282  -0.886168  -0.031636  -0.001394   0.866735  22.719955 </code></pre>
 <pre class="r"><code>summary(imp.sub$info)</code></pre>
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- 0.8052  0.8516  0.8828  0.8989  0.9565  0.9715 </code></pre>
+ 0.8058  0.8478  0.8622  0.8819  0.9297  0.9715 </code></pre>
 <pre class="r"><code>cor.val &lt;- round(cor(imp.sub$imp.z, imp.sub$org.z), digits=3)
 cor.val</code></pre>
-<pre><code>[1] 0.904</code></pre>
+<pre><code>[1] 0.783</code></pre>
 <pre class="r"><code>g &lt;- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
     geom_point() +
     labs(title=paste0(&quot;IMPC Behavior Data (BC), Info&gt;&quot;, info.cutoff, &quot;, Cor=&quot;,cor.val),
@@ -1314,6 +1437,17 @@ g
 dev.off()</code></pre>
 <pre><code>png 
   2 </code></pre>
+<pre class="r"><code># Part of Supplementary Figure 3
+fig3.1 &lt;- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
+  geom_point() +
+  labs(title=&quot;Body Composition&quot;,
+       x=&quot;Imputed Z-scores&quot;, y = &quot;Measured Z-scores&quot;, col=&quot;Info&quot;) +
+  scale_x_continuous(limits=c(-9,9), breaks=c(seq(-9,9,3)), minor_breaks = NULL) +
+  scale_y_continuous(limits=c(-9,9), breaks=c(seq(-9,9,3))) +
+  scale_color_gradient(limits=c(0.8,1), low=&quot;#98cdf9&quot;, high=&quot;#084b82&quot;) +
+  theme_bw() +
+  theme(legend.position=&quot;none&quot;, plot.title=element_text(hjust=0.5))
+save(fig3.1, file=&quot;docs/figure/figures.Rmd/sim_BC.rdata&quot;)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1343,43 +1477,48 @@ other attached packages:
  [1] kompute_0.1.0         ade4_1.7-18           sva_3.42.0           
  [4] BiocParallel_1.28.0   genefilter_1.76.0     mgcv_1.8-36          
  [7] nlme_3.1-152          lme4_1.1-27.1         Matrix_1.3-4         
-[10] RNOmni_1.0.0          ComplexHeatmap_2.10.0 circlize_0.4.13      
-[13] RColorBrewer_1.1-2    tidyr_1.1.4           ggplot2_3.3.5        
-[16] reshape2_1.4.4        dplyr_1.0.7           data.table_1.14.2    
+[10] RNOmni_1.0.0          ggpubr_0.4.0          patchwork_1.1.1      
+[13] ComplexHeatmap_2.10.0 circlize_0.4.13       RColorBrewer_1.1-2   
+[16] tidyr_1.1.4           ggplot2_3.3.5         reshape2_1.4.4       
+[19] dplyr_1.0.7           data.table_1.14.2    
 
 loaded via a namespace (and not attached):
- [1] bitops_1.0-7           matrixStats_0.61.0     fs_1.5.0              
- [4] bit64_4.0.5            doParallel_1.0.16      httr_1.4.2            
- [7] GenomeInfoDb_1.30.0    rprojroot_2.0.2        tools_4.1.1           
-[10] utf8_1.2.2             R6_2.5.1               DBI_1.1.1             
-[13] BiocGenerics_0.40.0    colorspace_2.0-2       GetoptLong_1.0.5      
-[16] withr_2.4.2            tidyselect_1.1.1       bit_4.0.4             
-[19] compiler_4.1.1         git2r_0.28.0           Biobase_2.54.0        
-[22] labeling_0.4.2         scales_1.1.1           stringr_1.4.0         
-[25] digest_0.6.28          minqa_1.2.4            rmarkdown_2.11        
-[28] XVector_0.34.0         pkgconfig_2.0.3        htmltools_0.5.2       
-[31] limma_3.50.0           fastmap_1.1.0          highr_0.9             
-[34] rlang_0.4.12           GlobalOptions_0.1.2    RSQLite_2.2.8         
-[37] shape_1.4.6            jquerylib_0.1.4        farver_2.1.0          
-[40] generics_0.1.1         RCurl_1.98-1.5         magrittr_2.0.1        
-[43] GenomeInfoDbData_1.2.7 Rcpp_1.0.7             munsell_0.5.0         
-[46] S4Vectors_0.32.0       fansi_0.5.0            lifecycle_1.0.1       
-[49] edgeR_3.36.0           stringi_1.7.5          whisker_0.4           
-[52] yaml_2.2.1             zlibbioc_1.40.0        MASS_7.3-54           
-[55] plyr_1.8.6             blob_1.2.2             parallel_4.1.1        
-[58] promises_1.2.0.1       crayon_1.4.1           lattice_0.20-44       
-[61] Biostrings_2.62.0      splines_4.1.1          annotate_1.72.0       
-[64] KEGGREST_1.34.0        locfit_1.5-9.4         knitr_1.36            
-[67] pillar_1.6.4           boot_1.3-28            rjson_0.2.20          
-[70] codetools_0.2-18       stats4_4.1.1           XML_3.99-0.8          
-[73] glue_1.4.2             evaluate_0.14          png_0.1-7             
-[76] vctrs_0.3.8            nloptr_1.2.2.2         httpuv_1.6.3          
-[79] foreach_1.5.1          gtable_0.3.0           purrr_0.3.4           
-[82] clue_0.3-60            assertthat_0.2.1       cachem_1.0.6          
-[85] xfun_0.27              xtable_1.8-4           later_1.3.0           
-[88] survival_3.2-11        tibble_3.1.5           iterators_1.0.13      
-[91] memoise_2.0.0          AnnotationDbi_1.56.0   IRanges_2.28.0        
-[94] workflowr_1.6.2        cluster_2.1.2          ellipsis_0.3.2        </code></pre>
+  [1] minqa_1.2.4            colorspace_2.0-2       ggsignif_0.6.3        
+  [4] rjson_0.2.20           ellipsis_0.3.2         rprojroot_2.0.2       
+  [7] XVector_0.34.0         GlobalOptions_0.1.2    fs_1.5.0              
+ [10] clue_0.3-60            farver_2.1.0           bit64_4.0.5           
+ [13] AnnotationDbi_1.56.0   fansi_0.5.0            codetools_0.2-18      
+ [16] splines_4.1.1          doParallel_1.0.16      cachem_1.0.6          
+ [19] knitr_1.36             jsonlite_1.7.2         workflowr_1.6.2       
+ [22] nloptr_1.2.2.2         broom_0.7.9            annotate_1.72.0       
+ [25] cluster_2.1.2          png_0.1-7              compiler_4.1.1        
+ [28] httr_1.4.2             backports_1.3.0        assertthat_0.2.1      
+ [31] fastmap_1.1.0          limma_3.50.0           later_1.3.0           
+ [34] htmltools_0.5.2        tools_4.1.1            gtable_0.3.0          
+ [37] glue_1.4.2             GenomeInfoDbData_1.2.7 Rcpp_1.0.7            
+ [40] carData_3.0-5          Biobase_2.54.0         jquerylib_0.1.4       
+ [43] vctrs_0.3.8            Biostrings_2.62.0      iterators_1.0.13      
+ [46] xfun_0.31              stringr_1.4.0          lifecycle_1.0.1       
+ [49] rstatix_0.7.0          XML_3.99-0.8           edgeR_3.36.0          
+ [52] MASS_7.3-57            zlibbioc_1.40.0        scales_1.1.1          
+ [55] promises_1.2.0.1       parallel_4.1.1         yaml_2.2.1            
+ [58] memoise_2.0.0          sass_0.4.1             stringi_1.7.5         
+ [61] RSQLite_2.2.8          highr_0.9              S4Vectors_0.32.0      
+ [64] foreach_1.5.1          BiocGenerics_0.40.0    boot_1.3-28           
+ [67] shape_1.4.6            GenomeInfoDb_1.30.0    rlang_0.4.12          
+ [70] pkgconfig_2.0.3        matrixStats_0.61.0     bitops_1.0-7          
+ [73] evaluate_0.14          lattice_0.20-44        purrr_0.3.4           
+ [76] labeling_0.4.2         cowplot_1.1.1          bit_4.0.4             
+ [79] tidyselect_1.1.1       plyr_1.8.6             magrittr_2.0.1        
+ [82] R6_2.5.1               IRanges_2.28.0         generics_0.1.1        
+ [85] DBI_1.1.1              pillar_1.6.4           whisker_0.4           
+ [88] withr_2.4.2            survival_3.2-11        KEGGREST_1.34.0       
+ [91] abind_1.4-5            RCurl_1.98-1.5         tibble_3.1.5          
+ [94] crayon_1.4.1           car_3.0-12             utf8_1.2.2            
+ [97] rmarkdown_2.14         GetoptLong_1.0.5       locfit_1.5-9.4        
+[100] blob_1.2.2             git2r_0.28.0           digest_0.6.28         
+[103] xtable_1.8-4           httpuv_1.6.3           stats4_4.1.1          
+[106] munsell_0.5.0          bslib_0.3.1           </code></pre>
 </div>
 </div>
 </div>

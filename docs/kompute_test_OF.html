@@ -11,11 +11,11 @@
 
 <meta name="author" content="Coby Warkentin and Donghyung Lee" />
 
-<meta name="date" content="2022-04-04" />
+<meta name="date" content="2022-06-03" />
 
 <title>KOMPUTE method testing - OF data</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -74,6 +74,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -94,6 +95,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -246,7 +250,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -283,7 +287,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">KOMPUTE method testing - OF data</h1>
 <h4 class="author">Coby Warkentin and Donghyung Lee</h4>
-<h4 class="date">2022-04-04</h4>
+<h4 class="date">2022-06-03</h4>
 
 </div>
 
@@ -345,7 +349,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-04-04
+<strong>Last updated:</strong> 2022-06-03
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -436,16 +440,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree8ef467b35419ceff89077700426516a701f7be9ftargetblank8ef467ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/warkenca/komputeExamples/tree/8ef467b35419ceff89077700426516a701f7be9f" target="_blank">8ef467b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestreeafdb32000be9cd04809a85fda244a2079ef9b6e3targetblankafdb320a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/warkenca/komputeExamples/tree/afdb32000be9cd04809a85fda244a2079ef9b6e3" target="_blank">afdb320</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestree8ef467b35419ceff89077700426516a701f7be9ftargetblank8ef467ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomwarkencakomputeExamplestreeafdb32000be9cd04809a85fda244a2079ef9b6e3targetblankafdb320a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/warkenca/komputeExamples/tree/8ef467b35419ceff89077700426516a701f7be9f" target="_blank">8ef467b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/warkenca/komputeExamples/tree/afdb32000be9cd04809a85fda244a2079ef9b6e3" target="_blank">afdb320</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -457,13 +461,21 @@ Ignored files:
     Ignored:    analysis/Fig1.png
 
 Untracked files:
-    Untracked:  analysis/figures.Rmd
+    Untracked:  analysis/Fig1.pdf
+    Untracked:  code/figure4.R
+    Untracked:  code/table1.R
+    Untracked:  code/table1.Rmd
+    Untracked:  code/table1.pdf
+    Untracked:  code/table1_cache/
+    Untracked:  data/table1.data.rds
 
 Unstaged changes:
     Modified:   analysis/kompute_test_BC.Rmd
     Modified:   analysis/kompute_test_CC.Rmd
     Modified:   analysis/kompute_test_OF.Rmd
-    Modified:   code/prep_OF_data.R
+    Modified:   data/BC.zmat.rds
+    Modified:   data/CC.zmat.rds
+    Modified:   data/OF.zmat.rds
 
 </code></pre>
 <p>
@@ -502,6 +514,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/warkenca/komputeExamples/blob/711a9486084dc298a3128eaca73b323b8d4bd8c1/analysis/kompute_test_OF.Rmd" target="_blank">711a948</a>
+</td>
+<td>
+leed13
+</td>
+<td>
+2022-06-02
+</td>
+<td>
+code creating zmat added
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/warkenca/komputeExamples/blob/274d911b2d6e8e5766ddb33d79498f1704b01508/analysis/kompute_test_OF.Rmd" target="_blank">274d911</a>
+</td>
+<td>
+Coby Warkentin
+</td>
+<td>
+2022-04-04
+</td>
+<td>
+Manuscript first draft updates
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/warkenca/komputeExamples/274d911b2d6e8e5766ddb33d79498f1704b01508/docs/kompute_test_OF.html" target="_blank">274d911</a>
+</td>
+<td>
+Coby Warkentin
+</td>
+<td>
+2022-04-04
+</td>
+<td>
+Manuscript first draft updates
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -973,33 +1036,34 @@ draw(ht3)</code></pre>
 <h2>Prep IMPC summary stat</h2>
 <div id="read-of-summary-stat-impcv10.1" class="section level3">
 <h3>Read OF summary stat (IMPCv10.1)</h3>
-<pre class="r"><code>OF.stat &lt;- readRDS(&quot;data/OF.stat.rds&quot;)
+<pre class="r"><code>OF.stat &lt;- readRDS(&quot;data/OF.stat.v16.rds&quot;)
 dim(OF.stat)</code></pre>
-<pre><code>[1] 45326     8</code></pre>
+<pre><code>[1] 61854     8</code></pre>
 <pre class="r"><code>table(OF.stat$parameter_name, OF.stat$procedure_name)</code></pre>
-<pre><code>                              
-                                 OF
-  Center average speed         3335
-  Center distance travelled    3591
-  Center permanence time       3632
-  Center resting time          1802
-  Distance travelled - total   3550
-  Latency to center entry      1818
-  Number of center entries     1816
-  Number of rears - total      2772
-  Percentage center time       3375
-  Periphery average speed      3335
-  Periphery distance travelled 3591
-  Periphery permanence time    3633
-  Periphery resting time       1803
-  Whole arena average speed    3637
-  Whole arena resting time     3636</code></pre>
+<pre><code>                                 
+                                    OF
+  Center average speed            3896
+  Center distance travelled       4176
+  Center permanence time          4275
+  Center resting time             3570
+  Distance travelled - total      4201
+  Latency to center entry         2989
+  Number of center entries        3614
+  Number of rears - total         2553
+  Percentage center movement time 3600
+  Percentage center time          4275
+  Periphery average speed         4176
+  Periphery distance travelled    4176
+  Periphery permanence time       4275
+  Periphery resting time          3529
+  Whole arena average speed       4275
+  Whole arena resting time        4274</code></pre>
 <pre class="r"><code>length(unique(OF.stat$marker_symbol)) #3362</code></pre>
-<pre><code>[1] 3362</code></pre>
+<pre><code>[1] 3823</code></pre>
 <pre class="r"><code>length(unique(OF.stat$allele_symbol)) #3412</code></pre>
-<pre><code>[1] 3412</code></pre>
+<pre><code>[1] 3868</code></pre>
 <pre class="r"><code>length(unique(OF.stat$proc_param_name)) #15  # number of phenotypes in association statistics data set</code></pre>
-<pre><code>[1] 15</code></pre>
+<pre><code>[1] 16</code></pre>
 <pre class="r"><code>length(unique(OF.data$proc_param_name)) #15 # number of phenotypes in final control data</code></pre>
 <pre><code>[1] 15</code></pre>
 <pre class="r"><code>pheno.list.stat &lt;- unique(OF.stat$proc_param_name)
@@ -1022,10 +1086,10 @@ common.pheno.list</code></pre>
 <pre><code>[1] 14</code></pre>
 <pre class="r"><code>## Use summary statistics of common phenotypes
 dim(OF.stat)</code></pre>
-<pre><code>[1] 45326     8</code></pre>
+<pre><code>[1] 61854     8</code></pre>
 <pre class="r"><code>OF.stat &lt;- OF.stat %&gt;% filter(proc_param_name %in% common.pheno.list)
 dim(OF.stat)</code></pre>
-<pre><code>[1] 42554     8</code></pre>
+<pre><code>[1] 55701     8</code></pre>
 <pre class="r"><code>length(unique(OF.stat$proc_param_name))</code></pre>
 <pre><code>[1] 14</code></pre>
 </div>
@@ -1036,8 +1100,8 @@ mtest &lt;-as.data.frame.matrix(mtest)
 nmax &lt;-max(mtest)
 col_fun = colorRamp2(c(0, nmax), c(&quot;white&quot;, &quot;red&quot;))
 col_fun(seq(0, nmax))</code></pre>
-<pre><code> [1] &quot;#FFFFFFFF&quot; &quot;#FFEEE7FF&quot; &quot;#FFDCD0FF&quot; &quot;#FFCBB9FF&quot; &quot;#FFB9A2FF&quot; &quot;#FFA78CFF&quot;
- [7] &quot;#FF9576FF&quot; &quot;#FF8161FF&quot; &quot;#FF6D4CFF&quot; &quot;#FF5636FF&quot; &quot;#FF3A1FFF&quot; &quot;#FF0000FF&quot;</code></pre>
+<pre><code> [1] &quot;#FFFFFFFF&quot; &quot;#FFEAE2FF&quot; &quot;#FFD5C6FF&quot; &quot;#FFBFAAFF&quot; &quot;#FFA98FFF&quot; &quot;#FF9374FF&quot;
+ [7] &quot;#FF7B5AFF&quot; &quot;#FF6140FF&quot; &quot;#FF4124FF&quot; &quot;#FF0000FF&quot;</code></pre>
 <pre class="r"><code>ht = Heatmap(as.matrix(mtest), cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, col = col_fun,
              row_names_gp = gpar(fontsize = 8), name=&quot;Count&quot;)</code></pre>
 <pre><code>`use_raster` is automatically set to TRUE for a matrix with more than
@@ -1062,7 +1126,7 @@ OF.z = OF.stat %&gt;%
   summarize(zscore = sumz(z_score)) ## combine z-scores</code></pre>
 <pre><code>`summarise()` has grouped output by &#39;marker_symbol&#39;. You can override using the `.groups` argument.</code></pre>
 <pre class="r"><code>dim(OF.z)</code></pre>
-<pre><code>[1] 35836     3</code></pre>
+<pre><code>[1] 49921     3</code></pre>
 </div>
 <div id="make-z-score-matrix-long-to-wide" class="section level3">
 <h3>Make z-score matrix (long to wide)</h3>
@@ -1075,12 +1139,16 @@ OF.zmat = dcast(OF.z, marker_symbol ~ proc_param_name, value.var = &quot;zscore&
              fun.aggregate = mean) %&gt;% tibble::column_to_rownames(var=&quot;marker_symbol&quot;)
 OF.zmat = nan2na(OF.zmat) #convert nan to na
 dim(OF.zmat)</code></pre>
-<pre><code>[1] 3360   14</code></pre>
-<pre class="r"><code>id.mat &lt;- 1*(!is.na(OF.zmat)) # multiply 1 to make this matrix numeric
+<pre><code>[1] 3823   14</code></pre>
+<pre class="r"><code>dim(OF.zmat)</code></pre>
+<pre><code>[1] 3823   14</code></pre>
+<pre class="r"><code>saveRDS(OF.zmat, file = &quot;data/OF.zmat.rds&quot;)
+
+id.mat &lt;- 1*(!is.na(OF.zmat)) # multiply 1 to make this matrix numeric
 nrow(as.data.frame(colSums(id.mat)))</code></pre>
 <pre><code>[1] 14</code></pre>
 <pre class="r"><code>dim(id.mat)</code></pre>
-<pre><code>[1] 3360   14</code></pre>
+<pre><code>[1] 3823   14</code></pre>
 <pre class="r"><code>## heatmap of gene - phenotype (red: tested, white: untested)
 ht = Heatmap(t(id.mat), 
              cluster_rows = T, clustering_distance_rows =&quot;binary&quot;,
@@ -1196,38 +1264,38 @@ plot(a4, a1)</code></pre>
 <pre><code>Monte-Carlo test
 Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
 
-Observation: 0.9461638 
+Observation: 0.9481883 
 
 Based on 9999 replicates
 Simulated p-value: 1e-04 
 Alternative hypothesis: greater 
 
-     Std.Obs  Expectation     Variance 
- 8.253839656 -0.000564017  0.013156434 </code></pre>
+      Std.Obs   Expectation      Variance 
+ 8.2821799635 -0.0003203414  0.0131157538 </code></pre>
 <pre class="r"><code>mantel.rtest(as.dist(1-OF.cor.rank.fig), as.dist(1-OF.zcor.fig), nrepet = 9999)</code></pre>
 <pre><code>Monte-Carlo test
 Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
 
-Observation: 0.9513592 
+Observation: 0.9544471 
 
 Based on 9999 replicates
 Simulated p-value: 1e-04 
 Alternative hypothesis: greater 
 
      Std.Obs  Expectation     Variance 
-8.1916710930 0.0009080079 0.0134621564 </code></pre>
+8.2504397969 0.0008944113 0.0133578074 </code></pre>
 <pre class="r"><code>mantel.rtest(as.dist(1-OF.cor.combat.fig), as.dist(1-OF.zcor.fig), nrepet = 9999)</code></pre>
 <pre><code>Monte-Carlo test
 Call: mantelnoneuclid(m1 = m1, m2 = m2, nrepet = nrepet)
 
-Observation: 0.9660052 
+Observation: 0.9759421 
 
 Based on 9999 replicates
 Simulated p-value: 1e-04 
 Alternative hypothesis: greater 
 
      Std.Obs  Expectation     Variance 
- 8.835872572 -0.001694674  0.011994508 </code></pre>
+ 8.920438043 -0.001681222  0.012010766 </code></pre>
 </div>
 </div>
 <div id="test-kompute-imputation-algorithm" class="section level2">
@@ -1245,16 +1313,16 @@ library(kompute)</code></pre>
 <p>We randomly select measured gene-phenotype association z-scores, mask those, impute them using KOMPUTE method. Then we compare the imputed z-scores to the measured ones.</p>
 <pre class="r"><code>zmat &lt;-t(OF.zmat) 
 dim(zmat)</code></pre>
-<pre><code>[1]   14 3360</code></pre>
+<pre><code>[1]   14 3823</code></pre>
 <pre class="r"><code>## filter genes with na &lt; 10
 zmat0 &lt;- is.na(zmat)
 num.na&lt;-colSums(zmat0)
 summary(num.na)</code></pre>
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-  0.000   0.000   4.000   3.335   5.000  13.000 </code></pre>
+ 0.0000  0.0000  0.0000  0.9419  1.0000  8.0000 </code></pre>
 <pre class="r"><code>zmat &lt;- zmat[,num.na&lt;10]
 dim(zmat)</code></pre>
-<pre><code>[1]   14 3244</code></pre>
+<pre><code>[1]   14 3823</code></pre>
 <pre class="r"><code>#pheno.cor &lt;- OF.cor.fig
 #pheno.cor &lt;- OF.cor.rank.fig
 pheno.cor &lt;- OF.cor.combat.fig
@@ -1289,7 +1357,7 @@ rownames(zmat)</code></pre>
 
 ## percentage of missing Z-scores in the original data 
 100*sum(is.na(zmat))/(nrow(zmat)*ncol(zmat)) # 21%</code></pre>
-<pre><code>[1] 21.92179</code></pre>
+<pre><code>[1] 6.728074</code></pre>
 <pre class="r"><code>nimp &lt;- 2000 # # of missing/imputed Z-scores
 set.seed(1111)
 
@@ -1311,9 +1379,9 @@ rownames(zmat.imp) &lt;- rownames(zmat)</code></pre>
 <pre class="r"><code>kompute.res &lt;- kompute(zmat.imp, pheno.cor, 0.01)</code></pre>
 <pre><code>
 KOMPute running...</code></pre>
-<pre><code># of genes: 3244</code></pre>
+<pre><code># of genes: 3823</code></pre>
 <pre><code># of phenotypes: 14</code></pre>
-<pre><code># of imputed Z-scores: 11956</code></pre>
+<pre><code># of imputed Z-scores: 5601</code></pre>
 <pre class="r"><code># measured vs imputed
 length(org.z)</code></pre>
 <pre><code>[1] 2000</code></pre>
@@ -1330,22 +1398,22 @@ dim(imp)</code></pre>
 <pre><code>[1] 2000    3</code></pre>
 <pre class="r"><code>cor.val &lt;- round(cor(imp$imp.z, imp$org.z), digits=3)
 cor.val</code></pre>
-<pre><code>[1] 0.938</code></pre>
+<pre><code>[1] 0.917</code></pre>
 <pre class="r"><code>plot(imp$imp.z, imp$org.z)</code></pre>
 <p><img src="figure/kompute_test_OF.Rmd/KOMPUTE_res-2.png" width="480" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>info.cutoff &lt;- 0.8
 imp.sub &lt;- subset(imp, info&gt;info.cutoff)
 dim(imp.sub)</code></pre>
-<pre><code>[1] 1573    3</code></pre>
+<pre><code>[1] 1692    3</code></pre>
 <pre class="r"><code>summary(imp.sub$imp.z)</code></pre>
-<pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
--8.10593 -0.98431 -0.05220 -0.06551  0.84600  8.89281 </code></pre>
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-6.7589 -1.1702 -0.1815 -0.1054  0.8437 11.3203 </code></pre>
 <pre class="r"><code>summary(imp.sub$info)</code></pre>
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
- 0.8000  0.8825  0.9284  0.9171  0.9633  0.9878 </code></pre>
+ 0.8039  0.8564  0.9281  0.9146  0.9649  0.9878 </code></pre>
 <pre class="r"><code>cor.val &lt;- round(cor(imp.sub$imp.z, imp.sub$org.z), digits=3)
 cor.val</code></pre>
-<pre><code>[1] 0.968</code></pre>
+<pre><code>[1] 0.948</code></pre>
 <pre class="r"><code>g &lt;- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
     geom_point() +
     labs(title=paste0(&quot;IMPC Behavior Data (OF), Info&gt;&quot;, info.cutoff, &quot;, Cor=&quot;,cor.val),
@@ -1359,6 +1427,17 @@ g
 dev.off()</code></pre>
 <pre><code>png 
   2 </code></pre>
+<pre class="r"><code># Part of Supplementary Figure 3
+fig3.3 &lt;- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
+  geom_point() +
+  labs(title=&quot;Open Field&quot;,
+       x=&quot;Imputed Z-scores&quot;, y = &quot;&quot;, col=&quot;Info&quot;) +
+  scale_x_continuous(limits=c(-9,9), breaks=c(seq(-9,9,3)), minor_breaks = NULL) +
+  scale_y_continuous(limits=c(-9,9), breaks=c(seq(-9,9,3))) +
+  scale_color_gradient(limits=c(0.8,1), low=&quot;#98cdf9&quot;, high=&quot;#084b82&quot;) +
+  theme_bw() +
+  theme(legend.position=&quot;none&quot;, plot.title=element_text(hjust=0.5))
+save(fig3.3, file=&quot;docs/figure/figures.Rmd/sim_OF.rdata&quot;)</code></pre>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1396,35 +1475,36 @@ loaded via a namespace (and not attached):
  [1] bitops_1.0-7           matrixStats_0.61.0     fs_1.5.0              
  [4] bit64_4.0.5            doParallel_1.0.16      httr_1.4.2            
  [7] GenomeInfoDb_1.30.0    rprojroot_2.0.2        tools_4.1.1           
-[10] utf8_1.2.2             R6_2.5.1               DBI_1.1.1             
-[13] BiocGenerics_0.40.0    colorspace_2.0-2       GetoptLong_1.0.5      
-[16] withr_2.4.2            tidyselect_1.1.1       bit_4.0.4             
-[19] compiler_4.1.1         git2r_0.28.0           Biobase_2.54.0        
-[22] labeling_0.4.2         scales_1.1.1           stringr_1.4.0         
-[25] digest_0.6.28          minqa_1.2.4            rmarkdown_2.11        
-[28] XVector_0.34.0         pkgconfig_2.0.3        htmltools_0.5.2       
-[31] limma_3.50.0           fastmap_1.1.0          highr_0.9             
-[34] rlang_0.4.12           GlobalOptions_0.1.2    RSQLite_2.2.8         
-[37] shape_1.4.6            jquerylib_0.1.4        farver_2.1.0          
-[40] generics_0.1.1         RCurl_1.98-1.5         magrittr_2.0.1        
-[43] GenomeInfoDbData_1.2.7 Rcpp_1.0.7             munsell_0.5.0         
-[46] S4Vectors_0.32.0       fansi_0.5.0            lifecycle_1.0.1       
-[49] edgeR_3.36.0           stringi_1.7.5          whisker_0.4           
-[52] yaml_2.2.1             zlibbioc_1.40.0        MASS_7.3-54           
-[55] plyr_1.8.6             blob_1.2.2             parallel_4.1.1        
-[58] promises_1.2.0.1       crayon_1.4.1           lattice_0.20-44       
-[61] Biostrings_2.62.0      splines_4.1.1          annotate_1.72.0       
-[64] KEGGREST_1.34.0        locfit_1.5-9.4         knitr_1.36            
-[67] pillar_1.6.4           boot_1.3-28            rjson_0.2.20          
-[70] codetools_0.2-18       stats4_4.1.1           XML_3.99-0.8          
-[73] glue_1.4.2             evaluate_0.14          png_0.1-7             
-[76] vctrs_0.3.8            nloptr_1.2.2.2         httpuv_1.6.3          
-[79] foreach_1.5.1          gtable_0.3.0           purrr_0.3.4           
-[82] clue_0.3-60            assertthat_0.2.1       cachem_1.0.6          
-[85] xfun_0.27              xtable_1.8-4           later_1.3.0           
-[88] survival_3.2-11        tibble_3.1.5           iterators_1.0.13      
-[91] memoise_2.0.0          AnnotationDbi_1.56.0   IRanges_2.28.0        
-[94] workflowr_1.6.2        cluster_2.1.2          ellipsis_0.3.2        </code></pre>
+[10] bslib_0.3.1            utf8_1.2.2             R6_2.5.1              
+[13] DBI_1.1.1              BiocGenerics_0.40.0    colorspace_2.0-2      
+[16] GetoptLong_1.0.5       withr_2.4.2            tidyselect_1.1.1      
+[19] bit_4.0.4              compiler_4.1.1         git2r_0.28.0          
+[22] Biobase_2.54.0         labeling_0.4.2         sass_0.4.1            
+[25] scales_1.1.1           stringr_1.4.0          digest_0.6.28         
+[28] minqa_1.2.4            rmarkdown_2.14         XVector_0.34.0        
+[31] pkgconfig_2.0.3        htmltools_0.5.2        limma_3.50.0          
+[34] fastmap_1.1.0          highr_0.9              rlang_0.4.12          
+[37] GlobalOptions_0.1.2    RSQLite_2.2.8          shape_1.4.6           
+[40] jquerylib_0.1.4        farver_2.1.0           generics_0.1.1        
+[43] jsonlite_1.7.2         RCurl_1.98-1.5         magrittr_2.0.1        
+[46] GenomeInfoDbData_1.2.7 Rcpp_1.0.7             munsell_0.5.0         
+[49] S4Vectors_0.32.0       fansi_0.5.0            lifecycle_1.0.1       
+[52] edgeR_3.36.0           stringi_1.7.5          whisker_0.4           
+[55] yaml_2.2.1             zlibbioc_1.40.0        MASS_7.3-57           
+[58] plyr_1.8.6             blob_1.2.2             parallel_4.1.1        
+[61] promises_1.2.0.1       crayon_1.4.1           lattice_0.20-44       
+[64] Biostrings_2.62.0      splines_4.1.1          annotate_1.72.0       
+[67] KEGGREST_1.34.0        locfit_1.5-9.4         knitr_1.36            
+[70] pillar_1.6.4           boot_1.3-28            rjson_0.2.20          
+[73] codetools_0.2-18       stats4_4.1.1           XML_3.99-0.8          
+[76] glue_1.4.2             evaluate_0.14          png_0.1-7             
+[79] vctrs_0.3.8            nloptr_1.2.2.2         httpuv_1.6.3          
+[82] foreach_1.5.1          gtable_0.3.0           purrr_0.3.4           
+[85] clue_0.3-60            assertthat_0.2.1       cachem_1.0.6          
+[88] xfun_0.31              xtable_1.8-4           later_1.3.0           
+[91] survival_3.2-11        tibble_3.1.5           iterators_1.0.13      
+[94] memoise_2.0.0          AnnotationDbi_1.56.0   IRanges_2.28.0        
+[97] workflowr_1.6.2        cluster_2.1.2          ellipsis_0.3.2        </code></pre>
 </div>
 </div>
 </div>

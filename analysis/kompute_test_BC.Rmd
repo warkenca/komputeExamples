@@ -20,6 +20,8 @@ library(RColorBrewer)
 #library(cowplot)
 library(circlize)
 library(ComplexHeatmap)
+library(patchwork)
+library(ggpubr)
 ```
 
 ## Prep control phenotype data
@@ -215,6 +217,25 @@ pvca.plot.nobatch
 dev.off()
 ```
 
+```{r}
+# Supplementary Figure 1
+pvca.plot <- pvca.plot +
+  labs(title="") +
+  scale_x_discrete(limits=names(pvca.means), labels=c("Sex", "Pheno center", "Residual")) +
+  theme(axis.text.x = element_text(angle=0, vjust=1, hjust=.5))
+
+pvca.plot.nobatch <- pvca.plot.nobatch +
+  labs(y="", title="") +
+  scale_x_discrete(limits=names(pvca.means.nobatch), labels=c("Sex", "Pheno center", "Residual")) +
+  theme(axis.text.x = element_text(angle=0, vjust=1, hjust=.5))
+
+pvca.plots <- ggarrange(pvca.plot, pvca.plot.nobatch, labels = "AUTO")
+
+png(file="docs/figure/figures.Rmd/pvca_BC_supp.png", width=700, height=400)
+pvca.plots
+dev.off()
+```
+
 ### Compute correlations between phenotypes
 ```{r, fig.width=6, fig.height=3}
 BC.cor.rank <- cor(BC.mat.rank[,-1:-3], use="pairwise.complete.obs") # pearson correlation coefficient
@@ -235,7 +256,7 @@ draw(ht3)
 
 ### Read BC summary stat (IMPCv10.1)
 ```{r KOMP_stats}
-BC.stat <- readRDS("data/BC.stat.rds")
+BC.stat <- readRDS("data/BC.stat.v16.rds")
 dim(BC.stat)
 table(BC.stat$parameter_name, BC.stat$procedure_name)
 
@@ -379,6 +400,31 @@ draw(ht1+ht2+ht3+ht4)
 png(file="docs/figure/figures.Rmd/cors_BC.png", width=800, height=250)
 draw(ht1+ht2+ht3+ht4)
 dev.off()
+
+# Supplementary Figure 2
+BC.cor.combat.fig2 <- BC.cor.combat.fig
+BC.zcor.fig2 <- BC.zcor.fig
+rownames(BC.cor.combat.fig2) <- substring(rownames(BC.cor.combat.fig2), 4)
+rownames(BC.zcor.fig2) <- substring(rownames(BC.zcor.fig), 4)
+rownames(BC.cor.combat.fig2)[c(6,7)] = c("Bone Mineral Content", "Bone Mineral Density")
+rownames(BC.zcor.fig2)[c(6,7)] = c("Bone Mineral Content", "Bone Mineral Density")
+
+ht3 = Heatmap(BC.cor.combat.fig2, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 12), column_title="Phenotypic Correlation", column_title_gp = gpar(fontsize = 15),
+             name="Corr",
+             heatmap_legend_param = list(title_gp=gpar(fontsize=15), labels_gp=gpar(fontsize=12),
+                                         legend_height=unit(50, "mm")))
+ht4 = Heatmap(BC.zcor.fig2, cluster_rows = FALSE, cluster_columns = FALSE, show_column_names = F, #col = col_fun,
+             row_names_gp = gpar(fontsize = 12), column_title="Genetic Correlation", column_title_gp = gpar(fontsize = 15),
+             name="Corr")
+
+png(file="docs/figure/figures.Rmd/cors_BC_supp.png", width=625, height=250)
+draw(ht4+ht3)
+dev.off()
+
+pdf(file="docs/figure/figures.Rmd/cors_BC_supp.pdf", width=12, height=4.9)
+draw(ht4+ht3)
+dev.off()
 ```
 
 ### Test of the correlation between genetic correlation matrices
@@ -501,4 +547,16 @@ g
 png(file="docs/figure/figures.Rmd/sim_results_BC.png", width=600, height=350)
 g
 dev.off()
+
+# Part of Supplementary Figure 3
+fig3.1 <- ggplot(imp.sub, aes(x=imp.z, y=org.z, col=info)) +
+  geom_point() +
+  labs(title="Body Composition",
+       x="Imputed Z-scores", y = "Measured Z-scores", col="Info") +
+  scale_x_continuous(limits=c(-9,9), breaks=c(seq(-9,9,3)), minor_breaks = NULL) +
+  scale_y_continuous(limits=c(-9,9), breaks=c(seq(-9,9,3))) +
+  scale_color_gradient(limits=c(0.8,1), low="#98cdf9", high="#084b82") +
+  theme_bw() +
+  theme(legend.position="none", plot.title=element_text(hjust=0.5))
+save(fig3.1, file="docs/figure/figures.Rmd/sim_BC.rdata")
 ```
